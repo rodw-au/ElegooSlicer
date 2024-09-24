@@ -591,11 +591,12 @@ std::string GCodeWriter::_spiral_travel_to_z(double z, const Vec2d &ij_offset, c
                                  : this->config.travel_speed.value;
     }
     
-    // std::string output = ";G17\n";  // G17 is not supported
+    std::string output = ";G17\n";  // G17 is not supported
     GCodeG2G3Formatter w(true);
     w.emit_z(z);
     w.emit_ij(ij_offset);
     // w.emit_string(" P1 ");     // P1 is not supported
+    w.emit_string(" ");     // P1 is not supported
     w.emit_f(speed * 60.0);
     w.emit_comment(GCodeWriter::full_gcode_comment, comment);
     return output + w.string();

@@ -6,7 +6,7 @@
     "setting_id": "ERPETGECC",
     "instantiation": "true",
     "pressure_advance": [
-        "0.03"
+        "0.024"
     ],
     "compatible_printers": [
         "Elegoo Centauri Carbon 0.4 nozzle",

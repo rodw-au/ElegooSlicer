@@ -106,7 +106,7 @@ EOF
         my $version = $modules{$module};
         my @cmd = ($cpanm, @cpanm_args);
         
-        # temporary workaround for upstream bug in test
+        # temporary workaround for upstream bug in test 
         push @cmd, '--notest'
             if $module =~ /^(?:OpenGL|Test::Harness)$/;
         

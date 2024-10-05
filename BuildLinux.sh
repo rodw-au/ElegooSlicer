@@ -187,3 +187,4 @@ echo "[9/9] Generating Linux app..."
     popd
 echo "done"
 fi
+

@@ -65,7 +65,7 @@ set_logging_level($Slic3r::loglevel);
 # class instance in a thread safe manner.
 Slic3r::GCode::PlaceholderParser->new->evaluate_boolean_expression('1==1');
 
-# Open a file by converting $filename to local file system locales.
+# Open a file by converting $filename to local file system locales. 
 sub open {
     my ($fh, $mode, $filename) = @_;
     return CORE::open $$fh, $mode, encode_path($filename);

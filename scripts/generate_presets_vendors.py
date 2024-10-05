@@ -1,4 +1,4 @@
-# helps manage the static list of vendor names in src/slic3r/GUI/CreatePresetsDialog.cpp
+# helps manage the static list of vendor names in src/slic3r/GUI/CreatePresetsDialog.cpp 
 
 import json
 from pathlib import Path

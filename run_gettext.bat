@@ -33,3 +33,4 @@ goto :eof
     if not exist "./resources/i18n/%lang%" mkdir "./resources/i18n/%lang%"
     .\tools\msgfmt.exe --check-format -o "./resources/i18n/%lang%/ElegooSlicer.mo" "%file%"
 goto :eof
+

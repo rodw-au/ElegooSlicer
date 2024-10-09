@@ -48,4 +48,3 @@ cd ..
 call run_gettext.bat
 cd %build_dir%
 cmake --build . --target install --config %build_type%
-

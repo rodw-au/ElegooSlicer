@@ -13,7 +13,7 @@ use List::Util qw(first sum none);
 use Slic3r::Geometry qw(epsilon scale unscale scaled_epsilon Y);
 use Slic3r::Test;
 
-# Disable this until a more robust implementation is provided. It currently 
+# Disable this until a more robust implementation is provided. It currently
 # fails on Linux 32bit because some spurious extrudates are generated.
 if (0) {
     my $config = Slic3r::Config::new_from_defaults;

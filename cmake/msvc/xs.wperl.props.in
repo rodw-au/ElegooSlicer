@@ -20,4 +20,3 @@
     <LocalDebuggerWorkingDirectory>${PROPS_CMAKE_SOURCE_DIR}</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
 </Project>
-

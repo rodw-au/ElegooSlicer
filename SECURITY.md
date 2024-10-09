@@ -30,4 +30,3 @@ Follow these steps to improve security when using ElegooSlicer.
 We suggest you goto #2 if this happens.
 
 Why? Through experience we have found it is best to goto #2 in this situation.
-

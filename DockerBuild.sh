@@ -7,7 +7,7 @@ set -x
 # setup with persistent volumes for the build & deps directories
 # would speed up recompile times significantly.  For end users,
 # the simplicity of a single Docker image and a one-time compilation
-# seems better. 
+# seems better.
 docker build -t elegooslicer \
   --build-arg USER=$USER \
   --build-arg UID=$(id -u) \

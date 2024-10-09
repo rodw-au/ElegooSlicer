@@ -5,7 +5,7 @@
 
 namespace textconv_helper
 {
-	// Forward declarations of our classes. They are defined later. 
+	// Forward declarations of our classes. They are defined later.
 	class CA2A_;
 	class CA2W_;
 	class CW2A_;

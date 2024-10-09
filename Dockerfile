@@ -5,7 +5,7 @@ LABEL maintainer "DeftDawg <DeftDawg@gmail.com>"
 RUN apt-get update && \
     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-# Add a deb-src 
+# Add a deb-src
 RUN echo deb-src http://archive.ubuntu.com/ubuntu \
     $(cat /etc/*release | grep VERSION_CODENAME | cut -d= -f2) main universe>> /etc/apt/sources.list 
 

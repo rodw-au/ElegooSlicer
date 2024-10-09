@@ -200,7 +200,7 @@ endif()
 install(TARGETS XS DESTINATION ${PERL_VENDORARCH}/auto/Slic3r/XS)
 install(FILES lib/Slic3r/XS.pm DESTINATION ${PERL_VENDORLIB}/Slic3r)
 
-# Unit / integration tests 
+# Unit / integration tests
 enable_testing()
 get_filename_component(PERL_BIN_PATH "${PERL_EXECUTABLE}" DIRECTORY)
 if (MSVC)

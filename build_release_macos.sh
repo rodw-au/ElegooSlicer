@@ -54,7 +54,7 @@ while getopts ":dpa:snt:xbc:h" opt; do
   esac
 done
 
-# Set defaults 
+# Set defaults
 
 if [ -z "$ARCH" ]; then
   ARCH="$(uname -m)"

@@ -119,7 +119,7 @@ jobs:
           codesign --deep --force --verbose --options runtime --timestamp --entitlements ${{ github.workspace }}/scripts/disable_validation.entitlements --sign "$CERTIFICATE_ID" ElegooSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_DEV_ACCOUNT }}" --team-id "${{ secrets.TEAM_ID }}" --password "${{ secrets.APP_PWD }}"
           # xcrun notarytool submit "ElegooSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg" --keychain-profile "notarytool-profile" --wait
-          xcrun stapler staple ElegooSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
+          # xcrun stapler staple ElegooSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
 
       - name: Create DMG without notary
         if: github.ref != 'refs/heads/main' && inputs.os == 'macos-14'

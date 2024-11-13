@@ -1215,8 +1215,8 @@ wxWindow* PreferencesDialog::create_general_page()
     sizer_page->Add(item_save_presets, 0, wxTOP, FromDIP(3));
     sizer_page->Add(title_network, 0, wxTOP | wxEXPAND, FromDIP(20));
     sizer_page->Add(item_check_stable_version_only, 0, wxTOP, FromDIP(3));
-    sizer_page->Add(item_stealth_mode, 0, wxTOP, FromDIP(3));
-    sizer_page->Add(item_enable_plugin, 0, wxTOP, FromDIP(3));
+    // sizer_page->Add(item_stealth_mode, 0, wxTOP, FromDIP(3));
+    // sizer_page->Add(item_enable_plugin, 0, wxTOP, FromDIP(3));
 #ifdef _WIN32
     sizer_page->Add(title_associate_file, 0, wxTOP| wxEXPAND, FromDIP(20));
     sizer_page->Add(item_associate_3mf, 0, wxTOP, FromDIP(3));

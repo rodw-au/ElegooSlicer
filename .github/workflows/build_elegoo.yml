@@ -43,7 +43,7 @@ jobs:
       - name: Get the version and date on Ubuntu and macOS
         if: inputs.os != 'windows-latest'
         run: |
-          ver_pure=$(grep 'set(ELEGOOTechSupport_VERSION' version.inc | cut -d '"' -f2)
+          ver_pure=$(grep 'set(ELEGOOSLICER_VERSION' version.inc | cut -d '"' -f2)
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             ver="PR-${{ github.event.number }}"
           else
@@ -66,7 +66,7 @@ jobs:
               $ver = "PR" + $prNumber
           } else {
               $versionContent = Get-Content version.inc -Raw
-              if ($versionContent -match 'set\(ELEGOOTechSupport_VERSION "(.*?)"\)') {
+              if ($versionContent -match 'set\(ELEGOOSLICER_VERSION "(.*?)"\)') {
                   $ver = $matches[1]
               }
               $ver = "V$ver"

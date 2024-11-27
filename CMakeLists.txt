@@ -761,7 +761,7 @@ install(FILES ${CMAKE_SOURCE_DIR}/LICENSE.txt DESTINATION ".")
 configure_file(${LIBDIR}/platform/unix/fhs.hpp.in ${LIBDIR_BIN}/platform/unix/fhs.hpp)
 
 set (CPACK_PACKAGE_NAME "ElegooSlicer")
-set (CPACK_PACKAGE_VENDOR "Elegoo Technology Co.,Ltd")
+set (CPACK_PACKAGE_VENDOR "Shenzhen Elegoo Technology Co.,Ltd")
 set (CPACK_PACKAGE_VERSION_MAJOR "${ELEGOO_VERSION_MAJOR}")
 set (CPACK_PACKAGE_VERSION_MINOR "${ELEGOO_VERSION_MINOR}")
 set (CPACK_PACKAGE_VERSION_PATCH "${ELEGOO_VERSION_PATCH}")

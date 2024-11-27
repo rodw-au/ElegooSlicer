@@ -98,10 +98,10 @@ jobs:
         if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.os == 'macos-14'
         working-directory: ${{ github.workspace }}
         env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
-          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.MAC_BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.MAC_P12_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          CERTIFICATE_ID: ${{ secrets.MACOS_CERTIFICATE_ID }}
+          CERTIFICATE_ID: ${{ secrets.MAC_CERTIFICATE_ID }}
 
         run: |
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
@@ -117,7 +117,7 @@ jobs:
           ln -s /Applications ${{ github.workspace }}/build_${{inputs.arch}}/ElegooSlicer/Applications
           hdiutil create -volname "ElegooSlicer" -srcfolder ${{ github.workspace }}/build_${{inputs.arch}}/ElegooSlicer -ov -format UDZO ElegooSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
           codesign --deep --force --verbose --options runtime --timestamp --entitlements ${{ github.workspace }}/scripts/disable_validation.entitlements --sign "$CERTIFICATE_ID" ElegooSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
-          xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_DEV_ACCOUNT }}" --team-id "${{ secrets.TEAM_ID }}" --password "${{ secrets.APP_PWD }}"
+          xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_DEV_ACCOUNT }}" --team-id "${{ secrets.MAC_TEAM_ID }}" --password "${{ secrets.MAC_APP_PWD }}"
           xcrun notarytool submit "ElegooSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg" --keychain-profile "notarytool-profile" --wait
           xcrun stapler staple ElegooSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
 

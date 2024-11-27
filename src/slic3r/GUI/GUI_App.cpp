@@ -4264,7 +4264,8 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
             std::string best_release_url;
             std::string best_release_content;
             std::string best_pre_content;
-            std::string install_url;
+            std::string pre_install_url;
+            std::string release_install_url;
             
             const std::regex reg_num("([0-9]+)");
             if (check_stable_only) {
@@ -4279,24 +4280,34 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                         best_pre_url     = root.get<std::string>("html_url");
                         best_pre_content = root.get<std::string>("body");
                         best_pre.set_prerelease("Preview");
+                        //get the installer url
+                        auto assets = root.get_child("assets");
+                        for (auto asset : assets) {
+                            std::string asset_name = asset.second.get<std::string>("name");
+                            if (isValidInstaller(asset_name)) {
+                                pre_install_url = asset.second.get<std::string>("browser_download_url");
+                                break;
+                            }
+                        }
                     }
                 } else {
                     if (best_release < tag_version) {
                         best_release         = tag_version;
                         best_release_url     = root.get<std::string>("html_url");
                         best_release_content = root.get<std::string>("body");
+                        //get the installer url
+                        auto assets = root.get_child("assets");
+                        for (auto asset : assets) {
+                            std::string asset_name = asset.second.get<std::string>("name");
+                            if (isValidInstaller(asset_name)) {
+                                release_install_url = asset.second.get<std::string>("browser_download_url");
+                                break;
+                            }
+                        }
                     }
                 }
 
-                //get the installer url
-                auto assets = root.get_child("assets");
-                for (auto asset : assets) {
-                    std::string asset_name = asset.second.get<std::string>("name");
-                    if (isValidInstaller(asset_name)) {
-                        install_url = asset.second.get<std::string>("browser_download_url");
-                        break;
-                    }
-                }
+ 
             } else {
                 for (auto json_version : root) {
                     std::string tag = json_version.second.get<std::string>("tag_name");
@@ -4311,25 +4322,32 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                             best_pre_url     = json_version.second.get<std::string>("html_url");
                             best_pre_content = json_version.second.get<std::string>("body");
                             best_pre.set_prerelease("Preview");
+                            //get the installer url
+                            auto assets = json_version.second.get_child("assets");
+                            for (auto asset : assets) {
+                                std::string asset_name = asset.second.get<std::string>("name");
+                                if (isValidInstaller(asset_name)) {
+                                    pre_install_url = asset.second.get<std::string>("browser_download_url");
+                                    break;
+                                }
+                            }
                         }
                     } else {
                         if (best_release < tag_version) {
                             best_release         = tag_version;
                             best_release_url     = json_version.second.get<std::string>("html_url");
                             best_release_content = json_version.second.get<std::string>("body");
+                            //get the installer url
+                            auto assets = json_version.second.get_child("assets");
+                            for (auto asset : assets) {
+                                std::string asset_name = asset.second.get<std::string>("name");
+                                if (isValidInstaller(asset_name)) {
+                                    release_install_url = asset.second.get<std::string>("browser_download_url");
+                                    break;
+                                }
+                            }
                         }
                     }
-
-                    //get the installer url
-                    auto assets = json_version.second.get_child("assets");
-                    for (auto asset : assets) {
-                        std::string asset_name = asset.second.get<std::string>("name");
-                        if (isValidInstaller(asset_name)) {
-                            install_url = asset.second.get<std::string>("browser_download_url");
-                            break;
-                        }
-                    }
-
                 }
             }
 
@@ -4338,18 +4356,15 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                 best_pre         = best_release;
                 best_pre_url     = best_release_url;
                 best_pre_content = best_release_content;
+                pre_install_url  = release_install_url;
             }
 
             //if we don't have a valid installer, use the best pre url
-            if(install_url.empty()) {
-                if(check_stable_only)
-                {
-                    install_url = best_release_url;
-                }
-                else
-                {
-                    install_url = best_pre_url;
-                }
+            if(release_install_url.empty()) {
+                release_install_url = best_release_url;
+            }
+            if(pre_install_url.empty()) {
+                pre_install_url = best_pre_url;
             }
             // if we're the most recent, don't do anything
             if ((check_stable_only ? best_release : best_pre) <= current_version) {
@@ -4358,7 +4373,7 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                 return;
             }
 
-            version_info.url           = install_url; //check_stable_only ? best_release_url : best_pre_url;
+            version_info.url           = check_stable_only ? release_install_url : pre_install_url;
             version_info.version_str   = check_stable_only ? best_release.to_string_sf() : best_pre.to_string();
             version_info.description   = check_stable_only ? best_release_content : best_pre_content;
             version_info.force_upgrade = false;

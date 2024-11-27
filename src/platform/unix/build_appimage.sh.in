@@ -2,7 +2,7 @@
 APPIMAGETOOLURL="https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-$(uname -m).AppImage"
 
 
-APP_IMAGE="@SLIC3R_APP_KEY@_Linux_V@ELEGOOTechSupport_VERSION@.AppImage"
+APP_IMAGE="@SLIC3R_APP_KEY@_Linux_V@ELEGOOSLICER_VERSION@.AppImage"
 
 wget ${APPIMAGETOOLURL} -O ../appimagetool.AppImage
 chmod +x ../appimagetool.AppImage

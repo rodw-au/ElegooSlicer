@@ -4374,12 +4374,12 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
             }
 
             version_info.url           = check_stable_only ? release_install_url : pre_install_url;
-            version_info.version_str   = check_stable_only ? best_release.to_string_sf() : best_pre.to_string();
+            version_info.version_str   = check_stable_only ? best_release.to_string_sf() : best_pre.to_string_sf();
             version_info.description   = check_stable_only ? best_release_content : best_pre_content;
             version_info.force_upgrade = false;
 
             wxCommandEvent* evt = new wxCommandEvent(EVT_SLIC3R_VERSION_ONLINE);
-            evt->SetString((check_stable_only ? best_release : best_pre).to_string());
+            evt->SetString((check_stable_only ? best_release : best_pre).to_string_sf());
             GUI::wxGetApp().QueueEvent(evt);
           } catch (...) {}
         })

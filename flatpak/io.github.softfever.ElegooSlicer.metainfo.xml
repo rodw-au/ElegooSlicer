@@ -9,11 +9,11 @@
     <!-- hehe hadess @ppd 
     ... seriously though, thanks -->
     <summary>Get even more perfect prints!</summary>
-    <developer_name>ELEGOOTechSupport</developer_name>
-    <url type="homepage">https://github.com/ELEGOOTechSupport/ElegooSlicer</url>
-    <url type="help">https://github.com/ELEGOOTechSupport/ElegooSlicer/wiki</url>
-    <url type="bugtracker">https://github.com/ELEGOOTechSupport/ElegooSlicer/issues/</url>
-    <url type="donation">https://ko-fi.com/ELEGOOTechSupport</url>
+    <developer_name>ELEGOO-3D</developer_name>
+    <url type="homepage">https://github.com/ELEGOO-3D/ElegooSlicer</url>
+    <url type="help">https://github.com/ELEGOO-3D/ElegooSlicer/wiki</url>
+    <url type="bugtracker">https://github.com/ELEGOO-3D/ElegooSlicer/issues/</url>
+    <url type="donation">https://ko-fi.com/ELEGOO-3D</url>
     <metadata_license>0BSD</metadata_license>
     <project_license>AGPL-3.0-only</project_license>
     <content_rating type="oars-1.1" />
@@ -42,7 +42,7 @@
 	  <color type="primary" scheme_preference="light">#0066bd</color>
 	</branding>
     <releases>
-	    <release version="2.0.0-951fc8e" date="2024-01-30"> <url>https://github.com/ELEGOOTechSupport/OrcaSlicer/commit/951fc8e98a0d5ca0ccb254315646ce7889a44836</url>
+	    <release version="2.0.0-951fc8e" date="2024-01-30"> <url>https://github.com/ELEGOO-3D/OrcaSlicer/commit/951fc8e98a0d5ca0ccb254315646ce7889a44836</url>
         </release>
     </releases>
 </component>

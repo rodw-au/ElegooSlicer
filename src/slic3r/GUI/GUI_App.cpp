@@ -2209,7 +2209,7 @@ bool GUI_App::on_init_inner()
     }
 #endif
 
-    BOOST_LOG_TRIVIAL(info) << boost::format("gui mode, Current ElegooSlicer Version %1%")%ELEGOOTechSupport_VERSION;
+    BOOST_LOG_TRIVIAL(info) << boost::format("gui mode, Current ElegooSlicer Version %1%")%ELEGOOSLICER_VERSION;
     // Enable this to get the default Win32 COMCTRL32 behavior of static boxes.
 //    wxSystemOptions::SetOption("msw.staticbox.optimized-paint", 0);
     // Enable this to disable Windows Vista themes for all wxNotebooks. The themes seem to lead to terrible
@@ -4214,6 +4214,22 @@ Semver get_version(const std::string& str, const std::regex& regexp) {
     return Semver::invalid();
 }
 
+static bool isValidInstaller(const std::string& input)
+{
+#ifdef WIN32
+    std::regex pattern(R"(.*Windows.*Installer.*\.exe$)", std::regex_constants::icase);
+    return std::regex_match(input, pattern);
+#elif __APPLE__
+#ifdef __x86_64__
+    std::regex pattern(R"(.*Mac.*x86_64.*\.dmg$)", std::regex_constants::icase);
+    return std::regex_match(input, pattern);
+#elif __aarch64__
+    std::regex pattern(R"(.*Mac.*arm64.*\.dmg$)", std::regex_constants::icase);
+    return std::regex_match(input, pattern);
+#endif // __x86_64__
+#endif //  WIN32
+    return false;
+}
 void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 {
     AppConfig* app_config = wxGetApp().app_config;
@@ -4241,13 +4257,15 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
             // metadata
             std::regex matcher("[0-9]+\\.[0-9]+(\\.[0-9]+)*(-[A-Za-z0-9]+)?(\\+[A-Za-z0-9]+)?");
 
-            Semver           current_version = get_version(ELEGOOTechSupport_VERSION, matcher);
+            Semver           current_version = get_version(ELEGOOSLICER_VERSION, matcher);
             Semver best_pre(1, 0, 0);
             Semver best_release(1, 0, 0);
             std::string best_pre_url;
             std::string best_release_url;
             std::string best_release_content;
             std::string best_pre_content;
+            std::string install_url;
+            
             const std::regex reg_num("([0-9]+)");
             if (check_stable_only) {
                 std::string tag = root.get<std::string>("tag_name");
@@ -4267,6 +4285,16 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                         best_release         = tag_version;
                         best_release_url     = root.get<std::string>("html_url");
                         best_release_content = root.get<std::string>("body");
+                    }
+                }
+
+                //get the installer url
+                auto assets = root.get_child("assets");
+                for (auto asset : assets) {
+                    std::string asset_name = asset.second.get<std::string>("name");
+                    if (isValidInstaller(asset_name)) {
+                        install_url = asset.second.get<std::string>("browser_download_url");
+                        break;
                     }
                 }
             } else {
@@ -4291,6 +4319,17 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                             best_release_content = json_version.second.get<std::string>("body");
                         }
                     }
+
+                    //get the installer url
+                    auto assets = json_version.second.get_child("assets");
+                    for (auto asset : assets) {
+                        std::string asset_name = asset.second.get<std::string>("name");
+                        if (isValidInstaller(asset_name)) {
+                            install_url = asset.second.get<std::string>("browser_download_url");
+                            break;
+                        }
+                    }
+
                 }
             }
 
@@ -4300,6 +4339,18 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                 best_pre_url     = best_release_url;
                 best_pre_content = best_release_content;
             }
+
+            //if we don't have a valid installer, use the best pre url
+            if(install_url.empty()) {
+                if(check_stable_only)
+                {
+                    install_url = best_release_url;
+                }
+                else
+                {
+                    install_url = best_pre_url;
+                }
+            }
             // if we're the most recent, don't do anything
             if ((check_stable_only ? best_release : best_pre) <= current_version) {
                 if (by_user != 0)
@@ -4307,7 +4358,7 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                 return;
             }
 
-            version_info.url           = check_stable_only ? best_release_url : best_pre_url;
+            version_info.url           = install_url; //check_stable_only ? best_release_url : best_pre_url;
             version_info.version_str   = check_stable_only ? best_release.to_string_sf() : best_pre.to_string();
             version_info.description   = check_stable_only ? best_release_content : best_pre_content;
             version_info.force_upgrade = false;
@@ -4461,7 +4512,7 @@ std::string GUI_App::format_display_version()
 {
     if (!version_display.empty()) return version_display;
 
-    version_display = ELEGOOTechSupport_VERSION;
+    version_display = ELEGOOSLICER_VERSION;
     return version_display;
 }
 

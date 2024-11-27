@@ -167,7 +167,7 @@ jobs:
         run: .\build_release_vs2022.bat slicer
 
       - name: Sign app Win
-        if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.os == 'windows-latest'
+        if: inputs.os == 'windows-latest'
         working-directory: ${{ github.workspace }}/build
         env:
           CI_VSIGN_CERT: ${{ secrets.CI_VSIGN_CERT }}
@@ -187,7 +187,7 @@ jobs:
           cpack -G NSIS
 
       - name: Sign installer Win
-        if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.os == 'windows-latest'
+        if: inputs.os == 'windows-latest'
         working-directory: ${{ github.workspace }}/build
         env:
           CI_VSIGN_CERT: ${{ secrets.CI_VSIGN_CERT }}

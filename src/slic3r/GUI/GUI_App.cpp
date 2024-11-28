@@ -329,8 +329,8 @@ public:
 
 		// Logo
         BitmapCache bmp_cache;
-        wxBitmap logo_bmp = *bmp_cache.load_svg(is_dark ? "splash_logo_dark" : "splash_logo", width, height);  // use with full width & height
-        memDc.DrawBitmap(logo_bmp, 0, 0, true);
+        wxBitmap logo_bmp = *bmp_cache.load_svg(is_dark ? "splash_logo_dark" : "splash_logo", 400, 400);  // use with full width & height
+        memDc.DrawBitmap(logo_bmp, (width - 400) / 2, 60, true);
 
         // Version
         memDc.SetFont(m_constant_text.version_font);
@@ -934,7 +934,7 @@ void GUI_App::post_init()
     }*/
 
     // BBS: to be checked
-#if 1
+#if 0 //暂时屏蔽 Show Tip of the Day
     // show "Did you know" notification
     if (app_config->get("show_hints") == "true" && !is_gcode_viewer()) {
         plater_->get_notification_manager()->push_hint_notification(false);

@@ -259,8 +259,8 @@ AboutDialog::AboutDialog()
         version->SetFont(version_font);
         version->SetForegroundColour(wxColour("#FFFFFD"));
         bs_version->SetForegroundColour(wxColour("#FFFFFD"));
-        version->SetBackgroundColour(wxColour("#4d4d4d"));
-        bs_version->SetBackgroundColour(wxColour("#4d4d4d"));
+        version->SetBackgroundColour(wxColour(14,119,184));
+        bs_version->SetBackgroundColour(wxColour(14,119,184));
 
 
         vesizer->Add(version, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, FromDIP(5));

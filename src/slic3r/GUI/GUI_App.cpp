@@ -4230,8 +4230,121 @@ static bool isValidInstaller(const std::string& input)
 #endif //  WIN32
     return false;
 }
+
+static std::string getSystemLocale() {
+    std::string locale;
+
+#if defined(_WIN32) || defined(_WIN64)
+    // Windows specific code
+    wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
+    if (GetUserDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH)) {
+        char localeNameChar[LOCALE_NAME_MAX_LENGTH];
+        wcstombs(localeNameChar, localeName, LOCALE_NAME_MAX_LENGTH);
+        locale = localeNameChar;
+    }
+#elif defined(__APPLE__) || defined(__MACH__)
+    // macOS specific code
+    CFLocaleRef localeRef = CFLocaleCopyCurrent();
+    CFStringRef localeStr = CFLocaleGetIdentifier(localeRef);
+    char localeName[256];
+    if (CFStringGetCString(localeStr, localeName, sizeof(localeName), kCFStringEncodingUTF8)) {
+        locale = localeName;
+    }
+    CFRelease(localeRef);
+#endif
+
+    return locale;
+}
 void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 {
+
+#if 1 // Elegoo: use elegoo slicer release
+    AppConfig* app_config = wxGetApp().app_config;
+    auto       version_check_url = app_config->version_check_url();
+    Http::get(version_check_url)
+        .on_error([&](std::string body, std::string error, unsigned http_status) {
+          (void)body;
+          BOOST_LOG_TRIVIAL(error) << format("Error getting: `%1%`: HTTP %2%, %3%", "check_new_version_sf", http_status,
+                                             error);
+        })
+        .timeout_connect(1)
+        .on_complete([this,by_user](std::string body, unsigned http_status) {
+          // Http response OK
+          if (http_status != 200)
+            return;
+          try {
+            boost::trim(body);
+            // Elegoo: parse github release, inspired by SS
+            boost::property_tree::ptree root;
+            std::stringstream json_stream(body);
+            boost::property_tree::read_json(json_stream, root);
+
+            // at least two number, use '.' as separator. can be followed by -Az23 for prereleased and +Az42 for
+            // metadata
+            std::regex matcher("[0-9]+\\.[0-9]+(\\.[0-9]+)*(-[A-Za-z0-9]+)?(\\+[A-Za-z0-9]+)?");
+
+            Semver           current_version = get_version(ELEGOOSLICER_VERSION, matcher);
+            Semver best_release(1, 0, 0);
+            std::string best_release_content;
+            std::string best_release_url;
+            
+            const std::regex reg_num("([0-9]+)");
+            std::string version_str = root.get<std::string>("version");
+            if (version_str[0] == 'v')
+                version_str.erase(0, 1);
+            for (std::regex_iterator it = std::sregex_iterator(version_str.begin(), version_str.end(), reg_num); it != std::sregex_iterator(); ++it) {}
+            Semver new_version = get_version(version_str, matcher);
+
+            if (best_release < new_version) {
+                best_release         = new_version;
+                std::string locale_name;
+                auto description = root.get_child("description");
+                locale_name = getSystemLocale();
+                BOOST_LOG_TRIVIAL(warning) << "locale: " << locale_name;
+
+                if (locale_name.find("zh") != std::string::npos)
+                {
+                    best_release_content = description.get<std::string>("zh");
+                }else {
+                    best_release_content = description.get<std::string>("en");
+                }
+                
+                auto download_urls = root.get_child("download_urls");
+
+                std::string _url;
+                #ifdef WIN32
+                _url = download_urls.get<std::string>("windows");
+                #elif __APPLE__
+                #ifdef __x86_64__
+                _url = download_urls.get<std::string>("mac_x64");
+                #elif __aarch64__
+                _url = download_urls.get<std::string>("mac_arm64");
+                #endif // __x86_64__
+                #endif //  WIN32
+                best_release_url = _url;
+            }
+
+            // if we're the most recent, don't do anything
+            if (best_release <= current_version) {
+                if (by_user != 0)
+                    this->no_new_version();
+                return;
+            }
+
+            version_info.url           = best_release_url;
+            version_info.version_str   = best_release.to_string_sf();
+            version_info.description   = best_release_content;
+            version_info.force_upgrade = false;
+
+            wxCommandEvent* evt = new wxCommandEvent(EVT_SLIC3R_VERSION_ONLINE);
+            evt->SetString((best_release).to_string_sf());
+            GUI::wxGetApp().QueueEvent(evt);
+          } catch (...) {}
+        })
+        .perform();
+#endif
+
+#if 0 // Elegoo: disable version check，use github release
     AppConfig* app_config = wxGetApp().app_config;
     bool       check_stable_only = app_config->get_bool("check_stable_update_only");
     auto       version_check_url = app_config->version_check_url(check_stable_only);
@@ -4384,6 +4497,7 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
           } catch (...) {}
         })
         .perform();
+#endif
 }
 
 //BBS pop up a dialog and download files

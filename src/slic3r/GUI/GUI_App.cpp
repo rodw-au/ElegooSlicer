@@ -1465,6 +1465,7 @@ int GUI_App::install_plugin(std::string name, std::string package_name, InstallP
 
 void GUI_App::restart_networking()
 {
+    #if 0 // Disable networking plugin
     BOOST_LOG_TRIVIAL(info) << __FUNCTION__<< boost::format(" enter, mainframe %1%")%mainframe;
     on_init_network(true);
     if(m_agent) {
@@ -1505,6 +1506,7 @@ void GUI_App::restart_networking()
         // }
     }
     BOOST_LOG_TRIVIAL(info) << __FUNCTION__<< boost::format(" exit, m_agent=%1%")%m_agent;
+    #endif
 }
 
 void GUI_App::remove_old_networking_plugins()
@@ -2634,6 +2636,9 @@ bool GUI_App::on_init_inner()
 
 void GUI_App::copy_network_if_available()
 {
+    // disable network plugin update
+    return;
+
     if (app_config->get("update_network_plugin") != "true")
         return;
     std::string network_library, player_library, live555_library, network_library_dst, player_library_dst, live555_library_dst;
@@ -2716,6 +2721,8 @@ void GUI_App::copy_network_if_available()
 
 bool GUI_App::on_init_network(bool try_backup)
 {
+    return false;
+#if 0 // disable network plugin
     auto should_load_networking_plugin = app_config->get_bool("installed_networking");
     if(!should_load_networking_plugin) {
         BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << "Don't load plugin as installed_networking is false";
@@ -2822,6 +2829,7 @@ __retry:
     }
 
     return true;
+#endif
 }
 
 unsigned GUI_App::get_colour_approx_luma(const wxColour &colour)
@@ -3371,6 +3379,7 @@ if (res) {
 }
 
 void GUI_App::ShowDownNetPluginDlg() {
+#if 0 // Disable download Network Plugin
     try {
         auto iter = std::find_if(dialogStack.begin(), dialogStack.end(), [](auto dialog) {
             return dynamic_cast<DownloadProgressDialog *>(dialog) != nullptr;
@@ -3382,6 +3391,7 @@ void GUI_App::ShowDownNetPluginDlg() {
     } catch (std::exception &e) {
         ;
     }
+#endif
 }
 
 void GUI_App::ShowUserLogin(bool show)

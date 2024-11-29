@@ -487,6 +487,7 @@ void WebViewPanel::SendLoginInfo()
 
 void WebViewPanel::ShowNetpluginTip()
 {
+#if 0 // Disable Netplugin Tip
     // Install Network Plugin
     //std::string NP_Installed = wxGetApp().app_config->get("installed_networking");
     bool        bValid       = wxGetApp().is_compatibility_version();
@@ -504,6 +505,7 @@ void WebViewPanel::ShowNetpluginTip()
     wxString strJS = wxString::Format("window.postMessage(%s)", m_Res.dump(-1, ' ', false, json::error_handler_t::ignore));
 
     RunScript(strJS);
+#endif
 }
 
 void WebViewPanel::get_design_staffpick(int offset, int limit, std::function<void(std::string)> callback)

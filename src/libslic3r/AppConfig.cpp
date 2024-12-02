@@ -42,11 +42,9 @@ namespace Slic3r {
 // static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/softfever/OrcaSlicer/releases";
 // static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/OrcaSlicer/orcaslicer-profiles/releases/tags";
 
-
-
-static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repos/ELEGOOTechSupport/ElegooSlicer/releases/latest";
-static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/ELEGOOTechSupport/ElegooSlicer/releases";
-static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/ElegooSlicer/elegooslicer-profiles/releases/tags";
+static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repos/ELEGOO-3D/ElegooSlicer/releases/latest";
+static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/ELEGOO-3D/ElegooSlicer/releases";
+static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/ELEGOO-3D/elegooslicer-profiles/releases/tags";
 
 static const std::string MODELS_STR = "models";
 

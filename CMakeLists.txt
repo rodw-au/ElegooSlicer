@@ -762,9 +762,7 @@ configure_file(${LIBDIR}/platform/unix/fhs.hpp.in ${LIBDIR_BIN}/platform/unix/fh
 
 set (CPACK_PACKAGE_NAME "ElegooSlicer")
 set (CPACK_PACKAGE_VENDOR "Shenzhen Elegoo Technology Co.,Ltd")
-set (CPACK_PACKAGE_VERSION_MAJOR "${ELEGOO_VERSION_MAJOR}")
-set (CPACK_PACKAGE_VERSION_MINOR "${ELEGOO_VERSION_MINOR}")
-set (CPACK_PACKAGE_VERSION_PATCH "${ELEGOO_VERSION_PATCH}")
+set(CPACK_PACKAGE_VERSION ${SLIC3R_BUILD_ID})
 set (CPACK_PACKAGE_FILE_NAME "ElegooSlicer_Windows_Installer_V${ELEGOOSLICER_VERSION}")
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "ElegooSlicer is an open source slicer for FDM printers")
 set (CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/ELEGOO-3D/ElegooSlicer")
@@ -773,17 +771,22 @@ set (CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/resources/images\\\\ElegooSlicer.ic
 set (CPACK_NSIS_MUI_ICON "${CPACK_PACKAGE_ICON}")
 set (CPACK_NSIS_MUI_UNIICON "${CPACK_PACKAGE_ICON}")
 set (CPACK_NSIS_INSTALLED_ICON_NAME  "$INSTDIR\\\\elegoo-slicer.exe")
-set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-    CreateShortCut \\\"$DESKTOP\\\\ElegooSlicer.lnk\\\" \\\"$INSTDIR\\\\elegoo-slicer.exe\\\"
-")
+# set (CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+#     CreateShortCut \\\"$DESKTOP\\\\ElegooSlicer.lnk\\\" \\\"$INSTDIR\\\\elegoo-slicer.exe\\\"
+# ")
+# # 删除额外的快捷方式（卸载时执行）
+# set (CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
+#     "Delete \\\"$DESKTOP\\ElegooSlicer.lnk\\\"")
+set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
 set (CPACK_PACKAGE_CHECKSUM SHA256)
 set (CPACK_PACKAGE_INSTALL_REGISTRY_KEY "ElegooSlicer")
 set (CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set (CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 # set (CPACK_NSIS_MODIFY_PATH "ON")
-set(CPACK_PACKAGE_EXECUTABLES "elegoo-slicer;ElegooSlicer")
+set(CPACK_PACKAGE_EXECUTABLES "elegoo-slicer" "ElegooSlicer")
 set(CPACK_CREATE_DESKTOP_LINKS "elegoo-slicer")
 set (CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE.txt) # must also include in install command
+
 
 set(CPACK_WIX_UPGRADE_GUID "371EB0D6-0222-4816-AF91-085C517B469D")
 set(CPACK_GENERATOR NSIS)

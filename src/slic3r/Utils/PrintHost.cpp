@@ -14,6 +14,7 @@
 #include "libslic3r/PrintConfig.hpp"
 #include "libslic3r/Channel.hpp"
 #include "OctoPrint.hpp"
+#include "ElegooLink.hpp"
 #include "Duet.hpp"
 #include "FlashAir.hpp"
 #include "AstroBox.hpp"
@@ -51,6 +52,7 @@ PrintHost* PrintHost::get_print_host(DynamicPrintConfig *config)
         const auto host_type = opt != nullptr ? opt->value : htOctoPrint;
 
         switch (host_type) {
+            case htElegooLink: return new ElegooLink(config);
             case htOctoPrint: return new OctoPrint(config);
             case htDuet:      return new Duet(config);
             case htFlashAir:  return new FlashAir(config);

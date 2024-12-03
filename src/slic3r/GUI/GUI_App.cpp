@@ -144,6 +144,10 @@
     #include <gtk/gtk.h>
 #endif
 
+#ifdef __APPLE__
+    #include <CoreFoundation/CoreFoundation.h>
+#endif
+
 using namespace std::literals;
 namespace pt = boost::property_tree;
 

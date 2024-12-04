@@ -4318,12 +4318,12 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
             }
 
             version_info.url           = best_release_url;
-            version_info.version_str   = best_release.to_string_sf();
+            version_info.version_str   = best_release.to_string();
             version_info.description   = best_release_content;
             version_info.force_upgrade = false;
 
             wxCommandEvent* evt = new wxCommandEvent(EVT_SLIC3R_VERSION_ONLINE);
-            evt->SetString((best_release).to_string_sf());
+            evt->SetString((best_release).to_string());
             GUI::wxGetApp().QueueEvent(evt);
           } catch (...) {}
         })

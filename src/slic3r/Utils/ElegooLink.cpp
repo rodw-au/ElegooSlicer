@@ -298,6 +298,7 @@ namespace Slic3r {
 
         const auto upload_filename = upload_data.upload_path.filename();
         const auto upload_parent_path = upload_data.upload_path.parent_path();
+        std::string source_path = upload_data.source_path.string();
         //calc file size
         std::ifstream file(upload_data.source_path.string(), std::ios::binary | std::ios::ate);
         std::streamsize size = file.tellg();
@@ -310,7 +311,8 @@ namespace Slic3r {
         // 将UUID转换为字符串
         std::string uuid_string = to_string(uuid);
         std::string md5;
-        bbl_calc_md5(upload_data.source_path.string(), md5);
+
+        bbl_calc_md5(source_path, md5);
 
         // If test fails, test_msg_or_host_ip contains the error message.
         // Otherwise on Windows it contains the resolved IP address of the host.

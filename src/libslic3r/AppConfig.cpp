@@ -32,6 +32,10 @@
 #include <boost/algorithm/hex.hpp>
 #endif
 
+#ifdef __APPLE__
+    #include <CoreFoundation/CoreFoundation.h>
+#endif
+
 #define USE_JSON_CONFIG
 
 using namespace nlohmann;
@@ -1340,4 +1344,28 @@ bool AppConfig::exists()
     return boost::filesystem::exists(config_path());
 }
 
+std::string AppConfig::getSystemLocale() {
+    std::string locale;
+
+#if defined(_WIN32) || defined(_WIN64)
+    // Windows specific code
+    wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
+    if (GetUserDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH)) {
+        char localeNameChar[LOCALE_NAME_MAX_LENGTH];
+        wcstombs(localeNameChar, localeName, LOCALE_NAME_MAX_LENGTH);
+        locale = localeNameChar;
+    }
+#elif defined(__APPLE__) || defined(__MACH__)
+    // macOS specific code
+    CFLocaleRef localeRef = CFLocaleCopyCurrent();
+    CFStringRef localeStr = CFLocaleGetIdentifier(localeRef);
+    char localeName[256];
+    if (CFStringGetCString(localeStr, localeName, sizeof(localeName), kCFStringEncodingUTF8)) {
+        locale = localeName;
+    }
+    CFRelease(localeRef);
+#endif
+
+    return locale;
+}
 }; // namespace Slic3r

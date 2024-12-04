@@ -144,10 +144,6 @@
     #include <gtk/gtk.h>
 #endif
 
-#ifdef __APPLE__
-    #include <CoreFoundation/CoreFoundation.h>
-#endif
-
 using namespace std::literals;
 namespace pt = boost::property_tree;
 
@@ -4245,36 +4241,13 @@ static bool isValidInstaller(const std::string& input)
     return false;
 }
 
-static std::string getSystemLocale() {
-    std::string locale;
-
-#if defined(_WIN32) || defined(_WIN64)
-    // Windows specific code
-    wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
-    if (GetUserDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH)) {
-        char localeNameChar[LOCALE_NAME_MAX_LENGTH];
-        wcstombs(localeNameChar, localeName, LOCALE_NAME_MAX_LENGTH);
-        locale = localeNameChar;
-    }
-#elif defined(__APPLE__) || defined(__MACH__)
-    // macOS specific code
-    CFLocaleRef localeRef = CFLocaleCopyCurrent();
-    CFStringRef localeStr = CFLocaleGetIdentifier(localeRef);
-    char localeName[256];
-    if (CFStringGetCString(localeStr, localeName, sizeof(localeName), kCFStringEncodingUTF8)) {
-        locale = localeName;
-    }
-    CFRelease(localeRef);
-#endif
-
-    return locale;
-}
 void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 {
 
 #if 1 // Elegoo: use elegoo slicer release
     AppConfig* app_config = wxGetApp().app_config;
     auto       version_check_url = app_config->version_check_url();
+    std::string locale_name = app_config->getSystemLocale();
     Http::get(version_check_url)
         .on_error([&](std::string body, std::string error, unsigned http_status) {
           (void)body;
@@ -4282,7 +4255,7 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                                              error);
         })
         .timeout_connect(1)
-        .on_complete([this,by_user](std::string body, unsigned http_status) {
+        .on_complete([this,by_user,locale_name](std::string body, unsigned http_status) {
           // Http response OK
           if (http_status != 200)
             return;
@@ -4311,12 +4284,11 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 
             if (best_release < new_version) {
                 best_release         = new_version;
-                std::string locale_name;
                 auto description = root.get_child("description");
-                locale_name = getSystemLocale();
+                
                 BOOST_LOG_TRIVIAL(warning) << "locale: " << locale_name;
-
-                if (locale_name.find("zh") != std::string::npos)
+                printf("locale: %s\n", locale_name.c_str());
+                if (locale_name.find("zh") != std::string::npos || locale_name.find("CN") != std::string::npos)
                 {
                     best_release_content = description.get<std::string>("zh");
                 }else {

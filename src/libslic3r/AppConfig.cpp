@@ -30,6 +30,7 @@
 //FIXME replace the two following includes with <boost/md5.hpp> after it becomes mainstream.
 #include <boost/uuid/detail/md5.hpp>
 #include <boost/algorithm/hex.hpp>
+#include <Windows.h>
 #endif
 
 #ifdef __APPLE__

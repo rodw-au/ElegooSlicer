@@ -287,22 +287,22 @@ void NotificationManager::SlicingProgressNotification::render(GLCanvas3D& canvas
 			}
 			ImGui::EndChild();
 
-			// Separator Line
-			ImVec2 separator_min = ImVec2(ImGui::GetCursorScreenPos().x + progress_child_window_padding.x, ImGui::GetCursorScreenPos().y);
-			ImVec2 separator_max = ImVec2(ImGui::GetCursorScreenPos().x + progress_child_window_padding.x + progress_panel_width, ImGui::GetCursorScreenPos().y);
-			ImGui::GetCurrentWindow()->DrawList->AddLine(separator_min, separator_max, ImColor(238, 238, 238, (int)(255 * m_current_fade_opacity)));
+			// // Separator Line
+			// ImVec2 separator_min = ImVec2(ImGui::GetCursorScreenPos().x + progress_child_window_padding.x, ImGui::GetCursorScreenPos().y);
+			// ImVec2 separator_max = ImVec2(ImGui::GetCursorScreenPos().x + progress_child_window_padding.x + progress_panel_width, ImGui::GetCursorScreenPos().y);
+			// ImGui::GetCurrentWindow()->DrawList->AddLine(separator_min, separator_max, ImColor(238, 238, 238, (int)(255 * m_current_fade_opacity)));
 
-			child_name = "##DailyTipsPanel" + std::to_string(parent_window->ID);
-			ImVec2 dailytips_pos = ImGui::GetCursorScreenPos() + dailytips_child_window_padding;
-			ImVec2 dailytips_size = ImVec2(dailytips_panel_width, dailytips_panel_height);
-			m_dailytips_panel->set_position(dailytips_pos);
-			m_dailytips_panel->set_size(dailytips_size);
-			m_dailytips_panel->set_fade_opacity(m_current_fade_opacity);
-			ImGui::SetNextWindowPos(dailytips_pos);
-			if (ImGui::BeginChild(child_name.c_str(), ImVec2(dailytips_panel_width, dailytips_panel_height), false, child_window_flags)) {
-				render_dailytips_panel(dailytips_pos, dailytips_size);
-			}
-			ImGui::EndChild();
+			// child_name = "##DailyTipsPanel" + std::to_string(parent_window->ID);
+			// ImVec2 dailytips_pos = ImGui::GetCursorScreenPos() + dailytips_child_window_padding;
+			// ImVec2 dailytips_size = ImVec2(dailytips_panel_width, dailytips_panel_height);
+			// m_dailytips_panel->set_position(dailytips_pos);
+			// m_dailytips_panel->set_size(dailytips_size);
+			// m_dailytips_panel->set_fade_opacity(m_current_fade_opacity);
+			// ImGui::SetNextWindowPos(dailytips_pos);
+			// if (ImGui::BeginChild(child_name.c_str(), ImVec2(dailytips_panel_width, dailytips_panel_height), false, child_window_flags)) {
+			// 	render_dailytips_panel(dailytips_pos, dailytips_size);
+			// }
+			// ImGui::EndChild();
 		}
 
 		if (ImGui::IsMouseHoveringRect(ImGui::GetWindowPos(), ImGui::GetWindowPos() + ImGui::GetWindowSize(), true)) {
@@ -341,7 +341,7 @@ void Slic3r::GUI::NotificationManager::SlicingProgressNotification::render_text(
 
 		// complete text
 		imgui.push_bold_font();
-		ImGui::SetCursorScreenPos(ImVec2(pos.x + icon_size.x + ImGui::CalcTextSize(" ").x, pos.y + (icon_size.y - m_line_height) / 2));
+		ImGui::SetCursorScreenPos(ImVec2(pos.x + icon_size.x + ImGui::CalcTextSize(" ").x, pos.y + (icon_size.y - m_line_height*scale) / 2));
 		imgui.text(m_text1.substr(0, m_endlines[0]).c_str());
 		imgui.pop_bold_font();
 		return;
@@ -392,7 +392,7 @@ void NotificationManager::SlicingProgressNotification::render_dailytips_panel(co
 
 void NotificationManager::SlicingProgressNotification::render_show_dailytips(const ImVec2& pos)
 {
-	if (m_sp_state != SlicingProgressState::SP_COMPLETED && m_sp_state != SlicingProgressState::SP_CANCELLED)
+	// if (m_sp_state != SlicingProgressState::SP_COMPLETED && m_sp_state != SlicingProgressState::SP_CANCELLED)
 		return;
 
 	ImGuiWrapper& imgui = *wxGetApp().imgui();

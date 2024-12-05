@@ -329,8 +329,8 @@ public:
 
 		// Logo
         BitmapCache bmp_cache;
-        wxBitmap logo_bmp = *bmp_cache.load_svg(is_dark ? "splash_logo_dark" : "splash_logo", width, height);  // use with full width & height
-        memDc.DrawBitmap(logo_bmp, 0, 0, true);
+        wxBitmap logo_bmp = *bmp_cache.load_svg(is_dark ? "splash_logo_dark" : "splash_logo", 400, 400);  // use with full width & height
+        memDc.DrawBitmap(logo_bmp, (width - 400) / 2, 60, true);
 
         // Version
         memDc.SetFont(m_constant_text.version_font);
@@ -934,7 +934,7 @@ void GUI_App::post_init()
     }*/
 
     // BBS: to be checked
-#if 1
+#if 0 //暂时屏蔽 Show Tip of the Day
     // show "Did you know" notification
     if (app_config->get("show_hints") == "true" && !is_gcode_viewer()) {
         plater_->get_notification_manager()->push_hint_notification(false);
@@ -1465,6 +1465,7 @@ int GUI_App::install_plugin(std::string name, std::string package_name, InstallP
 
 void GUI_App::restart_networking()
 {
+    #if 0 // Disable networking plugin
     BOOST_LOG_TRIVIAL(info) << __FUNCTION__<< boost::format(" enter, mainframe %1%")%mainframe;
     on_init_network(true);
     if(m_agent) {
@@ -1505,6 +1506,7 @@ void GUI_App::restart_networking()
         // }
     }
     BOOST_LOG_TRIVIAL(info) << __FUNCTION__<< boost::format(" exit, m_agent=%1%")%m_agent;
+    #endif
 }
 
 void GUI_App::remove_old_networking_plugins()
@@ -2634,6 +2636,9 @@ bool GUI_App::on_init_inner()
 
 void GUI_App::copy_network_if_available()
 {
+    // disable network plugin update
+    return;
+
     if (app_config->get("update_network_plugin") != "true")
         return;
     std::string network_library, player_library, live555_library, network_library_dst, player_library_dst, live555_library_dst;
@@ -2716,6 +2721,8 @@ void GUI_App::copy_network_if_available()
 
 bool GUI_App::on_init_network(bool try_backup)
 {
+    return false;
+#if 0 // disable network plugin
     auto should_load_networking_plugin = app_config->get_bool("installed_networking");
     if(!should_load_networking_plugin) {
         BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << "Don't load plugin as installed_networking is false";
@@ -2822,6 +2829,7 @@ __retry:
     }
 
     return true;
+#endif
 }
 
 unsigned GUI_App::get_colour_approx_luma(const wxColour &colour)
@@ -3371,6 +3379,7 @@ if (res) {
 }
 
 void GUI_App::ShowDownNetPluginDlg() {
+#if 0 // Disable download Network Plugin
     try {
         auto iter = std::find_if(dialogStack.begin(), dialogStack.end(), [](auto dialog) {
             return dynamic_cast<DownloadProgressDialog *>(dialog) != nullptr;
@@ -3382,6 +3391,7 @@ void GUI_App::ShowDownNetPluginDlg() {
     } catch (std::exception &e) {
         ;
     }
+#endif
 }
 
 void GUI_App::ShowUserLogin(bool show)
@@ -4230,8 +4240,97 @@ static bool isValidInstaller(const std::string& input)
 #endif //  WIN32
     return false;
 }
+
 void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 {
+
+#if 1 // Elegoo: use elegoo slicer release
+    AppConfig* app_config = wxGetApp().app_config;
+    auto       version_check_url = app_config->version_check_url();
+    std::string locale_name = app_config->getSystemLocale();
+    Http::get(version_check_url)
+        .on_error([&](std::string body, std::string error, unsigned http_status) {
+          (void)body;
+          BOOST_LOG_TRIVIAL(error) << format("Error getting: `%1%`: HTTP %2%, %3%", "check_new_version_sf", http_status,
+                                             error);
+        })
+        .timeout_connect(1)
+        .on_complete([this,by_user,locale_name](std::string body, unsigned http_status) {
+          // Http response OK
+          if (http_status != 200)
+            return;
+          try {
+            boost::trim(body);
+            // Elegoo: parse github release, inspired by SS
+            boost::property_tree::ptree root;
+            std::stringstream json_stream(body);
+            boost::property_tree::read_json(json_stream, root);
+
+            // at least two number, use '.' as separator. can be followed by -Az23 for prereleased and +Az42 for
+            // metadata
+            std::regex matcher("[0-9]+\\.[0-9]+(\\.[0-9]+)*(-[A-Za-z0-9]+)?(\\+[A-Za-z0-9]+)?");
+
+            Semver           current_version = get_version(ELEGOOSLICER_VERSION, matcher);
+            Semver best_release(1, 0, 0);
+            std::string best_release_content;
+            std::string best_release_url;
+            
+            const std::regex reg_num("([0-9]+)");
+            std::string version_str = root.get<std::string>("version");
+            if (version_str[0] == 'v')
+                version_str.erase(0, 1);
+            for (std::regex_iterator it = std::sregex_iterator(version_str.begin(), version_str.end(), reg_num); it != std::sregex_iterator(); ++it) {}
+            Semver new_version = get_version(version_str, matcher);
+
+            if (best_release < new_version) {
+                best_release         = new_version;
+                auto description = root.get_child("description");
+                
+                BOOST_LOG_TRIVIAL(warning) << "locale: " << locale_name;
+                printf("locale: %s\n", locale_name.c_str());
+                if (locale_name.find("zh") != std::string::npos || locale_name.find("CN") != std::string::npos)
+                {
+                    best_release_content = description.get<std::string>("zh");
+                }else {
+                    best_release_content = description.get<std::string>("en");
+                }
+                
+                auto download_urls = root.get_child("download_urls");
+
+                std::string _url;
+                #ifdef WIN32
+                _url = download_urls.get<std::string>("windows");
+                #elif __APPLE__
+                #ifdef __x86_64__
+                _url = download_urls.get<std::string>("mac_x64");
+                #elif __aarch64__
+                _url = download_urls.get<std::string>("mac_arm64");
+                #endif // __x86_64__
+                #endif //  WIN32
+                best_release_url = _url;
+            }
+
+            // if we're the most recent, don't do anything
+            if (best_release <= current_version) {
+                if (by_user != 0)
+                    this->no_new_version();
+                return;
+            }
+
+            version_info.url           = best_release_url;
+            version_info.version_str   = best_release.to_string();
+            version_info.description   = best_release_content;
+            version_info.force_upgrade = false;
+
+            wxCommandEvent* evt = new wxCommandEvent(EVT_SLIC3R_VERSION_ONLINE);
+            evt->SetString((best_release).to_string());
+            GUI::wxGetApp().QueueEvent(evt);
+          } catch (...) {}
+        })
+        .perform();
+#endif
+
+#if 0 // Elegoo: disable version check，use github release
     AppConfig* app_config = wxGetApp().app_config;
     bool       check_stable_only = app_config->get_bool("check_stable_update_only");
     auto       version_check_url = app_config->version_check_url(check_stable_only);
@@ -4384,6 +4483,7 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
           } catch (...) {}
         })
         .perform();
+#endif
 }
 
 //BBS pop up a dialog and download files

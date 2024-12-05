@@ -523,8 +523,8 @@ set(SLIC3R_GUI_SOURCES
     Utils/PrintHost.cpp
     Utils/NetworkAgent.cpp
     Utils/NetworkAgent.hpp
-    Utils/OctoPrint.cpp
-    Utils/OctoPrint.hpp
+    Utils/ElegooLink.cpp
+    Utils/ElegooLink.hpp
     Utils/PrintHost.cpp
     Utils/PrintHost.hpp
     Utils/Serial.cpp

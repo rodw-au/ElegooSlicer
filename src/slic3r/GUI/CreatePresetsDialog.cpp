@@ -49,7 +49,7 @@ static const std::vector<std::string> printer_vendors =
     {"Elegoo"};
 
 static const std::unordered_map<std::string, std::vector<std::string>> printer_model_map =
-    {{"Elegoo",          {"Elegoo Centauri Carbon",      "Elegoo OrangeStorm Giga",      "Elegoo Neptune 4 Max",     "Elegoo Neptune 4 Plus", 
+    {{"Elegoo",          {"Elegoo OrangeStorm Giga",      "Elegoo Neptune 4 Max",     "Elegoo Neptune 4 Plus", 
                           "Elegoo Neptune 4 Pro",        "Elegoo Neptune 4",             "Elegoo Neptune 3 Max",     "Elegoo Neptune 3 Plus", 
                           "Elegoo Neptune 3 Pro",        "Elegoo Neptune 3",             "Elegoo Neptune X",         "Elegoo Neptune 2S", 
                           "Elegoo Neptune 2D",           "Elegoo Neptune 2",             "Elegoo Neptune"}}};

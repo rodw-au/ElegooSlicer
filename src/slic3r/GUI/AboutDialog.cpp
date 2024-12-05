@@ -245,7 +245,7 @@ AboutDialog::AboutDialog()
     // version
     {
         vesizer->Add(0, FromDIP(165), 1, wxEXPAND, FromDIP(5));
-        auto version_string = _L("ElegooSlicer ") + " " + std::string(ELEGOOSLICER_VERSION);
+        auto version_string = _L("ElegooSlicer ") + " " + std::string(SLIC3R_BUILD_ID);
         wxStaticText* version = new wxStaticText(this, wxID_ANY, version_string.c_str(), wxDefaultPosition, wxDefaultSize);
         wxStaticText* bs_version = new wxStaticText(this, wxID_ANY, wxString::Format("Based on OrcaSlicer"), wxDefaultPosition, wxDefaultSize);
         bs_version->SetFont(Label::Body_12);
@@ -259,8 +259,8 @@ AboutDialog::AboutDialog()
         version->SetFont(version_font);
         version->SetForegroundColour(wxColour("#FFFFFD"));
         bs_version->SetForegroundColour(wxColour("#FFFFFD"));
-        version->SetBackgroundColour(wxColour("#4d4d4d"));
-        bs_version->SetBackgroundColour(wxColour("#4d4d4d"));
+        version->SetBackgroundColour(wxColour(14,119,184));
+        bs_version->SetBackgroundColour(wxColour(14,119,184));
 
 
         vesizer->Add(version, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, FromDIP(5));

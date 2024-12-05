@@ -1103,7 +1103,7 @@ wxWindow* PreferencesDialog::create_general_page()
 
     // auto item_stealth_mode = create_item_checkbox(_L("Stealth Mode"), page, _L("This stops the transmission of data to Bambu's cloud services. Users who don't use BBL machines or use LAN mode only can safely turn on this function."), 50, "stealth_mode");
     // auto item_enable_plugin = create_item_checkbox(_L("Enable network plugin"), page, _L("Enable network plugin"), 50, "installed_networking");
-    auto item_check_stable_version_only = create_item_checkbox(_L("Check for stable updates only"), page, _L("Check for stable updates only"), 50, "check_stable_update_only");
+    //auto item_check_stable_version_only = create_item_checkbox(_L("Check for stable updates only"), page, _L("Check for stable updates only"), 50, "check_stable_update_only");
 
     std::vector<wxString> Units         = {_L("Metric") + " (mm, g)", _L("Imperial") + " (in, oz)"};
     auto item_currency = create_item_combobox(_L("Units"), page, _L("Units"), "use_inches", Units);
@@ -1127,15 +1127,16 @@ wxWindow* PreferencesDialog::create_general_page()
     auto reverse_mouse_zoom = create_item_checkbox(_L("Reverse mouse zoom"), page, _L("If enabled, reverses the direction of zoom with mouse wheel."), 50, "reverse_mouse_wheel_zoom");
 
     auto item_show_splash_screen = create_item_checkbox(_L("Show splash screen"), page, _L("Show the splash screen during startup."), 50, "show_splash_screen");
+#if 0 //暂时屏蔽 Show Tip of the Day
     auto item_hints = create_item_checkbox(_L("Show \"Tip of the day\" notification after start"), page, _L("If enabled, useful hints are displayed at startup."), 50, "show_hints");
-
+#endif
     auto item_calc_mode = create_item_checkbox(_L("Flushing volumes: Auto-calculate everytime the color changed."), page, _L("If enabled, auto-calculate everytime the color changed."), 50, "auto_calculate");
     auto item_calc_in_long_retract = create_item_checkbox(_L("Flushing volumes: Auto-calculate every time when the filament is changed."), page, _L("If enabled, auto-calculate every time when filament is changed"), 50, "auto_calculate_when_filament_change");
     auto item_remember_printer_config = create_item_checkbox(_L("Remember printer configuration"), page, _L("If enabled, ElegooSlicer will remember and switch filament/process configuration for each printer automatically."), 50, "remember_printer_config");
     auto item_multi_machine = create_item_checkbox(_L("Multi-device Management(Take effect after restarting ElegooSlicer)."), page, _L("With this option enabled, you can send a task to multiple devices at the same time and manage multiple devices."), 50, "enable_multi_machine");
     auto item_auto_arrange  = create_item_checkbox(_L("Auto arrange plate after cloning"), page, _L("Auto arrange plate after object cloning"), 50, "auto_arrange");
     auto title_presets = create_item_title(_L("Presets"), page, _L("Presets"));
-    auto title_network = create_item_title(_L("Network"), page, _L("Network"));
+    // auto title_network = create_item_title(_L("Network"), page, _L("Network"));
     auto item_user_sync        = create_item_checkbox(_L("Auto sync user presets(Printer/Filament/Process)"), page, _L("User Sync"), 50, "sync_user_preset");
     auto item_system_sync        = create_item_checkbox(_L("Update built-in Presets automatically."), page, _L("System Sync"), 50, "sync_system_preset");
     auto item_save_presets = create_item_button(_L("Clear my choice on the unsaved presets."), _L("Clear"), page, L"", _L("Clear my choice on the unsaved presets."), []() {
@@ -1203,7 +1204,9 @@ wxWindow* PreferencesDialog::create_general_page()
     sizer_page->Add(item_use_free_camera_settings, 0, wxTOP, FromDIP(3));
     sizer_page->Add(reverse_mouse_zoom, 0, wxTOP, FromDIP(3));
     sizer_page->Add(item_show_splash_screen, 0, wxTOP, FromDIP(3));
+#if 0 //暂时屏蔽 Show Tip of the Day
     sizer_page->Add(item_hints, 0, wxTOP, FromDIP(3));
+#endif
     sizer_page->Add(item_calc_in_long_retract, 0, wxTOP, FromDIP(3));
     sizer_page->Add(item_multi_machine, 0, wxTOP, FromDIP(3));
     sizer_page->Add(item_auto_arrange, 0, wxTOP, FromDIP(3));
@@ -1213,8 +1216,8 @@ wxWindow* PreferencesDialog::create_general_page()
     sizer_page->Add(item_system_sync, 0, wxTOP, FromDIP(3));
     sizer_page->Add(item_remember_printer_config, 0, wxTOP, FromDIP(3));
     sizer_page->Add(item_save_presets, 0, wxTOP, FromDIP(3));
-    sizer_page->Add(title_network, 0, wxTOP | wxEXPAND, FromDIP(20));
-    sizer_page->Add(item_check_stable_version_only, 0, wxTOP, FromDIP(3));
+    // sizer_page->Add(title_network, 0, wxTOP | wxEXPAND, FromDIP(20));
+    // sizer_page->Add(item_check_stable_version_only, 0, wxTOP, FromDIP(3));
     // sizer_page->Add(item_stealth_mode, 0, wxTOP, FromDIP(3));
     // sizer_page->Add(item_enable_plugin, 0, wxTOP, FromDIP(3));
 #ifdef _WIN32

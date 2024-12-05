@@ -30,6 +30,11 @@
 //FIXME replace the two following includes with <boost/md5.hpp> after it becomes mainstream.
 #include <boost/uuid/detail/md5.hpp>
 #include <boost/algorithm/hex.hpp>
+#include <Windows.h>
+#endif
+
+#ifdef __APPLE__
+    #include <CoreFoundation/CoreFoundation.h>
 #endif
 
 #define USE_JSON_CONFIG
@@ -45,6 +50,7 @@ namespace Slic3r {
 static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repos/ELEGOO-3D/ElegooSlicer/releases/latest";
 static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/ELEGOO-3D/ElegooSlicer/releases";
 static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/ELEGOO-3D/elegooslicer-profiles/releases/tags";
+static const std::string ELEGOO_UPDATE_URL_STABLE = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer/update_config.json";
 
 static const std::string MODELS_STR = "models";
 
@@ -185,7 +191,7 @@ void AppConfig::set_defaults()
 
 //#ifdef SUPPORT_SHOW_HINTS
     if (get("show_hints").empty())
-        set_bool("show_hints", true);
+        set_bool("show_hints", false);
 //#endif
     if (get("enable_multi_machine").empty())
         set_bool("enable_multi_machine", false);
@@ -1326,7 +1332,7 @@ std::string AppConfig::config_path()
 std::string AppConfig::version_check_url(bool stable_only/* = false*/) const
 {
     auto from_settings = get("version_check_url");
-    return from_settings.empty() ? stable_only ? VERSION_CHECK_URL_STABLE : VERSION_CHECK_URL : from_settings;
+    return from_settings.empty() ? ELEGOO_UPDATE_URL_STABLE : from_settings; //stable_only ? VERSION_CHECK_URL_STABLE : VERSION_CHECK_URL : from_settings;
 }
 
 std::string AppConfig::profile_update_url() const
@@ -1339,4 +1345,28 @@ bool AppConfig::exists()
     return boost::filesystem::exists(config_path());
 }
 
+std::string AppConfig::getSystemLocale() {
+    std::string locale;
+
+#if defined(_WIN32) || defined(_WIN64)
+    // Windows specific code
+    wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
+    if (GetUserDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH)) {
+        char localeNameChar[LOCALE_NAME_MAX_LENGTH];
+        wcstombs(localeNameChar, localeName, LOCALE_NAME_MAX_LENGTH);
+        locale = localeNameChar;
+    }
+#elif defined(__APPLE__) || defined(__MACH__)
+    // macOS specific code
+    CFLocaleRef localeRef = CFLocaleCopyCurrent();
+    CFStringRef localeStr = CFLocaleGetIdentifier(localeRef);
+    char localeName[256];
+    if (CFStringGetCString(localeStr, localeName, sizeof(localeName), kCFStringEncodingUTF8)) {
+        locale = localeName;
+    }
+    CFRelease(localeRef);
+#endif
+
+    return locale;
+}
 }; // namespace Slic3r

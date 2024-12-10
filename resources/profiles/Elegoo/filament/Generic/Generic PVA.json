@@ -1,9 +1,9 @@
 {
     "type": "filament",
-    "name": "Elegoo Generic PETG",
-    "inherits": "Elegoo Generic PETG @base",
+    "name": "Generic PVA",
+    "inherits": "Elegoo Generic PVA @base",
     "from": "system",
-    "setting_id": "EGPETG00",
+    "setting_id": "GPVA00",
     "instantiation": "true",
     "compatible_printers": [
         "Elegoo Centauri Carbon 0.4 nozzle",
@@ -11,3 +11,4 @@
         "Elegoo Centauri Carbon 0.8 nozzle"
     ]
 }
+  

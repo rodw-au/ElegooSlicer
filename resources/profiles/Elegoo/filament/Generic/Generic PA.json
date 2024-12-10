@@ -1,14 +1,11 @@
 {
     "type": "filament",
-    "name": "Elegoo Generic PC",
-    "inherits": "Elegoo Generic PC @base",
+    "name": "Generic PA",
+    "inherits": "Elegoo Generic PA @base",
     "from": "system",
-    "setting_id": "EGPC00",
+    "setting_id": "GPA00",
     "instantiation": "true",
     "compatible_printers": [
-        "Elegoo Neptune 3 Pro 0.4 nozzle",
-        "Elegoo Neptune 3 Plus 0.4 nozzle",
-        "Elegoo Neptune 3 Max 0.4 nozzle",
         "Elegoo Neptune 4 0.4 nozzle",
         "Elegoo Neptune 4 0.6 nozzle",
         "Elegoo Neptune 4 0.8 nozzle",

@@ -1,8 +1,8 @@
 {
     "type": "filament",
-    "name": "Elegoo Generic PLA @0.2 nozzle",
+    "name": "Generic PLA @0.2 nozzle",
     "from": "system",
-    "setting_id": "EGPLA00020",
+    "setting_id": "GPLA00020",
     "instantiation": "true",
     "filament_max_volumetric_speed": [
         "1.6"

@@ -1,9 +1,9 @@
 {
     "type": "filament",
-    "name": "Elegoo Generic ABS",
-    "inherits": "Elegoo Generic ABS @base",
+    "name": "Generic PET-CF",
+    "inherits": "Elegoo Generic PET-CF @base",
     "from": "system",
-    "setting_id": "EGABS00",
+    "setting_id": "GPETCF00",
     "instantiation": "true",
     "compatible_printers": [
         "Elegoo Centauri Carbon 0.4 nozzle",

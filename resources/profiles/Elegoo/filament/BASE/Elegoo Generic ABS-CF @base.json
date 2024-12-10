@@ -1,0 +1,11 @@
+{
+    "type": "filament",
+    "name": "Elegoo Generic ABS-CF @base",
+    "inherits": "fdm_filament_abs",
+    "from": "system",
+    "filament_id": "EGABSCFB00",
+    "instantiation": "false",
+    "filament_max_volumetric_speed": [
+        "12"
+    ]
+}

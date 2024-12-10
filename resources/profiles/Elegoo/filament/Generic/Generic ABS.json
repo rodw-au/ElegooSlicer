@@ -1,9 +1,9 @@
 {
     "type": "filament",
-    "name": "Elegoo Generic PLA",
-    "inherits": "Elegoo Generic PLA @base",
+    "name": "Generic ABS",
+    "inherits": "Elegoo Generic ABS @base",
     "from": "system",
-    "setting_id": "EGPLA00",
+    "setting_id": "GABS00",
     "instantiation": "true",
     "compatible_printers": [
         "Elegoo Centauri Carbon 0.4 nozzle",

@@ -1,9 +1,9 @@
 {
     "type": "filament",
-    "name": "Elegoo Generic ASA",
-    "inherits": "Elegoo Generic ASA @base",
+    "name": "Generic ABS-CF",
+    "inherits": "Elegoo Generic ABS-CF @base",
     "from": "system",
-    "setting_id": "EGASA00",
+    "setting_id": "GABSCF00",
     "instantiation": "true",
     "compatible_printers": [
         "Elegoo Centauri Carbon 0.4 nozzle",
@@ -11,4 +11,3 @@
         "Elegoo Centauri Carbon 0.8 nozzle"
     ]
 }
-  

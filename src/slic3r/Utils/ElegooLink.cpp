@@ -173,7 +173,9 @@ namespace Slic3r {
     }
 
     const char* ElegooLink::get_name() const { return "Elegoo Link"; }
-
+    bool ElegooLink::test(wxString &curl_msg) const{
+        return true;
+    }
     wxString ElegooLink::get_test_ok_msg() const
     {
         return _(L("Connection to Elegoo Link works correctly."));
@@ -496,60 +498,7 @@ namespace Slic3r {
     #ifdef WIN32
     bool ElegooLink::test_with_resolved_ip(wxString &msg) const
     {
-        // Since the request is performed synchronously here,
-        // it is ok to refer to `msg` from within the closure
-        const char* name = get_name();
-        bool res = true;
-        // Msg contains ip string.
-        auto url = substitute_host(make_url("api/version"), GUI::into_u8(msg));
-        msg.Clear();
-
-        BOOST_LOG_TRIVIAL(info) << boost::format("%1%: Get version at: %2%") % name % url;
-
-        std::string host = get_host_from_url(m_host);
-        auto http = Http::get(url);//std::move(url));
-        // "Host" header is necessary here. We have resolved IP address and subsituted it into "url" variable.
-        // And when creating Http object above, libcurl automatically includes "Host" header from address it got.
-        // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back.
-        // Not changing the host would work on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse proxy is used (issue #9734).
-        // Also when allow_ip_resolve = 0, this is not needed, but it should not break anything if it stays.
-        // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
-        http.header("Host", host);
-        set_auth(http);
-        http
-            .on_error([&](std::string body, std::string error, unsigned status) {
-                BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error getting version at %2% : %3%, HTTP %4%, body: `%5%`") % name % url % error % status % body;
-                res = false;
-                msg = format_error(body, error, status);
-            })
-            .on_complete([&, this](std::string body, unsigned) {
-                BOOST_LOG_TRIVIAL(info) << boost::format("%1%: Got version: %2%") % name % body;
-
-                try {
-                    std::stringstream ss(body);
-                    pt::ptree ptree;
-                    pt::read_json(ss, ptree);
-
-                    if (!ptree.get_optional<std::string>("api")) {
-                        res = false;
-                        return;
-                    }
-
-                    const auto text = ptree.get_optional<std::string>("text");
-                    res = validate_version_text(text);
-                    if (!res) {
-                        msg = GUI::format_wxstr(_L("Mismatched type of print host: %s"), (text ? *text : name));
-                    }
-                }
-                catch (const std::exception&) {
-                    res = false;
-                    msg = "Could not parse server response.";
-                }
-            })
-            .ssl_revoke_best_effort(m_ssl_revoke_best_effort)
-            .perform_sync();
-
-        return res;
+        return true;
     }
     #endif //WIN32
 }

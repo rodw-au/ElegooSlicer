@@ -3736,7 +3736,7 @@ LayerResult GCode::process_layer(
     }
 
     if (! first_layer && ! m_second_layer_things_done) {
-       unsigned int first_printing_extruder_id;
+       unsigned int first_printing_extruder_id = 0;
       if (print.is_BBL_printer()) {
         // BBS: open powerlost recovery
         {

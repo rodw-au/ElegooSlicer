@@ -415,6 +415,15 @@ bool OctoPrint::upload_inner_with_resolved_ip(PrintHostUpload upload_data, Progr
             result = false;
         })
         .on_progress([&](Http::Progress progress, bool& cancel) {
+
+            // If upload is finished, do not call progress_fn
+            // on_complete will be called after some time, so we do not need to call it here
+            // Because some devices will call on_complete after the upload progress reaches 100%, 
+            //so we need to process it here, based on on_complete
+            if(progress.ultotal == progress.ulnow){
+                // Upload is finished
+                return;
+            }
             prorgess_fn(std::move(progress), cancel);
             if (cancel) {
                 // Upload was canceled
@@ -502,6 +511,15 @@ bool OctoPrint::upload_inner_with_host(PrintHostUpload upload_data, ProgressFn p
             res = false;
         })
         .on_progress([&](Http::Progress progress, bool& cancel) {
+            
+            // If upload is finished, do not call progress_fn
+            // on_complete will be called after some time, so we do not need to call it here
+            // Because some devices will call on_complete after the upload progress reaches 100%, 
+            //so we need to process it here, based on on_complete
+            if(progress.ultotal == progress.ulnow){
+                // Upload is finished
+                return;
+            }
             prorgess_fn(std::move(progress), cancel);
             if (cancel) {
                 // Upload was canceled

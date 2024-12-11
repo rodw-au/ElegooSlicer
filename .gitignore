@@ -35,3 +35,4 @@ src/ElegooSlicer-doc/
 **/.flatpak-builder/
 resources/profiles/user/default
 CMakePresets.json
+*.env

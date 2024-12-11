@@ -216,6 +216,7 @@ namespace Slic3r {
         if(OctoPrint::test(curl_msg)){
             return true;
         }
+        curl_msg="";
         return elegoo_test(curl_msg);
     }
     wxString ElegooLink::get_test_ok_msg() const
@@ -242,6 +243,7 @@ namespace Slic3r {
         if(OctoPrint::test_with_resolved_ip(test_msg_or_host_ip)){
             return OctoPrint::upload_inner_with_host(upload_data, prorgess_fn, error_fn, info_fn);
         }
+        test_msg_or_host_ip="";
         if(!elegoo_test_with_resolved_ip(test_msg_or_host_ip)){
             error_fn(std::move(test_msg_or_host_ip));
             return false;
@@ -378,6 +380,7 @@ namespace Slic3r {
         if(OctoPrint::test(test_msg_or_host_ip)){
             return OctoPrint::upload_inner_with_host(upload_data, prorgess_fn, error_fn, info_fn);
         }
+        test_msg_or_host_ip="";
         if(!elegoo_test(test_msg_or_host_ip)){
             error_fn(std::move(test_msg_or_host_ip));
             return false;
@@ -433,7 +436,7 @@ namespace Slic3r {
         set_auth(http);
         http.form_add("Check", "1")
             .form_add("S-File-MD5", md5)
-            .form_add("Offset", 0)
+            .form_add("Offset", "0")
             .form_add("Uuid", uuid_string)
             .form_add("TotalSize", fileSize)
             .form_add_file("File", upload_data.source_path.string(), upload_filename.string())
@@ -610,6 +613,7 @@ namespace Slic3r {
         if(OctoPrint::test_with_resolved_ip(msg)){
             return true;
         }
+        msg="";
         return elegoo_test_with_resolved_ip(msg);
     }
     #endif //WIN32

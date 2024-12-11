@@ -42,6 +42,11 @@ set DEPS=%CD%/ElegooSlicer_dep
 if "%1"=="slicer" (
     GOTO :slicer
 )
+@REM 打安装包
+if "%1"=="pack_install" (
+    GOTO :pack_install
+)
+
 echo "building deps.."
 
 echo on
@@ -65,3 +70,41 @@ cd ..
 call run_gettext.bat
 cd %build_dir%
 cmake --build . --target install --config %build_type%
+
+@REM 打安装包
+if "%2"!="pack_install"  exit /b 0
+
+:pack_install
+
+setlocal enabledelayedexpansion
+
+cd %WP%
+
+set PACK_INSTALL_FILE=.\%build_dir%\install.ini
+echo PACK_INSTALL_FILE: %PACK_INSTALL_FILE%
+
+for /f "tokens=1,* delims==" %%a in ('findstr "^ELEGOOSLICER_VERSION" "%PACK_INSTALL_FILE%"') do (
+    set ELEGOOSLICER_VERSION=%%b
+)
+
+if "!ELEGOOSLICER_VERSION!"=="" (
+    echo ERROR: ELEGOOSLICER_VERSION is empty. Exiting.
+    exit /b 1
+)
+
+set INSTALL_PATH=./%build_dir%/ElegooSlicer
+set OUTFILE=./%build_dir%/ElegooSlicer_Windows_Installer_V!ELEGOOSLICER_VERSION!.exe
+
+
+echo ELEGOOSLICER_VERSION: !ELEGOOSLICER_VERSION!
+echo INSTALL_PATH: !INSTALL_PATH!
+echo OUTFILE: %OUTFILE%
+
+"%~dp0/tools/NSIS/makensis.exe" /DPRODUCT_VERSION=!ELEGOOSLICER_VERSION! /DINSTALL_PATH=!INSTALL_PATH! /DOUTFILE=!OUTFILE!  package.nsi
+
+if %ERRORLEVEL% neq 0 (
+    echo Packaging failed! Please check if package.nsi is correct.
+    exit /b %ERRORLEVEL%
+)
+
+echo Packaging successful!

@@ -72,7 +72,7 @@ cd %build_dir%
 cmake --build . --target install --config %build_type%
 
 @REM 打安装包
-if "%2"!="pack_install"  exit /b 0
+if not "%2"=="pack_install"  exit /b 0
 
 :pack_install
 

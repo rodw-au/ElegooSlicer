@@ -14,7 +14,7 @@ endif()
 
 # 添加 BUILD_NUMBER 变量
 if(NOT DEFINED BUILD_NUMBER)
-    set(BUILD_NUMBER "0")
+    set(BUILD_NUMBER "1")
 endif()
 
 set(ELEGOOSLICER_SHORT_VERSION "1.1.5")

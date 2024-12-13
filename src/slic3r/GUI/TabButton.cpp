@@ -17,7 +17,7 @@ END_EVENT_TABLE()
 static wxColour BORDER_HOVER_COL = wxColour(0, 120, 189);
 
 const static wxColour TAB_BUTTON_BG    = wxColour("#FEFFFF");
-const static wxColour TAB_BUTTON_SEL   = wxColour(219, 253, 213, 255);
+const static wxColour TAB_BUTTON_SEL   = wxColour(0, 120, 189, 255);
 
 TabButton::TabButton()
     : paddingSize(43, 16)

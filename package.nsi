@@ -11,6 +11,14 @@
 
 SetCompressor lzma
 
+VIProductVersion "${PRODUCT_VERSION}"
+VIAddVersionKey "ProductName" "ElegooSlicer"
+VIAddVersionKey "FileVersion" "${PRODUCT_VERSION}"
+VIAddVersionKey "ProductVersion" "${PRODUCT_VERSION}"
+VIAddVersionKey "CompanyName" "Shenzhen Elegoo Technology Co., Ltd" 
+VIAddVersionKey "FileDescription" "ElegooSlicer"
+VIAddVersionKey "LegalCopyright" ""
+
 ; ------ MUI 现代界面定义 (1.67 版本以上兼容) ------
 !include "MUI.nsh"
 !include "nsProcess.nsh"
@@ -237,9 +245,9 @@ Function un.onInit
 
   done:
 	${If} $LANGUAGE == ${LANG_ENGLISH}
-	  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you really want to completely remove $(^Name), and all of its components?" IDYES continue_uninstall IDNO abort_uninstall
+	  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you really want to completely remove $(^Name)?" IDYES continue_uninstall IDNO abort_uninstall
 	${Else}
-	  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "您确定要完全卸载 $(^Name) 及其所有组件吗？" IDYES continue_uninstall IDNO abort_uninstall
+	  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "您确定要完全卸载 $(^Name) 吗？" IDYES continue_uninstall IDNO abort_uninstall
 	${EndIf} 
 
 

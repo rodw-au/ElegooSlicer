@@ -5,29 +5,29 @@
     "from": "system",
     "setting_id": "GPACF00",
     "instantiation": "true",
-    "fan_cooling_layer_time": [
-        "5"
-    ],
-    "fan_max_speed": [
-        "30"
-    ],
-    "fan_min_speed": [
-        "10"
-    ],
     "filament_type": [
         "PA-CF"
     ],
     "full_fan_speed_layer": [
         "2"
     ],
-    "overhang_fan_speed": [
-        "40"
-    ],
-    "overhang_fan_threshold": [
-        "0%"
-    ],
     "temperature_vitrification": [
         "170"
+    ],
+	"fan_cooling_layer_time": [
+        "30"
+    ],
+    "fan_max_speed": [
+        "60"
+    ],
+    "fan_min_speed": [
+        "30"
+    ],
+	"overhang_fan_speed": [
+        "100"
+    ],
+    "overhang_fan_threshold": [
+        "10%"
     ],
     "compatible_printers": [
         "Elegoo Neptune 4 0.4 nozzle",

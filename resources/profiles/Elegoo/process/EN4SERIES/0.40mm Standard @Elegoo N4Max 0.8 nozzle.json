@@ -9,5 +9,7 @@
   "filename_format": "EN4Max_{nozzle_diameter[0]}_{input_filename_base}_{filament_type[0]}{layer_height}_{print_time}.gcode",
   "compatible_printers": [
      "Elegoo Neptune 4 Max 0.8 nozzle"
-  ]
+  ],
+  "default_acceleration": "3000",
+  "outer_wall_acceleration": "1500"
 }

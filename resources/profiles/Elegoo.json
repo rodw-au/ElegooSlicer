@@ -1389,7 +1389,7 @@
       "sub_path": "filament/Generic/Generic PC.json"
     },
     {
-      "name": "Generic PC",
+      "name": "Generic PC-CF",
       "sub_path": "filament/Generic/Generic PC-CF.json"
     },
     {
@@ -1403,10 +1403,6 @@
     {
       "name": "Generic PA",
       "sub_path": "filament/Generic/Generic PA.json"
-    },
-    {
-      "name": "Generic PA-CF",
-      "sub_path": "filament/Generic/Generic PA-CF.json"
     },
     {
       "name": "Generic ASA-CF",

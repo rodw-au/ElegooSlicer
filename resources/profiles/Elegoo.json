@@ -1,6 +1,6 @@
 {
   "name": "Elegoo",
-  "version": "01.01.01.04",
+  "version": "01.01.01.06",
   "force_update": "0",
   "description": "Elegoo configurations",
   "machine_model_list": [
@@ -1389,7 +1389,7 @@
       "sub_path": "filament/Generic/Generic PC.json"
     },
     {
-      "name": "Generic PC",
+      "name": "Generic PC-CF",
       "sub_path": "filament/Generic/Generic PC-CF.json"
     },
     {
@@ -1403,10 +1403,6 @@
     {
       "name": "Generic PA",
       "sub_path": "filament/Generic/Generic PA.json"
-    },
-    {
-      "name": "Generic PA-CF",
-      "sub_path": "filament/Generic/Generic PA-CF.json"
     },
     {
       "name": "Generic ASA-CF",

@@ -1,13 +1,16 @@
 ; 该脚本使用 HM VNISEdit 脚本编辑器向导产生
-
+!define LIBRARY_X64
 ; 安装程序初始定义常量
 !define PRODUCT_NAME "ElegooSlicer"
 !define PRODUCT_PUBLISHER "Shenzhen Elegoo Technology Co.,Ltd"
 ;!define PRODUCT_WEB_SITE "https://www.elegoo.com"
-!define PRODUCT_DIR_REGKEY "Software\WOW6432Node\Microsoft\Windows\CurrentVersion\App Paths\elegoo-slicer.exe"
-!define PRODUCT_UNINST_KEY "Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\elegoo-slicer.exe"
+!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
+
+
+!define PRODUCT_UNINST_KEY_32 "Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 
 SetCompressor lzma
 
@@ -22,6 +25,7 @@ VIAddVersionKey "LegalCopyright" ""
 ; ------ MUI 现代界面定义 (1.67 版本以上兼容) ------
 !include "MUI.nsh"
 !include "nsProcess.nsh"
+!include "WordFunc.nsh"
 
 ; MUI 预定义常量
 !define MUI_ABORTWARNING
@@ -78,12 +82,19 @@ LangString MUI_STARTMENUPAGE_TEXT ${LANG_CHINESE_SIMPLIFIED} "不创建快捷方式"
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile ".\build\ElegooSlicer_Windows_Installer_V${PRODUCT_VERSION}.exe"
-InstallDir "$PROGRAMFILES\ElegooSlicer"
+InstallDir "$PROGRAMFILES64\ElegooSlicer"
 InstallDirRegKey HKLM "${PRODUCT_UNINST_KEY}" "UninstallString"
 ShowInstDetails show
 ShowUnInstDetails show
 
 Section "MainSection" SEC01
+
+  ${WordFind} "$INSTDIR" "ElegooSlicer" "E+1{" $R0
+  IfErrors notfound end
+  notfound:
+	StrCpy $INSTDIR $INSTDIR\ElegooSlicer	
+  end:
+
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   
@@ -120,81 +131,98 @@ SectionEnd
 #-- 根据 NSIS 脚本编辑规则，所有 Function 区段必须放置在 Section 区段之后编写，以避免安装程序出现未可预知的问题。--#
 Var UNINSTALL_PROG
 Var OLD_VER
+Var UNINSTALL_PROG_32
+Var OLD_VER_32
 Var PUBLIC_DESKTOP_PATH
+Var OLD_PATH
+Var VER_INFO
+Var UNINSTALL_PATH
 
 ; 定义语言字符串
 LangString TXT_UNINSTALL_SUCCESS ${LANG_ENGLISH} "$(^Name) has been successfully removed from your computer."
 LangString TXT_UNINSTALL_SUCCESS ${LANG_CHINESE_SIMPLIFIED} "$(^Name) 已成功从您的计算机中删除。"
 
 
-  
-Function SelectLanguage
+Function UninstallOldVersion
+  ; 执行卸载 	
+  Exch $0 
+  ${If} $0 != ""
+    ${WordReplace} "$0" "$\"" "" "+" $0
+    StrCpy $UNINSTALL_PATH $0
+	StrCpy $OLD_PATH $0 -13	
+	ExecWait '"$UNINSTALL_PATH" /S _?=$OLD_PATH' $0
+	DetailPrint "Uninstall.exe returned $0"
+	Delete "$UNINSTALL_PATH"
+	RMDir /r $OLD_PATH
+	;旧版本桌面快捷方式放在了public下 默认的卸载程序无法删除掉
+	ReadRegStr $PUBLIC_DESKTOP_PATH HKLM "Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" "Common Desktop"
+    Delete "$PUBLIC_DESKTOP_PATH\ElegooSlicer.lnk"
+  ${EndIf}
+FunctionEnd
+
+
+Function .onInit
+  SetRegView 64
+  ;!insertmacro MUI_LANGDLL_DISPLAY 
   System::Call 'Kernel32::GetUserDefaultUILanguage() i.r0'
   ${If} $0 == ${LANG_CHINESE_SIMPLIFIED}
       StrCpy $LANGUAGE ${LANG_CHINESE_SIMPLIFIED}
   ${Else}
       StrCpy $LANGUAGE ${LANG_ENGLISH}
   ${EndIf}
-FunctionEnd
 
-
-Function .onInit
- 
-  ;!insertmacro MUI_LANGDLL_DISPLAY 
-  Call SelectLanguage
+  ReadRegStr $UNINSTALL_PROG ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY} "UninstallString"
+  ReadRegStr $OLD_VER ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY} "DisplayVersion"
+  ReadRegStr $UNINSTALL_PROG_32 ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY_32} "UninstallString"
+  ReadRegStr $OLD_VER_32 ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY_32} "DisplayVersion"    
 
   nsProcess::_FindProcess "elegoo-slicer.exe"
   Pop $R0 
   ${If} $R0 == 0
     ;在安装和卸载的初始化中LangString还未根据语言类型加载，动态判断处理
 	${If} $LANGUAGE == ${LANG_ENGLISH}
-		MessageBox MB_OKCANCEL|MB_ICONSTOP "The installer has detected that ${PRODUCT_NAME} is running.$\nClick 'OK' to force close ${PRODUCT_NAME} and continue the installation.Click 'Cancel' to exit the installer." IDOK kill_and_continue IDCANCEL abort_install
+	  MessageBox MB_OKCANCEL|MB_ICONSTOP "The installer has detected that ${PRODUCT_NAME} is running.$\nClick 'OK' to force close ${PRODUCT_NAME} and continue the installation.Click 'Cancel' to exit the installer." /SD IDOK IDOK kill_and_continue IDCANCEL abort_install
 	${Else}
-		MessageBox MB_OKCANCEL|MB_ICONSTOP "安装程序检测到 ${PRODUCT_NAME} 正在运行。是否要强制关闭它并继续安装?$\n点击 '确认' 强制关闭并继续安装，点击 '取消' 退出安装程序。" IDOK kill_and_continue IDCANCEL abort_install
+	  MessageBox MB_OKCANCEL|MB_ICONSTOP "安装程序检测到 ${PRODUCT_NAME} 正在运行。是否要强制关闭它并继续安装?$\n点击 '确认' 强制关闭并继续安装，点击 '取消' 退出安装程序。" /SD IDOK IDOK kill_and_continue IDCANCEL abort_install
 	${EndIf} 
   ${EndIf} 
   
-  Goto check_old_version 
-
+  StrCpy $VER_INFO ""
+  
+  ${If} $UNINSTALL_PROG != ""
+    StrCpy $VER_INFO $OLD_VER
+  ${ElseIf} $UNINSTALL_PROG_32 != ""	
+	StrCpy $VER_INFO $OLD_VER_32
+  ${Else}
+    goto done
+  ${EndIf} 
+   	
+  ${If} $LANGUAGE == ${LANG_ENGLISH}
+	MessageBox MB_YESNO|MB_ICONQUESTION "Detected version $VER_INFO. Do you want to uninstall it and continue with the installation?" /SD IDYES IDYES uninstall_old_version IDNO abort_install
+  ${Else}
+    MessageBox MB_YESNO|MB_ICONQUESTION "检测到版本 $VER_INFO。是否要卸载它并继续安装?" /SD IDYES IDYES uninstall_old_version IDNO abort_install
+  ${EndIf}
+  
+  abort_install:
+    Abort
+	
   kill_and_continue:
     nsProcess::_KillProcess "elegoo-slicer.exe"
     Pop $R0
-    Sleep 1000 
-	goto uninstall_old_version
-
-  check_old_version:
-    ReadRegStr $UNINSTALL_PROG ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY} "UninstallString"
-    IfErrors done 
-    ReadRegStr $OLD_VER ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY} "DisplayVersion"
-   
-	${If} $LANGUAGE == ${LANG_ENGLISH}
-	  MessageBox MB_YESNO|MB_ICONQUESTION "Detected version $OLD_VER. Do you want to uninstall it and continue with the installation?" IDYES uninstall_old_version IDNO abort_install
-	${Else}
-	  MessageBox MB_YESNO|MB_ICONQUESTION "检测到版本 $OLD_VER。是否要卸载它并继续安装?" IDYES uninstall_old_version IDNO abort_install
-	${EndIf} 
-  abort_install:
-    Abort
-  uninstall_old_version:
-    ; 执行卸载 旧版本桌面快捷方式放在了public下 默认的卸载程序无法删除掉
-	!insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
-	Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
-	Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
-	Delete "$SMPROGRAMS\$ICONS_GROUP\ElegooSlicer.lnk"
-	RMDir "$SMPROGRAMS\$ICONS_GROUP"
+	Sleep 1000 
+	goto uninstall_old_version 
 	
-	Delete "$DESKTOP\ElegooSlicer.lnk"
-
-	RMDir /r "$INSTDIR"
-
-	DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
-	DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}" 
+  uninstall_old_version:  
+    Push $UNINSTALL_PROG
+    Call UninstallOldVersion
+	Push $UNINSTALL_PROG_32
+    Call UninstallOldVersion 
+	${If} $OLD_PATH != ""
+	  StrCpy $INSTDIR $OLD_PATH
+	${EndIf}
 	
-	;Delete "C:\Users\Public\Desktop\ElegooSlicer.lnk"
-	ReadRegStr $PUBLIC_DESKTOP_PATH HKLM "Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" "Common Desktop"
-	Delete "$PUBLIC_DESKTOP_PATH\ElegooSlicer.lnk"
-
   done:
-   
+	
 FunctionEnd
 
 
@@ -203,7 +231,7 @@ FunctionEnd
  ******************************/
 
 Section Uninstall
-	
+  SetRegView 64
   !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
@@ -222,15 +250,21 @@ SectionEnd
 #-- 根据 NSIS 脚本编辑规则，所有 Function 区段必须放置在 Section 区段之后编写，以避免安装程序出现未可预知的问题。--#
 
 Function un.onInit
-  !insertmacro MUI_UNGETLANGUAGE
+  System::Call 'Kernel32::GetUserDefaultUILanguage() i.r0'
+  ${If} $0 == ${LANG_CHINESE_SIMPLIFIED}
+      StrCpy $LANGUAGE ${LANG_CHINESE_SIMPLIFIED}
+  ${Else}
+      StrCpy $LANGUAGE ${LANG_ENGLISH}
+  ${EndIf}
+  ;!insertmacro MUI_UNGETLANGUAGE
   ;在un.onInit 中只能调用un函数，在onInit中无法调用un，所以检测正在进行的检测 各自实现
   nsProcess::_FindProcess "elegoo-slicer.exe"
   Pop $R0
   ${If} $R0 = 0
   	${If} $LANGUAGE == ${LANG_ENGLISH}
-	  MessageBox MB_OKCANCEL|MB_ICONSTOP "The installer has detected that ${PRODUCT_NAME} is running.$\nClick 'OK' to force close ${PRODUCT_NAME} and continue the installation.$\nClick 'Cancel' to exit the installer." IDOK kill_and_continue IDCANCEL abort_install
+	  MessageBox MB_OKCANCEL|MB_ICONSTOP "The installer has detected that ${PRODUCT_NAME} is running.$\nClick 'OK' to force close ${PRODUCT_NAME} and continue the installation.$\nClick 'Cancel' to exit the installer." /SD IDOK IDOK kill_and_continue IDCANCEL abort_install
 	${Else}
-	  MessageBox MB_OKCANCEL|MB_ICONSTOP "安装程序检测到 ${PRODUCT_NAME} 正在运行。是否要强制关闭它并继续安装?$\n点击 '确认' 强制关闭并继续安装，点击 '取消' 退出安装程序。" IDOK kill_and_continue IDCANCEL abort_install
+	  MessageBox MB_OKCANCEL|MB_ICONSTOP "安装程序检测到 ${PRODUCT_NAME} 正在运行。是否要强制关闭它并继续安装?$\n点击 '确认' 强制关闭并继续安装，点击 '取消' 退出安装程序。" /SD IDOK IDOK kill_and_continue IDCANCEL abort_install
 	${EndIf} 
   ${EndIf} 
   Goto done 
@@ -245,9 +279,9 @@ Function un.onInit
 
   done:
 	${If} $LANGUAGE == ${LANG_ENGLISH}
-	  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you really want to completely remove $(^Name)?" IDYES continue_uninstall IDNO abort_uninstall
+	  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you really want to completely remove $(^Name)?" /SD IDYES IDYES continue_uninstall IDNO abort_uninstall
 	${Else}
-	  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "您确定要完全卸载 $(^Name) 吗？" IDYES continue_uninstall IDNO abort_uninstall
+	  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "您确定要完全卸载 $(^Name) 吗？" /SD IDYES IDYES continue_uninstall IDNO abort_uninstall
 	${EndIf} 
 
 
@@ -261,6 +295,6 @@ FunctionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK $(TXT_UNINSTALL_SUCCESS)
+  MessageBox MB_ICONINFORMATION|MB_OK $(TXT_UNINSTALL_SUCCESS) /SD IDOK
 FunctionEnd
 

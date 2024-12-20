@@ -1359,12 +1359,78 @@ std::string AppConfig::getSystemLocale() {
 #elif defined(__APPLE__) || defined(__MACH__)
     // macOS specific code
     CFLocaleRef localeRef = CFLocaleCopyCurrent();
-    CFStringRef localeStr = CFLocaleGetIdentifier(localeRef);
-    char localeName[256];
-    if (CFStringGetCString(localeStr, localeName, sizeof(localeName), kCFStringEncodingUTF8)) {
-        locale = localeName;
+    // 获取国家代码
+    CFStringRef countryCode = (CFStringRef)CFLocaleGetValue(localeRef, kCFLocaleCountryCode);
+    
+    // 将 CFStringRef 转换为 C++ 字符串
+    char country[256];
+    if (CFStringGetCString(countryCode, country, sizeof(country), kCFStringEncodingUTF8)) {
+        std::cout << "系统设置的国家: " << country << std::endl;
+    } else {
+        std::cerr << "无法获取国家代码" << std::endl;
     }
     CFRelease(localeRef);
+
+    CFArrayRef languages = CFLocaleCopyPreferredLanguages();
+    CFStringRef language = (CFStringRef)CFArrayGetValueAtIndex(languages, 0);
+    
+    char lang[256];
+    if (CFStringGetCString(language, lang, sizeof(lang), kCFStringEncodingUTF8)) {
+        std::string langStr(lang);
+        size_t pos = langStr.find('-');
+        if (pos != std::string::npos) {
+            langStr = langStr.substr(0, pos);
+        }
+        std::cout << "当前系统语言: " << lang << std::endl;
+        locale = langStr + "-" + country;
+    } else {
+        std::cerr << "无法获取系统语言" << std::endl;
+    }
+
+    CFRelease(languages);
+#endif
+
+    return locale;
+}
+
+std::string AppConfig::getSystemLanguage(){
+    std::string locale;
+
+#if defined(_WIN32) || defined(_WIN64)
+    // Windows specific code
+    wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
+    if (GetUserDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH)) {
+        char localeNameChar[LOCALE_NAME_MAX_LENGTH];
+        wcstombs(localeNameChar, localeName, LOCALE_NAME_MAX_LENGTH);
+        locale = localeNameChar;
+    }
+#elif defined(__APPLE__) || defined(__MACH__)
+
+    CFArrayRef languages = CFLocaleCopyPreferredLanguages();
+    CFStringRef language = (CFStringRef)CFArrayGetValueAtIndex(languages, 0);
+    
+    char lang[256];
+    if (CFStringGetCString(language, lang, sizeof(lang), kCFStringEncodingUTF8)) {
+        std::string langStr(lang);
+        //查找最后一个'-'的位置
+        size_t pos = langStr.rfind('-');
+        if (pos != std::string::npos) {
+            langStr = langStr.substr(0, pos);
+        }
+        if(langStr == "zh") {
+            langStr = "zh-CN";
+        } else if (langStr == "zh-Hans") {
+            langStr = "zh-CN";
+        } else if (langStr == "zh-Hant") {
+            langStr = "zh-TW";
+        } 
+        std::cout << "当前系统语言: " << lang << std::endl;
+        locale = langStr;
+    } else {
+        std::cerr << "无法获取系统语言" << std::endl;
+    }
+
+    CFRelease(languages);
 #endif
 
     return locale;

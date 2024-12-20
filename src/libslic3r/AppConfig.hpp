@@ -295,6 +295,7 @@ public:
     static const std::string SECTION_EMBOSS_STYLE;
 
 	std::string getSystemLocale();
+	std::string getSystemLanguage();
 private:
 	template<typename T>
 	bool get_3dmouse_device_numeric_value(const std::string &device_name, const char *parameter_name, T &out) const 

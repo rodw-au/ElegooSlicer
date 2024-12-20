@@ -1241,7 +1241,9 @@ void Sidebar::update_all_preset_comboboxes()
             m_bed_type_list->SelectAndNotify((int) bed_type - 1);
         }
     } else {
-        m_bed_type_list->SelectAndNotify(btPEI - 1);
+        // m_bed_type_list->SelectAndNotify(btPEI - 1);
+        BedType bed_type = preset_bundle.printers.get_edited_preset().get_default_bed_type(&preset_bundle);
+        m_bed_type_list->SelectAndNotify((int) bed_type - 1);
         m_bed_type_list->Disable();
     }
 
@@ -3712,7 +3714,7 @@ std::vector<size_t> Plater::priv::load_files(const std::vector<fs::path>& input_
                         load_type  = static_cast<LoadType>(std::stoi(import_project_action));
 
                     // BBS: version check
-                    Semver app_version = *(Semver::parse(ELEGOOSLICER_VERSION));
+                    Semver app_version = *(Semver::parse(ORCA_VERSION));// 暂时使用Orca的版本，不然加载模型会提示一些兼容性问题。
                     if (en_3mf_file_type == En3mfType::From_Prusa) {
                         // do not reset the model config
                         load_config = false;
@@ -3746,36 +3748,36 @@ std::vector<size_t> Plater::priv::load_files(const std::vector<fs::path>& input_
                     //     }
                     // } 
                     else if (load_config && (file_version > app_version)) {
-                        // if (config_substitutions.unrecogized_keys.size() > 0) {
-                        //     wxString text  = wxString::Format(_L("The 3mf's version %s is newer than %s's version %s, Found following keys unrecognized:"),
-                        //                                      file_version.to_string(), std::string(SLIC3R_APP_FULL_NAME), app_version.to_string_sf());
-                        //     text += "\n";
-                        //     bool     first = true;
-                        //     // std::string context = into_u8(text);
-                        //     wxString context = text;
-                        //     // if (wxGetApp().app_config->get("user_mode") == "develop") {
-                        //     //     for (auto &key : config_substitutions.unrecogized_keys) {
-                        //     //         context += "  -";
-                        //     //         context += key;
-                        //     //         context += ";\n";
-                        //     //         first = false;
-                        //     //     }
-                        //     // }
-                        //     wxString append = _L("You'd better upgrade your software.\n");
-                        //     context += "\n\n";
-                        //     // context += into_u8(append);
-                        //     context += append;
-                        //     show_info(q, context, _L("Newer 3mf version"));
-                        // }
-                        // else {
-                        //     //if the minor version is not matched
-                        //     if (file_version.min() != app_version.min()) {
-                        //         wxString text  = wxString::Format(_L("The 3mf's version %s is newer than %s's version %s, Suggest to upgrade your software."),
-                        //                          file_version.to_string(), std::string(SLIC3R_APP_FULL_NAME), app_version.to_string_sf());
-                        //         text += "\n";
-                        //         show_info(q, text, _L("Newer 3mf version"));
-                        //     }
-                        // }
+                        if (config_substitutions.unrecogized_keys.size() > 0) {
+                            wxString text  = wxString::Format(_L("The 3mf's version %s is newer than %s's version %s, Found following keys unrecognized:"),
+                                                             file_version.to_string(), std::string(SLIC3R_APP_FULL_NAME), app_version.to_string_sf());
+                            text += "\n";
+                            bool     first = true;
+                            // std::string context = into_u8(text);
+                            wxString context = text;
+                            // if (wxGetApp().app_config->get("user_mode") == "develop") {
+                            //     for (auto &key : config_substitutions.unrecogized_keys) {
+                            //         context += "  -";
+                            //         context += key;
+                            //         context += ";\n";
+                            //         first = false;
+                            //     }
+                            // }
+                            wxString append = _L("You'd better upgrade your software.\n");
+                            context += "\n\n";
+                            // context += into_u8(append);
+                            context += append;
+                            show_info(q, context, _L("Newer 3mf version"));
+                        }
+                        else {
+                            //if the minor version is not matched
+                            if (file_version.min() != app_version.min()) {
+                                wxString text  = wxString::Format(_L("The 3mf's version %s is newer than %s's version %s, Suggest to upgrade your software."),
+                                                 file_version.to_string(), std::string(SLIC3R_APP_FULL_NAME), app_version.to_string_sf());
+                                text += "\n";
+                                show_info(q, text, _L("Newer 3mf version"));
+                            }
+                        }
                     } 
                     else if (!load_config) {
                         // reset config except color

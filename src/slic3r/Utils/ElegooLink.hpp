@@ -21,13 +21,13 @@ public:
     ElegooLink(DynamicPrintConfig *config);
     ~ElegooLink() override = default;
     const char* get_name() const override;
-
+    virtual bool test(wxString &curl_msg) const override;
     wxString get_test_ok_msg() const override;
     wxString get_test_failed_msg(wxString& msg) const override;
     bool upload(PrintHostUpload upload_data, ProgressFn prorgess_fn, ErrorFn error_fn, InfoFn info_fn) const override;
-    bool has_auto_discovery() const override { return true; }
+    bool has_auto_discovery() const override { return false; }
     bool can_test() const override { return true; }
-    PrintHostPostUploadActions get_post_upload_actions() const override { return PrintHostPostUploadAction::StartPrint; }
+    PrintHostPostUploadActions get_post_upload_actions() const override { return PrintHostPostUploadAction::None; }
 protected:
 #ifdef WIN32
     virtual bool upload_inner_with_resolved_ip(PrintHostUpload upload_data, ProgressFn prorgess_fn, ErrorFn error_fn, InfoFn info_fn, const boost::asio::ip::address& resolved_addr) const;
@@ -36,8 +36,12 @@ protected:
     virtual bool upload_inner_with_host(PrintHostUpload upload_data, ProgressFn prorgess_fn, ErrorFn error_fn, InfoFn info_fn) const;
 
 #ifdef WIN32
-    bool test_with_resolved_ip(wxString& curl_msg) const;
+    virtual bool test_with_resolved_ip(wxString& curl_msg) const override;
+    bool elegoo_test_with_resolved_ip(wxString& curl_msg) const;
 #endif
+
+private:
+    bool elegoo_test(wxString& curl_msg) const;
 };
 }
 

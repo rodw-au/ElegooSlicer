@@ -174,9 +174,54 @@ namespace Slic3r {
 
     const char* ElegooLink::get_name() const { return "Elegoo Link"; }
 
+    bool ElegooLink::elegoo_test(wxString& msg) const{
+
+    const char *name = get_name();
+    bool res = true;
+    auto url = make_url("");
+    // Here we do not have to add custom "Host" header - the url contains host filled by user and libCurl will set the header by itself.
+    auto http = Http::get(std::move(url));
+    set_auth(http);
+    http.on_error([&](std::string body, std::string error, unsigned status) {
+            BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error getting version: %2%, HTTP %3%, body: `%4%`") % name % error % status % body;
+            res = false;
+            msg = format_error(body, error, status);
+        })
+        .on_complete([&, this](std::string body, unsigned) {
+            BOOST_LOG_TRIVIAL(debug) << boost::format("%1%: Got version: %2%") % name % body;
+            // Check if the response contains "ELEGOO" in any case.
+            // This is a simple check to see if the response is from an Elegoo Link server.
+            std::regex re("ELEGOO", std::regex::icase);
+            std::smatch match;
+            if (std::regex_search(body, match, re)) {
+                res = true;
+            } else {
+                msg = format_error(body, "Elegoo Link not detected", 0);
+                res = false;
+            }
+        })
+#ifdef WIN32
+            .ssl_revoke_best_effort(m_ssl_revoke_best_effort)
+            .on_ip_resolve([&](std::string address) {
+            // Workaround for Windows 10/11 mDNS resolve issue, where two mDNS resolves in succession fail.
+            // Remember resolved address to be reused at successive REST API call.
+            msg = GUI::from_u8(address);
+        })
+#endif // WIN32
+        .perform_sync();
+
+    return res;
+    }
+    bool ElegooLink::test(wxString &curl_msg) const{
+        if(OctoPrint::test(curl_msg)){
+            return true;
+        }
+        curl_msg="";
+        return elegoo_test(curl_msg);
+    }
     wxString ElegooLink::get_test_ok_msg() const
     {
-        return _(L("Connection to Elegoo Link works correctly."));
+        return _L("Connection to Elegoo Link works correctly.");
     }
 
     wxString ElegooLink::get_test_failed_msg(wxString& msg) const
@@ -193,7 +238,13 @@ namespace Slic3r {
         // Otherwise on Windows it contains the resolved IP address of the host.
         // Test_msg already contains resolved ip and will be cleared on start of test().
         wxString test_msg_or_host_ip = GUI::from_u8(resolved_addr.to_string());
-        if (!test_with_resolved_ip(test_msg_or_host_ip)) {
+
+        //Elegoo supports both otcoprint and Elegoo link
+        if(OctoPrint::test_with_resolved_ip(test_msg_or_host_ip)){
+            return OctoPrint::upload_inner_with_host(upload_data, prorgess_fn, error_fn, info_fn);
+        }
+        test_msg_or_host_ip="";
+        if(!elegoo_test_with_resolved_ip(test_msg_or_host_ip)){
             error_fn(std::move(test_msg_or_host_ip));
             return false;
         }
@@ -278,6 +329,14 @@ namespace Slic3r {
                 result = false;
             })
             .on_progress([&](Http::Progress progress, bool& cancel) {
+                // If upload is finished, do not call progress_fn
+                // on_complete will be called after some time, so we do not need to call it here
+                // Because some devices will call on_complete after the upload progress reaches 100%, 
+                //so we need to process it here, based on on_complete
+                if(progress.ultotal == progress.ulnow){
+                    // Upload is finished
+                    return;
+                }
                 prorgess_fn(std::move(progress), cancel);
                 if (cancel) {
                     // Upload was canceled
@@ -317,14 +376,18 @@ namespace Slic3r {
         // If test fails, test_msg_or_host_ip contains the error message.
         // Otherwise on Windows it contains the resolved IP address of the host.
         wxString test_msg_or_host_ip;
-        if (!test(test_msg_or_host_ip)) {
+        //Elegoo supports both otcoprint and Elegoo link
+        if(OctoPrint::test(test_msg_or_host_ip)){
+            return OctoPrint::upload_inner_with_host(upload_data, prorgess_fn, error_fn, info_fn);
+        }
+        test_msg_or_host_ip="";
+        if(!elegoo_test(test_msg_or_host_ip)){
             error_fn(std::move(test_msg_or_host_ip));
             return false;
         }
 
         std::string url;
         bool res = true;
-
     #ifdef WIN32
         // Workaround for Windows 10/11 mDNS resolve issue, where two mDNS resolves in succession fail.
         if (m_host.find("https://") == 0 || test_msg_or_host_ip.empty() || !GUI::get_app_config()->get_bool("allow_ip_resolve"))
@@ -373,7 +436,7 @@ namespace Slic3r {
         set_auth(http);
         http.form_add("Check", "1")
             .form_add("S-File-MD5", md5)
-            .form_add("Offset", 0)
+            .form_add("Offset", "0")
             .form_add("Uuid", uuid_string)
             .form_add("TotalSize", fileSize)
             .form_add_file("File", upload_data.source_path.string(), upload_filename.string())
@@ -409,6 +472,14 @@ namespace Slic3r {
                 res = false;
             })
             .on_progress([&](Http::Progress progress, bool& cancel) {
+                // If upload is finished, do not call progress_fn
+                // on_complete will be called after some time, so we do not need to call it here
+                // Because some devices will call on_complete after the upload progress reaches 100%, 
+                //so we need to process it here, based on on_complete
+                if(progress.ultotal == progress.ulnow){
+                    // Upload is finished
+                    return;
+                }
                 prorgess_fn(std::move(progress), cancel);
                 if (cancel) {
                     // Upload was canceled
@@ -494,62 +565,56 @@ namespace Slic3r {
 
 
     #ifdef WIN32
+
+    bool ElegooLink::elegoo_test_with_resolved_ip(wxString& msg) const{
+    // Since the request is performed synchronously here,
+    // it is ok to refer to `msg` from within the closure
+    const char* name = get_name();
+    bool res = true;
+    // Msg contains ip string.
+    auto url = substitute_host(make_url(""), GUI::into_u8(msg));
+    msg.Clear();
+    std::string host = get_host_from_url(m_host);
+    auto http = Http::get(url);//std::move(url));
+    // "Host" header is necessary here. We have resolved IP address and subsituted it into "url" variable.
+    // And when creating Http object above, libcurl automatically includes "Host" header from address it got.
+    // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back.
+    // Not changing the host would work on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse proxy is used (issue #9734).
+    // Also when allow_ip_resolve = 0, this is not needed, but it should not break anything if it stays.
+    // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
+    http.header("Host", host);
+    set_auth(http);
+    http
+        .on_error([&](std::string body, std::string error, unsigned status) {
+            BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error getting version at %2% : %3%, HTTP %4%, body: `%5%`") % name % url % error % status % body;
+            res = false;
+            msg = format_error(body, error, status);
+        })
+        .on_complete([&, this](std::string body, unsigned) {
+            // Check if the response contains "ELEGOO" in any case.
+            // This is a simple check to see if the response is from an Elegoo Link server.
+            std::regex re("ELEGOO", std::regex::icase);
+            std::smatch match;
+            if (std::regex_search(body, match, re)) {
+                res = true;
+            } else {
+                msg = format_error(body, "Elegoo Link not detected", 0);
+                res = false;
+            }
+        })
+        .ssl_revoke_best_effort(m_ssl_revoke_best_effort)
+        .perform_sync();
+
+    return res;
+    }
     bool ElegooLink::test_with_resolved_ip(wxString &msg) const
     {
-        // Since the request is performed synchronously here,
-        // it is ok to refer to `msg` from within the closure
-        const char* name = get_name();
-        bool res = true;
-        // Msg contains ip string.
-        auto url = substitute_host(make_url("api/version"), GUI::into_u8(msg));
-        msg.Clear();
-
-        BOOST_LOG_TRIVIAL(info) << boost::format("%1%: Get version at: %2%") % name % url;
-
-        std::string host = get_host_from_url(m_host);
-        auto http = Http::get(url);//std::move(url));
-        // "Host" header is necessary here. We have resolved IP address and subsituted it into "url" variable.
-        // And when creating Http object above, libcurl automatically includes "Host" header from address it got.
-        // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back.
-        // Not changing the host would work on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse proxy is used (issue #9734).
-        // Also when allow_ip_resolve = 0, this is not needed, but it should not break anything if it stays.
-        // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
-        http.header("Host", host);
-        set_auth(http);
-        http
-            .on_error([&](std::string body, std::string error, unsigned status) {
-                BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error getting version at %2% : %3%, HTTP %4%, body: `%5%`") % name % url % error % status % body;
-                res = false;
-                msg = format_error(body, error, status);
-            })
-            .on_complete([&, this](std::string body, unsigned) {
-                BOOST_LOG_TRIVIAL(info) << boost::format("%1%: Got version: %2%") % name % body;
-
-                try {
-                    std::stringstream ss(body);
-                    pt::ptree ptree;
-                    pt::read_json(ss, ptree);
-
-                    if (!ptree.get_optional<std::string>("api")) {
-                        res = false;
-                        return;
-                    }
-
-                    const auto text = ptree.get_optional<std::string>("text");
-                    res = validate_version_text(text);
-                    if (!res) {
-                        msg = GUI::format_wxstr(_L("Mismatched type of print host: %s"), (text ? *text : name));
-                    }
-                }
-                catch (const std::exception&) {
-                    res = false;
-                    msg = "Could not parse server response.";
-                }
-            })
-            .ssl_revoke_best_effort(m_ssl_revoke_best_effort)
-            .perform_sync();
-
-        return res;
+        //Elegoo supports both otcoprint and Elegoo link
+        if(OctoPrint::test_with_resolved_ip(msg)){
+            return true;
+        }
+        msg="";
+        return elegoo_test_with_resolved_ip(msg);
     }
     #endif //WIN32
 }

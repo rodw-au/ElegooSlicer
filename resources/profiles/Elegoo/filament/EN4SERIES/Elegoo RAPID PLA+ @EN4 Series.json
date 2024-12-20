@@ -12,8 +12,11 @@
         "100"
     ],
     "fan_min_speed": [
-        "60"
+        "100"
     ],
+    "overhang_fan_threshold": [
+        "25%"
+    ],	
     "filament_max_volumetric_speed": [
         "21"
     ],

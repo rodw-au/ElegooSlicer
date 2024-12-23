@@ -64,7 +64,8 @@ LangString MUI_STARTMENUPAGE_TEXT ${LANG_CHINESE_SIMPLIFIED} "不创建快捷方式"
 ; 安装过程页面
 !insertmacro MUI_PAGE_INSTFILES
 ; 安装完成页面
-!define MUI_FINISHPAGE_RUN "$INSTDIR\elegoo-slicer.exe"
+!define MUI_FINISHPAGE_RUN
+!define MUI_FINISHPAGE_RUN_FUNCTION "RunMainApp"
 !insertmacro MUI_PAGE_FINISH
 
 ; 安装卸载过程页面
@@ -225,6 +226,10 @@ Function .onInit
 	
 FunctionEnd
 
+Function RunMainApp
+ ; 使用 System::Call 以普通权限运行程序
+  System::Call 'shell32::ShellExecute(i 0, t"open", t"explorer.exe", t" /e,elegoo-slicer.exe", t"$INSTDIR\\", i 0)'
+FunctionEnd
 
 /******************************
  *  以下是安装程序的卸载部分  *

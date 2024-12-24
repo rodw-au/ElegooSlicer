@@ -34,8 +34,30 @@ namespace pt = boost::property_tree;
 
 namespace Slic3r {
 
+    enum ElegooLinkCommand {
+        //get status
+        ELEGOO_GET_STATUS = 0,
+        //get properties
+        ELEGOO_GET_PROPERTIES = 1,
+        //start print
+        ELEGOO_START_PRINT = 128,
+    };
+
+    typedef enum
+    {
+        SDCP_PRINT_CTRL_ACK_OK = 0,  // OK
+        SDCP_PRINT_CTRL_ACK_BUSY = 1 , // 设备忙 device is busy
+        SDCP_PRINT_CTRL_ACK_NOT_FOUND = 2,  // 未找到目标文件 file not found
+        SDCP_PRINT_CTRL_ACK_MD5_FAILED = 3,  // MD5校验失败 MD5 check failed
+        SDCP_PRINT_CTRL_ACK_FILEIO_FAILED = 4,  // 文件读取失败  file I/O error
+        SDCP_PRINT_CTRL_ACK_INVLAID_RESOLUTION = 5, // 文件分辨率不匹配 file resolution is invalid
+        SDCP_PRINT_CTRL_ACK_UNKNOW_FORMAT = 6,  // 无法识别的文件格式 file format is invalid
+        SDCP_PRINT_CTRL_ACK_UNKNOW_MODEL = 7, // 文件机型不匹配 file model is invalid
+    } ElegooLinkStartPrintAck;
+
+
     namespace {
-    #ifdef WIN32
+
     std::string get_host_from_url(const std::string& url_in)
     {
         std::string url = url_in;
@@ -74,7 +96,40 @@ namespace Slic3r {
             BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to allocate curl_url";
         return out;
     }
+ 
+    std::string get_host_from_url_no_port(const std::string& url_in)
+    {
+        std::string url = url_in;
+        // add http:// if there is no scheme
+        size_t double_slash = url.find("//");
+        if (double_slash == std::string::npos)
+            url = "http://" + url;
+        std::string out = url;
+        CURLU* hurl = curl_url();
+        if (hurl) {
+            // Parse the input URL.
+            CURLUcode rc = curl_url_set(hurl, CURLUPART_URL, url.c_str(), 0);
+            if (rc == CURLUE_OK) {
+                // Replace the address.
+                char* host;
+                rc = curl_url_get(hurl, CURLUPART_HOST, &host, 0);
+                if (rc == CURLUE_OK) {
+                    out = host;
+                    curl_free(host);
+                }
+                else
+                    BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to get host form URL " << url;
+            }
+            else
+                BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to parse URL " << url;
+            curl_url_cleanup(hurl);
+        }
+        else
+            BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to allocate curl_url";
+        return out;
+    }
 
+    #ifdef WIN32
         // Workaround for Windows 10/11 mDNS resolve issue, where two mDNS resolves in succession fail.
     std::string substitute_host(const std::string& orig_addr, std::string sub_addr)
     {
@@ -164,6 +219,7 @@ namespace Slic3r {
         }
         return ret_val;
     }
+
 } //namespace
 
 
@@ -209,8 +265,7 @@ namespace Slic3r {
         })
 #endif // WIN32
         .perform_sync();
-
-    return res;
+        return res;
     }
     bool ElegooLink::test(wxString &curl_msg) const{
         if(OctoPrint::test(curl_msg)){
@@ -249,6 +304,16 @@ namespace Slic3r {
             return false;
         }
 
+        std::string wsUrl = get_host_from_url_no_port(m_host);
+        WebSocketClient client;
+        if(upload_data.post_action == PrintHostPostUploadAction::StartPrint){
+            try {
+                client.connect(wsUrl, "3030","/websocket");
+            }catch(std::exception &e){
+                error_fn(std::string("\n")+wxString::FromUTF8(e.what()));
+                return false;
+            }
+        }
         const char* name = get_name();
         const auto upload_filename = upload_data.upload_path.filename();
         const auto upload_parent_path = upload_data.upload_path.parent_path();
@@ -300,22 +365,28 @@ namespace Slic3r {
             .on_complete([&](std::string body, unsigned status) {
                 BOOST_LOG_TRIVIAL(debug) << boost::format("%1%: File uploaded: HTTP %2%: %3%") % name % status % body;
                 if(status == 200){
-                    pt::ptree root;
-                    std::istringstream is(body);
-                    pt::read_json(is, root);
-                    std::string code = root.get<std::string>("code");
-                    if(code == "000000"){
-                        // info_fn(L"complete", wxString());
-                    }else{
-                        //get error messages
-                        pt::ptree messages = root.get_child("messages");
-                        std::string error_message="ErrorCode : " + code + "\n";
-                        for (pt::ptree::value_type &message : messages) {
-                            std::string field = message.second.get<std::string>("field");
-                            std::string msg = message.second.get<std::string>("message");
-                            error_message += field + ":" + msg + "\n";
+                    try{
+                        pt::ptree root;
+                        std::istringstream is(body);
+                        pt::read_json(is, root);
+                        std::string code = root.get<std::string>("code");
+                        if(code == "000000"){
+                            // info_fn(L"complete", wxString());
+                        }else{
+                            //get error messages
+                            pt::ptree messages = root.get_child("messages");
+                            std::string error_message="ErrorCode : " + code + "\n";
+                            for (pt::ptree::value_type &message : messages) {
+                                std::string field = message.second.get<std::string>("field");
+                                std::string msg = message.second.get<std::string>("message");
+                                error_message += field + ":" + msg + "\n";
+                            }
+                            error_fn(wxString::FromUTF8(error_message));
+                            result = false;
                         }
-                        error_fn(wxString::FromUTF8(error_message));
+                    }catch(...){
+                        BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error parsing response: %2%") % name % body;
+                        error_fn(wxString::FromUTF8("Error parsing response"));
                         result = false;
                     }
                 }else{
@@ -347,6 +418,9 @@ namespace Slic3r {
             .ssl_revoke_best_effort(m_ssl_revoke_best_effort)
             .perform_sync();
 
+        if( result && upload_data.post_action == PrintHostPostUploadAction::StartPrint ){
+            result = print(client,upload_filename.string(),error_fn);
+        }
         return result;
     }
     #endif //WIN32
@@ -384,6 +458,18 @@ namespace Slic3r {
         if(!elegoo_test(test_msg_or_host_ip)){
             error_fn(std::move(test_msg_or_host_ip));
             return false;
+        }
+
+
+        std::string wsUrl = get_host_from_url_no_port(m_host);
+        WebSocketClient client;
+        if(upload_data.post_action == PrintHostPostUploadAction::StartPrint){
+            try {
+                client.connect(wsUrl, "3030","/websocket");
+            }catch(std::exception &e){
+                error_fn(std::string("\n")+wxString::FromUTF8(e.what()));
+                return false;
+            }
         }
 
         std::string url;
@@ -443,22 +529,28 @@ namespace Slic3r {
             .on_complete([&](std::string body, unsigned status) {
                 BOOST_LOG_TRIVIAL(debug) << boost::format("%1%: File uploaded: HTTP %2%: %3%") % name % status % body;
                 if (status == 200) {
-                    pt::ptree root;
-                    std::istringstream is(body);
-                    pt::read_json(is, root);
-                    std::string code = root.get<std::string>("code");
-                    if (code == "000000") {
-                        // info_fn(L"complete", wxString());
-                    } else {
-                        //get error messages
-                        pt::ptree messages = root.get_child("messages");
-                        std::string error_message = "ErrorCode : " + code + "\n";
-                        for (pt::ptree::value_type& message : messages) {
-                            std::string field = message.second.get<std::string>("field");
-                            std::string msg = message.second.get<std::string>("message");
-                            error_message += field + ":" + msg + "\n";
+                    try{
+                        pt::ptree root;
+                        std::istringstream is(body);
+                        pt::read_json(is, root);
+                        std::string code = root.get<std::string>("code");
+                        if(code == "000000"){
+                            // info_fn(L"complete", wxString());
+                        }else{
+                            //get error messages
+                            pt::ptree messages = root.get_child("messages");
+                            std::string error_message="ErrorCode : " + code + "\n";
+                            for (pt::ptree::value_type &message : messages) {
+                                std::string field = message.second.get<std::string>("field");
+                                std::string msg = message.second.get<std::string>("message");
+                                error_message += field + ":" + msg + "\n";
+                            }
+                            error_fn(wxString::FromUTF8(error_message));
+                            res = false;
                         }
-                        error_fn(wxString::FromUTF8(error_message));
+                    }catch(...){
+                        BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error parsing response: %2%") % name % body;
+                        error_fn(wxString::FromUTF8("Error parsing response"));
                         res = false;
                     }
                 } else {
@@ -492,12 +584,15 @@ namespace Slic3r {
     #endif
             .perform_sync();
 
+        if(res && upload_data.post_action == PrintHostPostUploadAction::StartPrint){
+            res = print(client,upload_filename.string(),error_fn);
+        }
         return res;
     }
 
     bool ElegooLink::validate_version_text(const boost::optional<std::string> &version_text) const
     {
-        return version_text ? boost::starts_with(*version_text, "OctoPrint") : true;
+        return  true;
     }
 
     bool ElegooLink::upload(PrintHostUpload upload_data, ProgressFn prorgess_fn, ErrorFn error_fn, InfoFn info_fn) const
@@ -617,4 +712,126 @@ namespace Slic3r {
         return elegoo_test_with_resolved_ip(msg);
     }
     #endif //WIN32
+
+    bool ElegooLink::print(WebSocketClient& client, const std::string filename,ErrorFn error_fn) const{
+        bool res = true;
+        // create a random UUID generator
+        boost::uuids::random_generator generator;
+        // generate a UUID
+        boost::uuids::uuid uuid = generator();
+        std::string uuid_string = to_string(uuid);
+        try {
+            std::string requestID = uuid_string; 
+            auto now = std::chrono::system_clock::now();
+            auto duration = now.time_since_epoch();
+            auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+            std::string timestamp = std::to_string(milliseconds);     
+            std::string jsonString = R"({
+                                        "Id":"",
+                                        "Data":{
+                                            "Cmd":)"+std::to_string(ElegooLinkCommand::ELEGOO_START_PRINT)+R"(,
+                                            "Data":{
+                                                "Filename":"/local/)" + filename + R"(",
+                                                "StartLayer":0,
+                                                "Calibration_switch":0,
+                                                "PrintPlatformType":0,
+                                                "Tlp_Switch":0
+                                            },
+                                            "RequestID":")"+ uuid_string + R"(",
+                                            "MainboardID":"",
+                                            "TimeStamp":)" + timestamp + R"(,
+                                            "From":1
+                                        }
+                                    })";
+                    std::cout << "send: " << jsonString << std::endl;
+                    BOOST_LOG_TRIVIAL(info) << "start print, param: " << jsonString;
+                    client.send(jsonString);
+                    int count = 0;
+                    do{
+                        std::string response = client.receive();
+                        std::cout << "Received: " << response << std::endl;
+                        BOOST_LOG_TRIVIAL(info) << "Received: " << response;
+
+                        //sample response
+                        // {"Id":"979d4C788A4a78bC777A870F1A02867A","Data":{"Cmd":128,"Data":{"Ack":1},"RequestID":"5223de52cc7642ae8d7924f9dd46f6ad","MainboardID":"1c7319d30105041800009c0000000000","TimeStamp":1735032553},"Topic":"sdcp/response/1c7319d30105041800009c0000000000"}  
+                        pt::ptree root;
+                        std::istringstream is(response);
+                        pt::read_json(is, root);
+
+                        auto data = root.get_child_optional("Data");
+                        if(!data){
+                            BOOST_LOG_TRIVIAL(info) << "wait for start print response";
+                            continue;
+                        }
+                        auto cmd = data->get_optional<int>("Cmd");
+                        if(!cmd){
+                            BOOST_LOG_TRIVIAL(info) << "wait for start print response";
+                            continue;
+                        }
+                        if(*cmd == ElegooLinkCommand::ELEGOO_START_PRINT){
+                            auto _ack = data->get_optional<int>("Data.Ack");
+                            if(!_ack){
+                                BOOST_LOG_TRIVIAL(error) << "start print failed, ack not found";
+                                error_fn(GUI::from_u8("error code not found"));
+                                break;
+                            }
+                            auto ack = static_cast<ElegooLinkStartPrintAck>(*_ack);
+                            if(ack == ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_OK){
+                                res = true;
+                            }else{
+                                res = false;
+                                BOOST_LOG_TRIVIAL(error) << "start print failed: ack: " << ack;
+                                wxString error_message = "";
+                                switch(ack){
+                                    case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_BUSY:
+                                    {   
+                                        error_message =_L("The printer is busy, please check and try again.");
+                                        break;
+                                    }
+                                    case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_NOT_FOUND:
+                                    {
+                                        error_message =_L("The file is lost, please check and try again.");
+                                        break;
+                                    }
+                                    case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_MD5_FAILED:
+                                    {
+                                        error_message =_L("The file is corrupted, please check and try again.");
+                                        break;
+                                    }
+                                    case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_FILEIO_FAILED:
+                                    case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_INVLAID_RESOLUTION:
+                                    case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_UNKNOW_FORMAT:
+                                    {
+                                        error_message =_L("Transmission abnormality, please check and try again.");
+                                        break;
+                                    }
+                                    case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_UNKNOW_MODEL:
+                                    {
+                                        error_message =_L("The file does not match the printer, please check and try again.");
+                                        break;
+                                    }
+                                    default:
+                                    {
+                                        break;
+                                    }
+                                }
+
+                                error_message +="Error code: " + wxString::Format("%d",ack);
+                                error_fn(error_message);
+                            }
+                            break;
+                        }
+                    }while(count++ < 5);
+                    if(count >= 5){
+                        res = false;
+                        error_fn(GUI::from_u8("start print timeout"));
+                    }
+            } catch (const std::exception& e) {
+                std::cerr << "Error: " << e.what() << std::endl;
+                BOOST_LOG_TRIVIAL(error) << "start print error: " << e.what();
+                error_fn(GUI::from_u8("Start print failed \n") + GUI::from_u8(e.what()));
+                res=false;
+            }
+        return res;
+    }
 }

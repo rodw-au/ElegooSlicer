@@ -58,169 +58,169 @@ namespace Slic3r {
 
     namespace {
 
-    std::string get_host_from_url(const std::string& url_in)
-    {
-        std::string url = url_in;
-        // add http:// if there is no scheme
-        size_t double_slash = url.find("//");
-        if (double_slash == std::string::npos)
-            url = "http://" + url;
-        std::string out = url;
-        CURLU* hurl = curl_url();
-        if (hurl) {
-            // Parse the input URL.
-            CURLUcode rc = curl_url_set(hurl, CURLUPART_URL, url.c_str(), 0);
-            if (rc == CURLUE_OK) {
-                // Replace the address.
-                char* host;
-                rc = curl_url_get(hurl, CURLUPART_HOST, &host, 0);
+        std::string get_host_from_url(const std::string& url_in)
+        {
+            std::string url = url_in;
+            // add http:// if there is no scheme
+            size_t double_slash = url.find("//");
+            if (double_slash == std::string::npos)
+                url = "http://" + url;
+            std::string out = url;
+            CURLU* hurl = curl_url();
+            if (hurl) {
+                // Parse the input URL.
+                CURLUcode rc = curl_url_set(hurl, CURLUPART_URL, url.c_str(), 0);
                 if (rc == CURLUE_OK) {
-                    char* port;
-                    rc = curl_url_get(hurl, CURLUPART_PORT, &port, 0);
-                    if (rc == CURLUE_OK && port != nullptr) {
-                        out = std::string(host) + ":" + port;
-                        curl_free(port);
-                    } else {
+                    // Replace the address.
+                    char* host;
+                    rc = curl_url_get(hurl, CURLUPART_HOST, &host, 0);
+                    if (rc == CURLUE_OK) {
+                        char* port;
+                        rc = curl_url_get(hurl, CURLUPART_PORT, &port, 0);
+                        if (rc == CURLUE_OK && port != nullptr) {
+                            out = std::string(host) + ":" + port;
+                            curl_free(port);
+                        } else {
+                            out = host;
+                            curl_free(host);
+                        }
+                    }
+                    else
+                        BOOST_LOG_TRIVIAL(error) << "ElegooLink get_host_from_url: failed to get host form URL " << url;
+                }
+                else
+                    BOOST_LOG_TRIVIAL(error) << "ElegooLink get_host_from_url: failed to parse URL " << url;
+                curl_url_cleanup(hurl);
+            }
+            else
+                BOOST_LOG_TRIVIAL(error) << "ElegooLink get_host_from_url: failed to allocate curl_url";
+            return out;
+        }
+    
+        std::string get_host_from_url_no_port(const std::string& url_in)
+        {
+            std::string url = url_in;
+            // add http:// if there is no scheme
+            size_t double_slash = url.find("//");
+            if (double_slash == std::string::npos)
+                url = "http://" + url;
+            std::string out = url;
+            CURLU* hurl = curl_url();
+            if (hurl) {
+                // Parse the input URL.
+                CURLUcode rc = curl_url_set(hurl, CURLUPART_URL, url.c_str(), 0);
+                if (rc == CURLUE_OK) {
+                    // Replace the address.
+                    char* host;
+                    rc = curl_url_get(hurl, CURLUPART_HOST, &host, 0);
+                    if (rc == CURLUE_OK) {
                         out = host;
                         curl_free(host);
                     }
+                    else
+                        BOOST_LOG_TRIVIAL(error) << "ElegooLink get_host_from_url: failed to get host form URL " << url;
                 }
                 else
-                    BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to get host form URL " << url;
+                    BOOST_LOG_TRIVIAL(error) << "ElegooLink get_host_from_url: failed to parse URL " << url;
+                curl_url_cleanup(hurl);
             }
             else
-                BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to parse URL " << url;
-            curl_url_cleanup(hurl);
+                BOOST_LOG_TRIVIAL(error) << "ElegooLink get_host_from_url: failed to allocate curl_url";
+            return out;
         }
-        else
-            BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to allocate curl_url";
-        return out;
-    }
- 
-    std::string get_host_from_url_no_port(const std::string& url_in)
-    {
-        std::string url = url_in;
-        // add http:// if there is no scheme
-        size_t double_slash = url.find("//");
-        if (double_slash == std::string::npos)
-            url = "http://" + url;
-        std::string out = url;
-        CURLU* hurl = curl_url();
-        if (hurl) {
-            // Parse the input URL.
-            CURLUcode rc = curl_url_set(hurl, CURLUPART_URL, url.c_str(), 0);
-            if (rc == CURLUE_OK) {
-                // Replace the address.
-                char* host;
-                rc = curl_url_get(hurl, CURLUPART_HOST, &host, 0);
-                if (rc == CURLUE_OK) {
-                    out = host;
-                    curl_free(host);
-                }
-                else
-                    BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to get host form URL " << url;
-            }
-            else
-                BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to parse URL " << url;
-            curl_url_cleanup(hurl);
-        }
-        else
-            BOOST_LOG_TRIVIAL(error) << "OctoPrint get_host_from_url: failed to allocate curl_url";
-        return out;
-    }
 
-    #ifdef WIN32
-        // Workaround for Windows 10/11 mDNS resolve issue, where two mDNS resolves in succession fail.
-    std::string substitute_host(const std::string& orig_addr, std::string sub_addr)
-    {
-        // put ipv6 into [] brackets 
-        if (sub_addr.find(':') != std::string::npos && sub_addr.at(0) != '[')
-            sub_addr = "[" + sub_addr + "]";
-
-    #if 0
-        //URI = scheme ":"["//"[userinfo "@"] host [":" port]] path["?" query]["#" fragment]
-        std::string final_addr = orig_addr;
-        //  http
-        size_t double_dash = orig_addr.find("//");
-        size_t host_start = (double_dash == std::string::npos ? 0 : double_dash + 2);
-        // userinfo
-        size_t at = orig_addr.find("@");
-        host_start = (at != std::string::npos && at > host_start ? at + 1 : host_start);
-        // end of host, could be port(:), subpath(/) (could be query(?) or fragment(#)?)
-        // or it will be ']' if address is ipv6 )
-        size_t potencial_host_end = orig_addr.find_first_of(":/", host_start); 
-        // if there are more ':' it must be ipv6
-        if (potencial_host_end != std::string::npos && orig_addr[potencial_host_end] == ':' && orig_addr.rfind(':') != potencial_host_end) {
-            size_t ipv6_end = orig_addr.find(']', host_start);
-            // DK: Uncomment and replace orig_addr.length() if we want to allow subpath after ipv6 without [] parentheses.
-            potencial_host_end = (ipv6_end != std::string::npos ? ipv6_end + 1 : orig_addr.length()); //orig_addr.find('/', host_start));
-        }
-        size_t host_end = (potencial_host_end != std::string::npos ? potencial_host_end : orig_addr.length());
-        // now host_start and host_end should mark where to put resolved addr
-        // check host_start. if its nonsense, lets just use original addr (or  resolved addr?)
-        if (host_start >= orig_addr.length()) {
-            return final_addr;
-        }
-        final_addr.replace(host_start, host_end - host_start, sub_addr);
-        return final_addr;
-    #else
-        // Using the new CURL API for handling URL. https://everything.curl.dev/libcurl/url
-        // If anything fails, return the input unchanged.
-        std::string out = orig_addr;
-        CURLU *hurl = curl_url();
-        if (hurl) {
-            // Parse the input URL.
-            CURLUcode rc = curl_url_set(hurl, CURLUPART_URL, orig_addr.c_str(), 0);
-            if (rc == CURLUE_OK) {
-                // Replace the address.
-                rc = curl_url_set(hurl, CURLUPART_HOST, sub_addr.c_str(), 0);
-                if (rc == CURLUE_OK) {
-                    // Extract a string fromt the CURL URL handle.
-                    char *url;
-                    rc = curl_url_get(hurl, CURLUPART_URL, &url, 0);
-                    if (rc == CURLUE_OK) {
-                        out = url;
-                        curl_free(url);
-                    } else
-                        BOOST_LOG_TRIVIAL(error) << "OctoPrint substitute_host: failed to extract the URL after substitution";
-                } else
-                    BOOST_LOG_TRIVIAL(error) << "OctoPrint substitute_host: failed to substitute host " << sub_addr << " in URL " << orig_addr;
-            } else
-                BOOST_LOG_TRIVIAL(error) << "OctoPrint substitute_host: failed to parse URL " << orig_addr;
-            curl_url_cleanup(hurl);
-        } else
-            BOOST_LOG_TRIVIAL(error) << "OctoPrint substitute_host: failed to allocate curl_url";
-        return out;
-    #endif
-    }
-    #endif // WIN32
-    std::string escape_string(const std::string& unescaped)
-    {
-        std::string ret_val;
-        CURL* curl = curl_easy_init();
-        if (curl) {
-            char* decoded = curl_easy_escape(curl, unescaped.c_str(), unescaped.size());
-            if (decoded) {
-                ret_val = std::string(decoded);
-                curl_free(decoded);
-            }
-            curl_easy_cleanup(curl);
-        }
-        return ret_val;
-    }
-    std::string escape_path_by_element(const boost::filesystem::path& path)
-    {
-        std::string ret_val = escape_string(path.filename().string());
-        boost::filesystem::path parent(path.parent_path());
-        while (!parent.empty() && parent.string() != "/") // "/" check is for case "/file.gcode" was inserted. Then boost takes "/" as parent_path.
+        #ifdef WIN32
+            // Workaround for Windows 10/11 mDNS resolve issue, where two mDNS resolves in succession fail.
+        std::string substitute_host(const std::string& orig_addr, std::string sub_addr)
         {
-            ret_val = escape_string(parent.filename().string()) + "/" + ret_val;
-            parent = parent.parent_path();
-        }
-        return ret_val;
-    }
+            // put ipv6 into [] brackets 
+            if (sub_addr.find(':') != std::string::npos && sub_addr.at(0) != '[')
+                sub_addr = "[" + sub_addr + "]";
 
-} //namespace
+        #if 0
+            //URI = scheme ":"["//"[userinfo "@"] host [":" port]] path["?" query]["#" fragment]
+            std::string final_addr = orig_addr;
+            //  http
+            size_t double_dash = orig_addr.find("//");
+            size_t host_start = (double_dash == std::string::npos ? 0 : double_dash + 2);
+            // userinfo
+            size_t at = orig_addr.find("@");
+            host_start = (at != std::string::npos && at > host_start ? at + 1 : host_start);
+            // end of host, could be port(:), subpath(/) (could be query(?) or fragment(#)?)
+            // or it will be ']' if address is ipv6 )
+            size_t potencial_host_end = orig_addr.find_first_of(":/", host_start); 
+            // if there are more ':' it must be ipv6
+            if (potencial_host_end != std::string::npos && orig_addr[potencial_host_end] == ':' && orig_addr.rfind(':') != potencial_host_end) {
+                size_t ipv6_end = orig_addr.find(']', host_start);
+                // DK: Uncomment and replace orig_addr.length() if we want to allow subpath after ipv6 without [] parentheses.
+                potencial_host_end = (ipv6_end != std::string::npos ? ipv6_end + 1 : orig_addr.length()); //orig_addr.find('/', host_start));
+            }
+            size_t host_end = (potencial_host_end != std::string::npos ? potencial_host_end : orig_addr.length());
+            // now host_start and host_end should mark where to put resolved addr
+            // check host_start. if its nonsense, lets just use original addr (or  resolved addr?)
+            if (host_start >= orig_addr.length()) {
+                return final_addr;
+            }
+            final_addr.replace(host_start, host_end - host_start, sub_addr);
+            return final_addr;
+        #else
+            // Using the new CURL API for handling URL. https://everything.curl.dev/libcurl/url
+            // If anything fails, return the input unchanged.
+            std::string out = orig_addr;
+            CURLU *hurl = curl_url();
+            if (hurl) {
+                // Parse the input URL.
+                CURLUcode rc = curl_url_set(hurl, CURLUPART_URL, orig_addr.c_str(), 0);
+                if (rc == CURLUE_OK) {
+                    // Replace the address.
+                    rc = curl_url_set(hurl, CURLUPART_HOST, sub_addr.c_str(), 0);
+                    if (rc == CURLUE_OK) {
+                        // Extract a string fromt the CURL URL handle.
+                        char *url;
+                        rc = curl_url_get(hurl, CURLUPART_URL, &url, 0);
+                        if (rc == CURLUE_OK) {
+                            out = url;
+                            curl_free(url);
+                        } else
+                            BOOST_LOG_TRIVIAL(error) << "ElegooLink substitute_host: failed to extract the URL after substitution";
+                    } else
+                        BOOST_LOG_TRIVIAL(error) << "ElegooLink substitute_host: failed to substitute host " << sub_addr << " in URL " << orig_addr;
+                } else
+                    BOOST_LOG_TRIVIAL(error) << "ElegooLink substitute_host: failed to parse URL " << orig_addr;
+                curl_url_cleanup(hurl);
+            } else
+                BOOST_LOG_TRIVIAL(error) << "ElegooLink substitute_host: failed to allocate curl_url";
+            return out;
+        #endif
+        }
+        #endif // WIN32
+        std::string escape_string(const std::string& unescaped)
+        {
+            std::string ret_val;
+            CURL* curl = curl_easy_init();
+            if (curl) {
+                char* decoded = curl_easy_escape(curl, unescaped.c_str(), unescaped.size());
+                if (decoded) {
+                    ret_val = std::string(decoded);
+                    curl_free(decoded);
+                }
+                curl_easy_cleanup(curl);
+            }
+            return ret_val;
+        }
+        std::string escape_path_by_element(const boost::filesystem::path& path)
+        {
+            std::string ret_val = escape_string(path.filename().string());
+            boost::filesystem::path parent(path.parent_path());
+            while (!parent.empty() && parent.string() != "/") // "/" check is for case "/file.gcode" was inserted. Then boost takes "/" as parent_path.
+            {
+                ret_val = escape_string(parent.filename().string()) + "/" + ret_val;
+                parent = parent.parent_path();
+            }
+            return ret_val;
+        }
+
+    } //namespace
 
 
     ElegooLink::ElegooLink(DynamicPrintConfig *config):
@@ -419,6 +419,8 @@ namespace Slic3r {
             .perform_sync();
 
         if( result && upload_data.post_action == PrintHostPostUploadAction::StartPrint ){
+            //sleep 3s, wait for the file to be processed
+            std::this_thread::sleep_for(std::chrono::seconds(3));
             result = print(client,upload_filename.string(),error_fn);
         }
         return result;
@@ -585,6 +587,8 @@ namespace Slic3r {
             .perform_sync();
 
         if(res && upload_data.post_action == PrintHostPostUploadAction::StartPrint){
+            //sleep 3s, wait for the file to be processed
+            std::this_thread::sleep_for(std::chrono::seconds(3));
             res = print(client,upload_filename.string(),error_fn);
         }
         return res;
@@ -772,7 +776,7 @@ namespace Slic3r {
                             auto _ack = data->get_optional<int>("Data.Ack");
                             if(!_ack){
                                 BOOST_LOG_TRIVIAL(error) << "start print failed, ack not found";
-                                error_fn(GUI::from_u8("error code not found"));
+                                error_fn(_L("Error code not found"));
                                 break;
                             }
                             auto ack = static_cast<ElegooLinkStartPrintAck>(*_ack);
@@ -790,46 +794,47 @@ namespace Slic3r {
                                     }
                                     case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_NOT_FOUND:
                                     {
-                                        error_message =_L("The file is lost, please check and try again.");
+                                        error_message =_(L("The file is lost, please check and try again."));
                                         break;
                                     }
                                     case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_MD5_FAILED:
                                     {
-                                        error_message =_L("The file is corrupted, please check and try again.");
+                                        error_message =_(L("The file is corrupted, please check and try again."));
                                         break;
                                     }
                                     case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_FILEIO_FAILED:
                                     case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_INVLAID_RESOLUTION:
                                     case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_UNKNOW_FORMAT:
                                     {
-                                        error_message =_L("Transmission abnormality, please check and try again.");
+                                        error_message =_(L("Transmission abnormality, please check and try again."));
                                         break;
                                     }
                                     case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_UNKNOW_MODEL:
                                     {
-                                        error_message =_L("The file does not match the printer, please check and try again.");
+                                        error_message =_(L("The file does not match the printer, please check and try again."));
                                         break;
                                     }
                                     default:
                                     {
+                                        error_message =_L("Unknown error");
                                         break;
                                     }
                                 }
 
-                                error_message +="Error code: " + wxString::Format("%d",ack);
+                                error_message += " " + wxString::Format(_L("Error code: %d"),ack);
                                 error_fn(error_message);
                             }
                             break;
                         }
-                    }while(count++ < 5);
-                    if(count >= 5){
+                    }while(++count < 15);
+                    if(count >= 15){
                         res = false;
-                        error_fn(GUI::from_u8("start print timeout"));
+                        error_fn(_L("Start print timeout"));
                     }
             } catch (const std::exception& e) {
                 std::cerr << "Error: " << e.what() << std::endl;
                 BOOST_LOG_TRIVIAL(error) << "start print error: " << e.what();
-                error_fn(GUI::from_u8("Start print failed \n") + GUI::from_u8(e.what()));
+                error_fn(_(L("Start print failed")) +"\n" +GUI::from_u8(e.what()));
                 res=false;
             }
         return res;

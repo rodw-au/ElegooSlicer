@@ -52,7 +52,7 @@ public:
         ws_.set_option(websocket::stream_base::decorator(
             [](websocket::request_type& req)
             {
-                req.set(http::field::user_agent,"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36");
+                req.set(http::field::user_agent,"ElegooSlicer");
             }));
         // Perform the WebSocket handshake
         ws_.handshake(_host, path);

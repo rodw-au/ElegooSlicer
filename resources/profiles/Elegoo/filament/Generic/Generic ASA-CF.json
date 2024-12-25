@@ -1,7 +1,7 @@
 {
     "type": "filament",
     "name": "Generic ASA-CF",
-    "inherits": "Elegoo Generic ASA-CF @base",
+    "inherits": "Generic ASA-CF @base",
     "from": "system",
     "setting_id": "GASACF00",
     "instantiation": "true",

@@ -7,7 +7,7 @@
     "filament_max_volumetric_speed": [
         "1.6"
     ],
-    "inherits": "Elegoo Generic PLA @base",
+    "inherits": "Generic PLA @base",
     "compatible_printers": [
       "Elegoo Centauri Carbon 0.2 nozzle",
       "Elegoo Neptune 4 0.2 nozzle",

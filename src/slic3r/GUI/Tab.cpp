@@ -4458,6 +4458,21 @@ void TabPrinter::toggle_options()
         for (int i = 0; i < max_field; ++i)
             toggle_option("machine_max_acceleration_travel", gcf != gcfMarlinLegacy && gcf != gcfKlipper, i);
         toggle_line("machine_max_acceleration_travel", gcf != gcfMarlinLegacy && gcf != gcfKlipper);
+
+
+        //Elegoo
+        bool isSystem= (m_presets->get_edited_preset().is_default||m_presets->get_edited_preset().is_system);
+        std::vector<std::string> motionVec= {         
+                "machine_max_acceleration_extruding", "machine_max_acceleration_retracting", 
+                "machine_max_acceleration_x", "machine_max_acceleration_y", "machine_max_acceleration_z", "machine_max_acceleration_e",
+                "machine_max_speed_x", "machine_max_speed_y", "machine_max_speed_z", "machine_max_speed_e",
+        };
+        //if is system, disable all motion settings
+        for (auto el : motionVec)
+        {
+            for (int i = 0; i < max_field; ++i)
+                toggle_option(el, !isSystem,i);
+        }
     }
 }
 

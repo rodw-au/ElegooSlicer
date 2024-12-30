@@ -1,7 +1,7 @@
 {
     "type": "filament",
     "name": "Generic ABS-CF",
-    "inherits": "Elegoo Generic ABS-CF @base",
+    "inherits": "Generic ABS-CF @base",
     "from": "system",
     "setting_id": "GABSCF00",
     "instantiation": "true",

@@ -1,7 +1,7 @@
 {
     "type": "filament",
     "name": "Generic PC-CF",
-    "inherits": "Elegoo Generic PC-CF @base",
+    "inherits": "Generic PC-CF @base",
     "from": "system",
     "setting_id": "GPCCF00",
     "instantiation": "true",

@@ -1,9 +1,16 @@
 {
     "type": "filament",
+<<<<<<<< HEAD:resources/profiles/Elegoo/filament/Generic/Generic ABS.json
+    "name": "Generic ABS",
+    "inherits": "Elegoo Generic ABS @base",
+    "from": "system",
+    "setting_id": "GABS00",
+========
     "name": "Generic PETG",
-    "inherits": "Elegoo Generic PETG @base",
+    "inherits": "Generic PETG @base",
     "from": "system",
     "setting_id": "GPETG00",
+>>>>>>>> release/v1.1.5:resources/profiles/Elegoo/filament/Generic/Generic PETG.json
     "instantiation": "true",
     "compatible_printers": [
         "Elegoo Centauri Carbon 0.4 nozzle",

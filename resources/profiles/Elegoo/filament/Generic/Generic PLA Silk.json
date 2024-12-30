@@ -1,7 +1,7 @@
 {
     "type": "filament",
     "name": "Generic PLA Silk",
-    "inherits": "Elegoo Generic PLA Silk @base",
+    "inherits": "Generic PLA Silk @base",
     "from": "system",
     "setting_id": "GPLAS00",
     "instantiation": "true",

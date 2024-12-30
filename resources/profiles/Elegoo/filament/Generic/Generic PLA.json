@@ -1,7 +1,7 @@
 {
     "type": "filament",
     "name": "Generic PLA",
-    "inherits": "Elegoo Generic PLA @base",
+    "inherits": "Generic PLA @base",
     "from": "system",
     "setting_id": "GPLA00",
     "instantiation": "true",

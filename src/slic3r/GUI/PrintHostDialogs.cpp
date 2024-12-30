@@ -490,7 +490,7 @@ void PrintHostQueueDialog::on_error(Event &evt)
 
     set_state(evt.job_id, ST_ERROR);
 
-    auto errormsg = format_wxstr("%1%\n%2%", _L("Error uploading to print host") + ":", evt.status);
+    auto errormsg = format_wxstr("%1%\n%2%", _L("Error"), evt.status);
     job_list->SetValue(wxVariant(0), evt.job_id, COL_PROGRESS);
     job_list->SetValue(wxVariant(errormsg), evt.job_id, COL_ERRORMSG);    // Stashes the error message into a hidden column for later
 

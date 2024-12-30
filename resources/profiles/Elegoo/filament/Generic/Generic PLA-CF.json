@@ -1,9 +1,16 @@
 {
     "type": "filament",
+<<<<<<<< HEAD:resources/profiles/Elegoo/filament/Generic/Generic PVA.json
+    "name": "Generic PVA",
+    "inherits": "Elegoo Generic PVA @base",
+    "from": "system",
+    "setting_id": "GPVA00",
+========
     "name": "Generic PLA-CF",
-    "inherits": "Elegoo Generic PLA-CF @base",
+    "inherits": "Generic PLA-CF @base",
     "from": "system",
     "setting_id": "GPLACF00",
+>>>>>>>> release/v1.1.5:resources/profiles/Elegoo/filament/Generic/Generic PLA-CF.json
     "instantiation": "true",
     "compatible_printers": [
         "Elegoo Centauri Carbon 0.4 nozzle",

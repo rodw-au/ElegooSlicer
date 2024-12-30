@@ -166,7 +166,7 @@ PrintHostSendDialog::PrintHostSendDialog(const fs::path &path, PrintHostPostUplo
     //     });
     // }
 
-    add_button(wxID_CANCEL,false, L("Cancel"));
+    add_button(wxID_CANCEL,false, _L("Cancel"));
     finalize();
 
 #ifdef __linux__

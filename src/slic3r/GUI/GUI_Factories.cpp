@@ -538,7 +538,7 @@ wxMenu* MenuFactory::append_submenu_add_handy_model(wxMenu* menu, ModelVolumeTyp
                 bool                                 is_stringhell = false;
                 std::string                          file_name     = item;
                 if (file_name == L("Elegoo Cube"))
-                    file_name = "ElegooCube_v2.3mf";
+                    file_name = "elegoo_cube.stl";
                 else if (file_name == L("3DBenchy"))
                     file_name = "3DBenchy.3mf";
                 else if (file_name == L("Autodesk FDM Test"))

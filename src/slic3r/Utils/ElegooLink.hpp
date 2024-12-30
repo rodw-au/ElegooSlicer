@@ -9,7 +9,7 @@
 #include "PrintHost.hpp"
 #include "libslic3r/PrintConfig.hpp"
 #include "OctoPrint.hpp"
-
+#include "WebSocketClient.hpp"
 namespace Slic3r {
 
 class DynamicPrintConfig;
@@ -27,7 +27,7 @@ public:
     bool upload(PrintHostUpload upload_data, ProgressFn prorgess_fn, ErrorFn error_fn, InfoFn info_fn) const override;
     bool has_auto_discovery() const override { return false; }
     bool can_test() const override { return true; }
-    PrintHostPostUploadActions get_post_upload_actions() const override { return PrintHostPostUploadAction::None; }
+    PrintHostPostUploadActions get_post_upload_actions() const override { return PrintHostPostUploadAction::StartPrint; }
 protected:
 #ifdef WIN32
     virtual bool upload_inner_with_resolved_ip(PrintHostUpload upload_data, ProgressFn prorgess_fn, ErrorFn error_fn, InfoFn info_fn, const boost::asio::ip::address& resolved_addr) const;
@@ -42,6 +42,7 @@ protected:
 
 private:
     bool elegoo_test(wxString& curl_msg) const;
+    bool print(WebSocketClient& client, const std::string filename,ErrorFn error_fn) const;
 };
 }
 

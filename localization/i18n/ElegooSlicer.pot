@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-30 15:44+0200\n"
+"POT-Creation-Date: 2024-12-25 12:27+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1355,8 +1355,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"ElegooSlicer will terminate because of running out of memory.It may be a bug. "
-"It will be appreciated if you report the issue to our team."
+"ElegooSlicer will terminate because of running out of memory.It may be a "
+"bug. It will be appreciated if you report the issue to our team."
 msgstr ""
 
 msgid "Fatal error"
@@ -2635,7 +2635,7 @@ msgstr ""
 msgid "GNU Affero General Public License, version 3"
 msgstr ""
 
-msgid "ElegooSlicer is based on PrusaSlicer and BambuStudio"
+msgid "ElegooSlicer is based on OrcaSlicer"
 msgstr ""
 
 msgid "Libraries"
@@ -2651,20 +2651,6 @@ msgid "About %s"
 msgstr ""
 
 msgid "ElegooSlicer "
-msgstr ""
-
-msgid "ElegooSlicer is based on ElegooSlicer, BambuStudio, PrusaSlicer, and SuperSlicer."
-msgstr ""
-
-msgid "BambuStudio is originally based on PrusaSlicer by PrusaResearch."
-msgstr ""
-
-msgid "PrusaSlicer is originally based on Slic3r by Alessandro Ranellucci."
-msgstr ""
-
-msgid ""
-"Slic3r was created by Alessandro Ranellucci with the help of many other "
-"contributors."
 msgstr ""
 
 msgid "Version"
@@ -4879,8 +4865,8 @@ msgid "Failed to parse model information."
 msgstr ""
 
 msgid ""
-"The .gcode.3mf file contains no G-code data.Please slice it with ElegooSlicer "
-"and export a new .gcode.3mf file."
+"The .gcode.3mf file contains no G-code data.Please slice it with "
+"ElegooSlicer and export a new .gcode.3mf file."
 msgstr ""
 
 #, possible-c-format, possible-boost-format
@@ -5234,8 +5220,8 @@ msgid "Newer 3mf version"
 msgstr ""
 
 msgid ""
-"The 3mf file version is in Beta and it is newer than the current ElegooSlicer  "
-"version."
+"The 3mf file version is in Beta and it is newer than the current "
+"ElegooSlicer  version."
 msgstr ""
 
 msgid "If you would like to try ElegooSlicer Beta, you may click to"
@@ -5247,7 +5233,8 @@ msgstr ""
 msgid "The 3mf file version is newer than the current ElegooSlicer version."
 msgstr ""
 
-msgid "Update your ElegooSlicer could enable all functionality in the 3mf file."
+msgid ""
+"Update your ElegooSlicer could enable all functionality in the 3mf file."
 msgstr ""
 
 msgid "Current Version: "
@@ -5583,8 +5570,8 @@ msgstr ""
 
 msgid ""
 "There are some unknown filaments mapped to generic preset. Please update "
-"ElegooSlicer or restart ElegooSlicer to check if there is an update to system "
-"presets."
+"ElegooSlicer or restart ElegooSlicer to check if there is an update to "
+"system presets."
 msgstr ""
 
 #, possible-boost-format
@@ -6102,7 +6089,7 @@ msgstr ""
 msgid "Associate"
 msgstr ""
 
-msgid "with ElegooSlicer so that Elegoo can open models from"
+msgid "with ElegooSlicer so that ElegooSlicer can open models from"
 msgstr ""
 
 msgid "Current Association: "
@@ -6133,20 +6120,6 @@ msgid "Others"
 msgstr ""
 
 msgid "Login Region"
-msgstr ""
-
-msgid "Stealth Mode"
-msgstr ""
-
-msgid ""
-"This stops the transmission of data to Bambu's cloud services. Users who "
-"don't use BBL machines or use LAN mode only can safely turn on this function."
-msgstr ""
-
-msgid "Enable network plugin"
-msgstr ""
-
-msgid "Check for stable updates only"
 msgstr ""
 
 msgid "Metric"
@@ -6243,23 +6216,22 @@ msgid "Remember printer configuration"
 msgstr ""
 
 msgid ""
-"If enabled, Elegoo will remember and switch filament/process configuration for "
-"each printer automatically."
+"If enabled, ElegooSlicer will remember and switch filament/process "
+"configuration for each printer automatically."
 msgstr ""
 
 msgid "Multi-device Management(Take effect after restarting ElegooSlicer)."
 msgstr ""
-
-msgid "Auto arrange plate after cloning"
-msgstr ""
-"克隆后自动排板"
 
 msgid ""
 "With this option enabled, you can send a task to multiple devices at the "
 "same time and manage multiple devices."
 msgstr ""
 
-msgid "Network"
+msgid "Auto arrange plate after cloning"
+msgstr ""
+
+msgid "Auto arrange plate after object cloning"
 msgstr ""
 
 msgid "Auto sync user presets(Printer/Filament/Process)"
@@ -6295,7 +6267,8 @@ msgstr ""
 msgid "Associate .step/.stp files to ElegooSlicer"
 msgstr ""
 
-msgid "If enabled, sets ElegooSlicer as default application to open .step files"
+msgid ""
+"If enabled, sets ElegooSlicer as default application to open .step files"
 msgstr ""
 
 msgid "Associate web links to ElegooSlicer"
@@ -6336,9 +6309,6 @@ msgid "Dark Mode"
 msgstr ""
 
 msgid "Enable Dark mode"
-msgstr ""
-
-msgid "Develop mode"
 msgstr ""
 
 msgid "Skip AMS blacklist check"
@@ -7744,8 +7714,9 @@ msgid "Flushing volumes for filament change"
 msgstr ""
 
 msgid ""
-"Elegoo would re-calculate your flushing volumes everytime the filaments color "
-"changed. You could disable the auto-calculate in ElegooSlicer > Preferences"
+"Elegoo would re-calculate your flushing volumes everytime the filaments "
+"color changed. You could disable the auto-calculate in ElegooSlicer > "
+"Preferences"
 msgstr ""
 
 msgid "Flushing volume (mm³) for each filament pair."
@@ -8097,9 +8068,6 @@ msgstr ""
 msgid "New version of ElegooSlicer"
 msgstr ""
 
-msgid "Skip this Version"
-msgstr ""
-
 msgid "Done"
 msgstr ""
 
@@ -8221,7 +8189,7 @@ msgstr ""
 msgid ""
 "The firmware version is abnormal. Repairing and updating are required before "
 "printing. Do you want to update now? You can also update later on printer or "
-"update next time starting ElegooSlicer."
+"update next time starting Orca."
 msgstr ""
 
 msgid "Extension Board"
@@ -8639,8 +8607,8 @@ msgstr ""
 msgid ""
 "The jerk setting exceeds the printer's maximum jerk (machine_max_jerk_x/"
 "machine_max_jerk_y).\n"
-"Elegoo will automatically cap the jerk speed to ensure it doesn't surpass the "
-"printer's capabilities.\n"
+"Elegoo will automatically cap the jerk speed to ensure it doesn't surpass "
+"the printer's capabilities.\n"
 "You can adjust the maximum jerk setting in your printer's configuration to "
 "get higher speeds."
 msgstr ""
@@ -13356,9 +13324,6 @@ msgstr ""
 msgid "Cancelling"
 msgstr ""
 
-msgid "Error uploading to print host"
-msgstr ""
-
 msgid "Unable to perform boolean operation on selected parts"
 msgstr ""
 
@@ -13712,7 +13677,7 @@ msgstr ""
 msgid ""
 "\n"
 "\n"
-"Elegoo has detected that your user presets synchronization function is not "
+"Orca has detected that your user presets synchronization function is not "
 "enabled, which may result in unsuccessful Filament settings on the Device "
 "page. \n"
 "Click \"Sync user presets\" to enable the synchronization function."
@@ -14288,150 +14253,32 @@ msgstr ""
 msgid "User cancelled."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Precise wall]
-msgid "Precise wall\nDid you know that turning on precise wall can improve precision and layer consistency?"
+msgid "Connection to Elegoo Link works correctly."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Sandwich mode]
-msgid "Sandwich mode\nDid you know that you can use sandwich mode (inner-outer-inner) to improve precision and layer consistency if your model doesn't have very steep overhangs?"
+msgid "Could not connect to Elegoo Link"
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Chamber temperature]
-msgid "Chamber temperature\nDid you know that ElegooSlicer supports chamber temperature?"
+msgid "Error code not found"
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Calibration]
-msgid "Calibration\nDid you know that calibrating your printer can do wonders? Check out our beloved calibration solution in ElegooSlicer."
+msgid "The printer is busy, please check and try again."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Auxiliary fan]
-msgid "Auxiliary fan\nDid you know that ElegooSlicer supports Auxiliary part cooling fan?"
+msgid "The file is lost, please check and try again."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Air filtration]
-msgid "Air filtration/Exhaust Fan\nDid you know that ElegooSlicer can support Air filtration/Exhaust Fan?"
+msgid "The file is corrupted, please check and try again."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:G-code window]
-msgid "G-code window\nYou can turn on/off the G-code window by pressing the <b>C</b> key."
+msgid "Transmission abnormality, please check and try again."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Switch workspaces]
-msgid "Switch workspaces\nYou can switch between <b>Prepare</b> and <b>Preview</b> workspaces by pressing the <b>Tab</b> key."
+msgid "The file does not match the printer, please check and try again."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:How to use keyboard shortcuts]
-msgid "How to use keyboard shortcuts\nDid you know that ElegooSlicer offers a wide range of keyboard shortcuts and 3D scene operations."
+msgid "Start print timeout"
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Reverse on odd]
-msgid "Reverse on odd\nDid you know that <b>Reverse on odd</b> feature can significantly improve the surface quality of your overhangs?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Cut Tool]
-msgid "Cut Tool\nDid you know that you can cut a model at any angle and position with the cutting tool?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Fix Model]
-msgid "Fix Model\nDid you know that you can fix a corrupted 3D model to avoid a lot of slicing problems on the Windows system?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Timelapse]
-msgid "Timelapse\nDid you know that you can generate a timelapse video during each print?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Auto-Arrange]
-msgid "Auto-Arrange\nDid you know that you can auto-arrange all objects in your project?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Auto-Orient]
-msgid "Auto-Orient\nDid you know that you can rotate objects to an optimal orientation for printing by a simple click?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Lay on Face]
-msgid "Lay on Face\nDid you know that you can quickly orient a model so that one of its faces sits on the print bed? Select the \"Place on face\" function or press the <b>F</b> key."
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Object List]
-msgid "Object List\nDid you know that you can view all objects/parts in a list and change settings for each object/part?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Search Functionality]
-msgid "Search Functionality\nDid you know that you use the Search tool to quickly find a specific ElegooSlicer setting?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Simplify Model]
-msgid "Simplify Model\nDid you know that you can reduce the number of triangles in a mesh using the Simplify mesh feature? Right-click the model and select Simplify model."
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Slicing Parameter Table]
-msgid "Slicing Parameter Table\nDid you know that you can view all objects/parts on a table and change settings for each object/part?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Split to Objects/Parts]
-msgid "Split to Objects/Parts\nDid you know that you can split a big object into small ones for easy colorizing or printing?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Subtract a Part]
-msgid "Subtract a Part\nDid you know that you can subtract one mesh from another using the Negative part modifier? That way you can, for example, create easily resizable holes directly in ElegooSlicer."
-msgstr ""
-
-#: resources/data/hints.ini: [hint:STEP]
-msgid "STEP\nDid you know that you can improve your print quality by slicing a STEP file instead of an STL?\nElegooSlicer supports slicing STEP files, providing smoother results than a lower resolution STL. Give it a try!"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Z seam location]
-msgid "Z seam location\nDid you know that you can customize the location of the Z seam, and even paint it on your print, to have it in a less visible location? This improves the overall look of your model. Check it out!"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Fine-tuning for flow rate]
-msgid "Fine-tuning for flow rate\nDid you know that flow rate can be fine-tuned for even better-looking prints? Depending on the material, you can improve the overall finish of the printed model by doing some fine-tuning."
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Split your prints into plates]
-msgid "Split your prints into plates\nDid you know that you can split a model that has a lot of parts into individual plates ready to print? This will simplify the process of keeping track of all the parts."
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Speed up your print with Adaptive Layer Height]
-msgid "Speed up your print with Adaptive Layer Height\nDid you know that you can print a model even faster, by using the Adaptive Layer Height option? Check it out!"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Support painting]
-msgid "Support painting\nDid you know that you can paint the location of your supports? This feature makes it easy to place the support material only on the sections of the model that actually need it."
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Different types of supports]
-msgid "Different types of supports\nDid you know that you can choose from multiple types of supports? Tree supports work great for organic models, while saving filament and improving print speed. Check them out!"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Printing Silk Filament]
-msgid "Printing Silk Filament\nDid you know that Silk filament needs special consideration to print it successfully? Higher temperature and lower speed are always recommended for the best results."
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Brim for better adhesion]
-msgid "Brim for better adhesion\nDid you know that when printing models have a small contact interface with the printing surface, it's recommended to use a brim?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Set parameters for multiple objects]
-msgid "Set parameters for multiple objects\nDid you know that you can set slicing parameters for all selected objects at one time?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Stack objects]
-msgid "Stack objects\nDid you know that you can stack objects as a whole one?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Flush into support/objects/infill]
-msgid "Flush into support/objects/infill\nDid you know that you can save the wasted filament by flushing them into support/objects/infill during filament change?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Improve strength]
-msgid "Improve strength\nDid you know that you can use more wall loops and higher sparse infill density to improve the strength of the model?"
-msgstr ""
-
-#: resources/data/hints.ini: [hint:When need to print with the printer door opened]
-msgid "When need to print with the printer door opened\nDid you know that opening the printer door can reduce the probability of extruder/hotend clogging when printing lower temperature filament with a higher enclosure temperature. More info about this in the Wiki."
-msgstr ""
-
-#: resources/data/hints.ini: [hint:Avoid warping]
-msgid "Avoid warping\nDid you know that when printing materials that are prone to warping such as ABS, appropriately increasing the heatbed temperature can reduce the probability of warping."
+msgid "Start print failed"
 msgstr ""

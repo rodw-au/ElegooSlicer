@@ -1,7 +1,7 @@
 {
     "type": "filament",
     "name": "Generic PET-CF",
-    "inherits": "Elegoo Generic PET-CF @base",
+    "inherits": "Generic PET-CF @base",
     "from": "system",
     "setting_id": "GPETCF00",
     "instantiation": "true",

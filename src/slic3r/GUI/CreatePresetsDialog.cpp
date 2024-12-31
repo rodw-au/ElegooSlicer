@@ -3559,7 +3559,7 @@ ExportConfigsDialog::ExportCase ExportConfigsDialog::save_presets_to_zip(const s
         std::string preset_name = config_path.first;
 
         // Add a file to the ZIP file
-        status = mz_zip_writer_add_file(&zip_archive, (preset_name).c_str(), encode_path(config_path.second.c_str()).c_str(), NULL, 0, MZ_DEFAULT_COMPRESSION);
+        status = mz_zip_writer_add_file(&zip_archive, encode_path(preset_name.c_str()).c_str(), encode_path(config_path.second.c_str()).c_str(), NULL, 0, MZ_DEFAULT_COMPRESSION);
         // status = mz_zip_writer_add_mem(&zip_archive, ("printer/" + printer_preset->name + ".json").c_str(), json_contents, strlen(json_contents), MZ_DEFAULT_COMPRESSION);
         if (MZ_FALSE == status) {
             BOOST_LOG_TRIVIAL(info) << preset_name << " Filament preset failed to add file to ZIP archive";

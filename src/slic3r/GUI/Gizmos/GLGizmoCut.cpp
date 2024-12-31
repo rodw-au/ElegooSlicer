@@ -704,7 +704,7 @@ bool GLGizmoCut3D::render_reset_button(const std::string& label_id, const std::s
     ImGui::PopStyleColor(3);
 
     if (ImGui::IsItemHovered())
-        m_imgui->tooltip(tooltip.c_str(), ImGui::GetFontSize() * 20.0f);
+        m_imgui->tooltip(tooltip, ImGui::GetFontSize() * 20.0f);
 
     ImGui::PopStyleVar();
 

@@ -758,7 +758,7 @@ bool ImGuiWrapper::bbl_slider_float(const std::string& label, float* v, float v_
     m_last_slider_status.deactivated_after_edit = ImGui::IsItemDeactivatedAfterEdit();
 
     if (!tooltip.empty() && ImGui::IsItemHovered())
-        this->tooltip(into_u8(tooltip).c_str(), max_tooltip_width);
+        this->tooltip(into_u8(tooltip), max_tooltip_width);
 
     if (clamp)
         *v = std::clamp(*v, v_min, v_max);
@@ -977,12 +977,12 @@ void ImGuiWrapper::text_wrapped(const wxString &label, float wrap_width)
     this->text_wrapped(label_utf8.c_str(), wrap_width);
 }
 
-void ImGuiWrapper::tooltip(const char *label, float wrap_width)
+void ImGuiWrapper::tooltip(const std::string &label, float wrap_width)
 {
     ImGui::BeginTooltip();
     ImGui::PushTextWrapPos(wrap_width);
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 1.00f, 1.00f, 1.00f));
-    ImGui::TextUnformatted(label);
+    ImGui::TextUnformatted(label.c_str());
     ImGui::PopStyleColor(1);
     ImGui::PopTextWrapPos();
     ImGui::EndTooltip();
@@ -1028,7 +1028,7 @@ bool ImGuiWrapper::slider_float(const char* label, float* v, float v_min, float 
         m_last_slider_status.can_take_snapshot = ImGui::IsItemClicked();
 
     if (!tooltip.empty() && ImGui::IsItemHovered())
-        this->tooltip(into_u8(tooltip).c_str(), max_tooltip_width);
+        this->tooltip(into_u8(tooltip), max_tooltip_width);
 
     if (clamp)
         *v = std::clamp(*v, v_min, v_max);
@@ -1047,7 +1047,7 @@ bool ImGuiWrapper::slider_float(const char* label, float* v, float v_min, float 
         }
         ImGui::PopStyleColor(3);
         if (ImGui::IsItemHovered())
-            this->tooltip(into_u8(_L("Edit")).c_str(), max_tooltip_width);
+            this->tooltip(into_u8(_L("Edit")), max_tooltip_width);
 
         ImGui::PopStyleVar();
     }

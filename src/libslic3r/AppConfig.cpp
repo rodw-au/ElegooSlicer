@@ -49,8 +49,15 @@ namespace Slic3r {
 
 static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repos/ELEGOO-3D/ElegooSlicer/releases/latest";
 static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/ELEGOO-3D/ElegooSlicer/releases";
+
+
+#if ELEGOO_TEST
+static const std::string PROFILE_UPDATE_URL = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer_profiles";
+static const std::string ELEGOO_UPDATE_URL_STABLE = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer/update_config.json";
+#else
 static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/ELEGOO-3D/elegooslicer-profiles/releases/tags";
 static const std::string ELEGOO_UPDATE_URL_STABLE = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer/update_config.json";
+#endif
 
 static const std::string MODELS_STR = "models";
 
@@ -1337,7 +1344,26 @@ std::string AppConfig::version_check_url(bool stable_only/* = false*/) const
 
 std::string AppConfig::profile_update_url() const
 {
-    return PROFILE_UPDATE_URL;
+    Semver elegoo_version;
+    auto version = Semver::parse(ELEGOOSLICER_VERSION);
+    if(!version) {
+        BOOST_LOG_TRIVIAL(error) << "[ElegooSlicer Updater]: failed to parse ElegooSlicer version";
+        return "";
+    }
+    elegoo_version = *version;
+    std::ostringstream oss;
+    oss << std::setw(2) << std::setfill('0') << elegoo_version.maj() << "."
+        << std::setw(2) << std::setfill('0') << elegoo_version.min() << "."
+        << "00.00";
+    std::string version_str = oss.str();
+    std::string profile_update_url;
+    #if ELEGOO_TEST
+        profile_update_url = PROFILE_UPDATE_URL + "/elegoo.ota.profiles." + version_str + ".test.json";
+    #else   
+        profile_update_url = PROFILE_UPDATE_URL + "/elegoo.ota.profiles." + version_str + ".json";
+    #endif
+
+    return profile_update_url;
 }
 
 bool AppConfig::exists()

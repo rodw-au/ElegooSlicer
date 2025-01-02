@@ -38,21 +38,83 @@ namespace Slic3r {
 namespace GUI {
 
 static const std::vector<std::string> filament_vendors = 
-    {"ELEGOO"};
+    {"3Dgenius",               "3DJake",                 "3DXTECH",                "3D BEST-Q",              "3D Hero",
+     "3D-Fuel",                "Aceaddity",              "AddNorth",               "Amazon Basics",          "AMOLEN",
+     "Ankermake",              "Anycubic",               "Atomic",                 "AzureFilm",              "BASF",
+     "Bblife",                 "BCN3D",                  "Beyond Plastic",         "California Filament",    "Capricorn",
+     "CC3D",                   "colorFabb",              "Comgrow",                "Cookiecad",              "Creality",
+     "CERPRiSE",               "Das Filament",           "DO3D",                   "DOW",                    "DSM",
+     "Duramic",                "ELEGOO",                 "Eryone",                 "Essentium",              "eSUN",                                    
+     "Extrudr",                "Fiberforce",             "Fiberlogy",              "FilaCube",               "Filamentive",
+     "Fillamentum",            "FLASHFORGE",             "Formfutura",             "Francofil",              "FilamentOne",
+     "Fil X",                  "GEEETECH",               "Giantarm",               "Gizmo Dorks",            "GreenGate3D",
+     "HATCHBOX",               "Hello3D",                "IC3D",                   "IEMAI",                  "IIID Max",
+     "INLAND",                 "iProspect",              "iSANMATE",               "Justmaker",              "Keene Village Plastics",
+     "Kexcelled",              "LDO",                    "MakerBot",               "MatterHackers",          "MIKA3D",
+     "NinjaTek",               "Nobufil",                "Novamaker",              "OVERTURE",               "OVVNYXE",
+     "Polymaker",              "Priline",                "Printed Solid",          "Protopasta",             "Prusament",
+     "Push Plastic",           "R3D",                    "Re-pet3D",               "Recreus",                "Regen",
+     "RatRig",                 "Sain SMART",             "SliceWorx",              "Snapmaker",              "SnoLabs",
+     "Spectrum",               "SUNLU",                  "TTYT3D",                 "Tianse",                 "UltiMaker",
+     "Valment",                "Verbatim",               "VO3D",                   "Voxelab",                "VOXELPLA",
+     "YOOPAI",                 "Yousu",                  "Ziro",                   "Zyltech"};
      
 static const std::vector<std::string> filament_types = {"PLA",    "rPLA",  "PLA+",      "PLA Tough", "PETG",  "ABS",    "ASA",    "FLEX",   "HIPS",   "PA",     "PACF",
-                                                        "NYLON",  "PVA",   "PVB",       "PC",        "PCABS", "PCTG",   "PCCF",   "PHA",    "PP",     "PEI",    "PET",    "PETG",
+                                                        "NYLON",  "PVA",   "PVB",       "PC",        "PCABS", "PCTG",   "PCCF",   "PHA",    "PP",     "PEI",    "PET",
                                                         "PETGCF", "PTBA",  "PTBA90A",   "PEEK",  "TPU93A", "TPU75D", "TPU",       "TPU92A", "TPU98A", "Misc",
-                                                        "TPE",    "GLAZE", "Nylon",     "CPE",   "METAL",  "ABST",   "Carbon Fiber"};
+                                                        "TPE",    "GLAZE", "Nylon",     "CPE",   "METAL",  "ABST",   "Carbon Fiber", "SBS"};
 
 static const std::vector<std::string> printer_vendors = 
-    {"Elegoo"};
+    {"Anker",              "Anycubic",          "Artillery",          "Bambulab",          "BIBO",              "BIQU",
+     "Creality ENDER",     "Creality CR",       "Creality SERMOON",   "FLSun",             "gCreate",   
+     "Geeetech",           "INAT",              "Infinity3D",         "Jubilee",           "LNL3D",
+     "LulzBot",            "MakerGear",         "Original Prusa",     "Papapiu",           "Print4Taste",
+     "RatRig",             "Rigid3D",           "Snapmaker",          "Sovol",             "TriLAB",
+     "Trimaker",           "Ultimaker",         "Voron",              "Zonestar"};
 
 static const std::unordered_map<std::string, std::vector<std::string>> printer_model_map =
-    {{"Elegoo",          {"Elegoo OrangeStorm Giga",      "Elegoo Neptune 4 Max",     "Elegoo Neptune 4 Plus", 
-                          "Elegoo Neptune 4 Pro",        "Elegoo Neptune 4",             "Elegoo Neptune 3 Max",     "Elegoo Neptune 3 Plus", 
-                          "Elegoo Neptune 3 Pro",        "Elegoo Neptune 3",             "Elegoo Neptune X",         "Elegoo Neptune 2S", 
-                          "Elegoo Neptune 2D",           "Elegoo Neptune 2",             "Elegoo Neptune"}}};
+    {{"Anker",          {"Anker M5", "Anker M5 All-Metal Hot End", "Anker M5C"}},
+     {"Anycubic",       {"Kossel Linear Plus", "Kossel Pulley(Linear)", "Mega Zero", "i3 Mega", "Predator"}},
+     {"Artillery",      {"sidewinder X1",   "Genius", "Hornet"}},
+     {"Bambulab",       {"Bambu Lab A1", "Bambu Lab P1P", "Bambu Lab P1S", "Bambu Lab X1", "Bambu Lab X1E"}},
+     {"BIBO",           {"BIBO2 Touch"}},
+     {"BIQU",           {"BX"}},
+     {"Creality ENDER", {"Ender-3",         "Ender-3 BLTouch",  "Ender-3 Pro",      "Ender-3 Neo",      
+                        "Ender-3 V2 Neo",   "Ender-3 S1 Plus",  "Ender-3 Max", "Ender-3 Max Neo",
+                        "Ender-4",          "Ender-5 Pro",      "Ender-5 Pro",      
+                        "Ender-7",          "Ender-2",          "Ender-2 Pro"}},
+     {"Creality CR",    {"CR-5 Pro",        "CR-5 Pro H",       "CR-10 SMART", "CR-10 SMART Pro",   "CR-10 Mini",
+                        "CR-10",            "CR-10 v3",         "CR-10 S",     "CR-10 v2",          "CR-10 v2",
+                        "CR-10 S Pro",      "CR-10 S Pro v2",   "CR-10 S4",         "CR-10 S5",         "CR-20",       "CR-20 Pro",         "CR-200B",
+                        "CR-8"}},
+     {"Creality SERMOON",{"Sermoon-D1",     "Sermoon-V1",       "Sermoon-V1 Pro"}},
+     {"FLSun",          {"FLSun QQs Pro",   "FLSun Q5"}},
+     {"gCreate",        {"gMax 1.5XT Plus", "gMax 2",           "gMax 2 Pro",       "gMax 2 Dual 2in1", "gMax 2 Dual Chimera"}},
+     {"Geeetech",       {"Thunder",         "Thunder Pro",      "Mizar s",          "Mizar Pro",        "Mizar",        "Mizar Max",
+                        "Mizar M",          "A10 Pro",          "A10 M",            "A10 T",            "A20",          "A20 M",
+                        "A20T",             "A30 Pro",          "A30 M",            "A30 T",            "E180",         "Me Ducer",
+                        "Me creator",       "Me Creator2",      "GiantArmD200",     "l3 ProB",          "l3 Prow",      "l3 ProC"}},
+     {"INAT",           {"Proton X Rail",   "Proton x Rod",     "Proton XE-750"}},
+     {"Infinity3D",     {"DEV-200",         "DEV-350"}},
+     {"Jubilee",        {"Jubilee"}},
+     {"LNL3D",          {"D3 v2",           "D3 Vulcan",        "D5",               "D6"}},
+     {"LulzBot",        {"Mini Aero",       "Taz6 Aero"}},
+     {"MakerGear",      {"Micro",           "M2(V4 Hotend)",    "M2 Dual",          "M3-single Extruder", "M3-Independent Dual Rev.0", "M3-Independent Dual Rev.0(Duplication Mode)",
+                        "M3-Independent Dual Rev.1",            "M3-Independent Dual Rev.1(Duplication Mode)", "ultra One", "Ultra One (DuplicationMode)"}},
+     {"Original Prusa", {"MK4", "SL1S SPEED", "MMU3"}},
+     {"Papapiu",        {"N1s"}},
+     {"Print4Taste",    {"mycusini 2.0"}},
+     {"RatRig",         {"V-core-3 300mm",  "V-Core-3 400mm",   "V-Core-3 500mm", "V-Minion"}},
+     {"Rigid3D",        {"Zero2",           "Zero3"}},
+     {"Snapmaker",      {"A250",            "A350"}},
+     {"Sovol",          {"SV06",            "SV06 PLUS",        "SV05",             "SV04",             "SV03 / SV03 BLTOUCH",      "SVO2 / SV02 BLTOUCH",      "SVO1 / SV01 BLToUCH", "SV01 PRO"}},
+     {"TriLAB",         {"AzteQ Industrial","AzteQ Dynamic",    "DeltiQ 2",         "DeltiQ 2 Plus",    "DeltiQ 2 + FlexPrint 2",   "DeltiQ 2 Plus + FlexPrint 2", "DeltiQ 2 +FlexPrint",
+                        "DeltiQ 2 Plus + FlexPrint",            "DeltiQ M",         "DeltiQ L",         "DeltiQ XL"}},
+     {"Trimaker",       {"Nebula cloud",    "Nebula",           "Cosmos ll"}},
+     {"Ultimaker",      {"Ultimaker 2"}},
+     {"Voron",          {"v2 250mm3",        "v2 300mm3",        "v2 350mm3",        "v1 250mm3",        "v1 300mm3", "v1 350mm3",
+                        "Zero 120mm3",      "Switchwire"}},
+     {"Zonestar",       {"Z5",              "Z6",               "Z5x",              "Z8",               "Z9"}}};
 
 
 

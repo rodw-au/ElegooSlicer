@@ -766,8 +766,11 @@ bool PresetUpdater::priv::sync_config(const VendorMap &vendors)
         return false;
     }
 
-    remove_invalid_ota_cached_profiles(cache_profile_path, vendors);
-
+    if (fs::exists(cache_profile_path)) {   
+        remove_invalid_ota_cached_profiles(cache_profile_path, vendors);
+    }
+           
+        
     //get the list of online profiles
     std::map<std::string, Resource>  ota_profiles_list;
     Http::get(profile_update_url)
@@ -838,7 +841,7 @@ bool PresetUpdater::priv::sync_config(const VendorMap &vendors)
         }
 
         if (cancel)
-            return;
+            return false;
         if(ota_profiles_list.find(vendor_name) != ota_profiles_list.end()) {
             auto vendor_ota_profiles = ota_profiles_list.at(vendor_name);
             Semver ota_semver = vendor_ota_profiles.version;
@@ -862,7 +865,7 @@ bool PresetUpdater::priv::sync_config(const VendorMap &vendors)
                 return false;
             }
             // extract the file downloaded
-            if (fs::exists(cache_profile_path))
+            if (!fs::exists(cache_profile_path))
                 fs::create_directories(cache_profile_path );
             BOOST_LOG_TRIVIAL(info) << "[ElegooSlicer Updater]start to unzip the downloaded file " << download_file;
             if (!extract_file(download_file, cache_profile_path)) {

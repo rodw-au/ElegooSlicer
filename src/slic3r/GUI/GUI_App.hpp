@@ -665,6 +665,7 @@ private:
     void            cancel_networking_install();
     void            restart_networking();
     void            check_config_updates_from_updater() { check_updates(false); }
+    void            check_config_updates_from_menu() { check_updates(true); }
 
 private:
     int             updating_bambu_networking();

@@ -466,6 +466,7 @@ private:
     bool            m_studio_active = true;
     std::chrono::system_clock::time_point  last_active_point;
 
+    void            check_message();
     void            check_update(bool show_tips, int by_user);
     void            check_new_version(bool show_tips = false, int by_user = 0);
     void            check_new_version_sf(bool show_tips = false, int by_user = 0);

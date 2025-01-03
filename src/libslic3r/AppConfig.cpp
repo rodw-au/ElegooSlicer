@@ -51,6 +51,7 @@ static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repo
 static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/ELEGOO-3D/ElegooSlicer/releases";
 static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/ELEGOO-3D/elegooslicer-profiles/releases/tags";
 static const std::string ELEGOO_UPDATE_URL_STABLE = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer/update_config.json";
+static const std::string MESSAGE_CHECK_URL = "https://github.com/anjis-elegoo/ssigncode/releases/download/v1.0.0/message.json";
 
 static const std::string MODELS_STR = "models";
 
@@ -1369,4 +1370,15 @@ std::string AppConfig::getSystemLocale() {
 
     return locale;
 }
+
+std::string AppConfig::message_check_url(){
+    return MESSAGE_CHECK_URL;
+}
+void AppConfig::set_last_pop_message_version(const std::string& version){
+    set("message", "last_pop_message_version", version);
+}
+std::string AppConfig::get_last_pop_message_version(){
+    return get("message", "last_pop_message_version");
+}
+
 }; // namespace Slic3r

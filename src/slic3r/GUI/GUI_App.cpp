@@ -1012,6 +1012,9 @@ void GUI_App::post_init()
                 hms_query->check_hms_info();
         });
 
+    CallAfter([this] {
+        check_message();
+    });
 
     DeviceManager::load_filaments_blacklist_config();
 
@@ -4123,6 +4126,124 @@ void GUI_App::reset_to_active()
     last_active_point = std::chrono::system_clock::now();
 }
 
+//parse the string, if it doesn't contain a valid version string, return invalid version.
+Semver get_version(const std::string& str, const std::regex& regexp) {
+    std::smatch match;
+    if (std::regex_match(str, match, regexp)) {
+        std::string version_cleaned = match[0];
+        const boost::optional<Semver> version = Semver::parse(version_cleaned);
+        if (version.has_value()) {
+            return *version;
+        }
+    }
+    return Semver::invalid();
+}
+
+
+void GUI_App::check_message()
+{
+    AppConfig* app_config = wxGetApp().app_config;
+    auto lastMessageVersion = app_config->get_last_pop_message_version();
+    auto       message_check_url = app_config->message_check_url();
+    std::string locale_name = app_config->getSystemLocale();
+    Http::get(message_check_url)
+        .on_error([&](std::string body, std::string error, unsigned http_status) {
+          (void)body;
+          BOOST_LOG_TRIVIAL(error) << format("Error getting: `%1%`: HTTP %2%, %3%", "check_message", http_status,
+                                             error);
+        })
+        .timeout_connect(5)
+        .on_complete([this,locale_name,lastMessageVersion](std::string body, unsigned http_status) {
+          // Http response OK
+          if (http_status != 200)
+            return;
+          try {
+            BOOST_LOG_TRIVIAL(info) << "check_message: " << body;
+            boost::trim(body);
+            // Elegoo: parse github release, inspired by SS
+            boost::property_tree::ptree root;
+            std::stringstream json_stream(body);
+            boost::property_tree::read_json(json_stream, root);
+
+            // at least two number, use '.' as separator. can be followed by -Az23 for prereleased and +Az42 for
+            // metadata
+            std::regex matcher("[0-9]+\\.[0-9]+(\\.[0-9]+)*(-[A-Za-z0-9]+)?(\\+[A-Za-z0-9]+)?");
+            Semver           current_version = get_version(lastMessageVersion, matcher);
+
+            const std::regex reg_num("([0-9]+)");
+            std::string version_str;
+            auto op_version_str = root.get_optional<std::string>("version");
+            if (op_version_str != boost::none) {
+                version_str = op_version_str.get();
+            }
+            if(version_str.empty()) {
+                version_str = "0.0.0";
+            }
+            if (version_str[0] == 'v')
+                version_str.erase(0, 1);
+            for (std::regex_iterator it = std::sregex_iterator(version_str.begin(), version_str.end(), reg_num); it != std::sregex_iterator(); ++it) {}
+            Semver new_version = get_version(version_str, matcher);
+
+            if (current_version < new_version) {
+
+                boost::optional<boost::property_tree::ptree> op_message;
+                auto op_messages = root.get_child_optional("messages");
+                if(!op_messages){
+                    return;
+                }
+                auto messages = *op_messages;
+                if (locale_name.find("zh") != std::string::npos || locale_name.find("CN") != std::string::npos)
+                {
+                    op_message = messages.get_child_optional("zh");
+                }else {
+                    op_message = messages.get_child_optional("en");
+                }
+                if (!op_message) {
+                    return;
+                }
+                auto message = *op_message;
+
+                std::string title;
+                std::string content;
+                std::string linkText;
+                std::string linkUrl;
+
+                boost::optional<std::string> op_title = message.get_optional<std::string>("title");
+                boost::optional<std::string> op_content = message.get_optional<std::string>("content");
+                boost::optional<std::string> op_linkText = message.get_optional<std::string>("linkText");
+                boost::optional<std::string> op_linkUrl = message.get_optional<std::string>("linkUrl");
+                if (op_title) {
+                    title = op_title.get();
+                }
+                if (op_content) {
+                    content = op_content.get();
+                }
+                if (op_linkText) {
+                    linkText = op_linkText.get();
+                }
+                if (op_linkUrl) {
+                    linkUrl = op_linkUrl.get();
+                }
+
+                std::function<bool(wxEvtHandler*)> callback = [=](wxEvtHandler*x){
+                                                                            if(linkUrl.empty()){ return false; }
+                                                                            wxLaunchDefaultBrowser(linkUrl);
+                                                                            return true;
+                                                                            };
+                std::function<void()> closeCallback = [=](){
+                    AppConfig* app_config = wxGetApp().app_config;
+                    app_config->set_last_pop_message_version(version_str);
+                };
+                notification_manager()->push_notification(NotificationType::CustomNotification,
+                                                                        NotificationManager::NotificationLevel::WebLinkNotificationLevel,title,
+                                                                        content,linkText,callback,closeCallback);
+
+            }
+          } catch (...) {}
+        })
+        .perform();
+}
+
 void GUI_App::check_update(bool show_tips, int by_user)
 {
     if (version_info.version_str.empty()) return;
@@ -4211,19 +4332,6 @@ void GUI_App::check_new_version(bool show_tips, int by_user)
     }).perform();
 }
 
-//parse the string, if it doesn't contain a valid version string, return invalid version.
-Semver get_version(const std::string& str, const std::regex& regexp) {
-    std::smatch match;
-    if (std::regex_match(str, match, regexp)) {
-        std::string version_cleaned = match[0];
-        const boost::optional<Semver> version = Semver::parse(version_cleaned);
-        if (version.has_value()) {
-            return *version;
-        }
-    }
-    return Semver::invalid();
-}
-
 static bool isValidInstaller(const std::string& input)
 {
 #ifdef WIN32
@@ -4243,7 +4351,6 @@ static bool isValidInstaller(const std::string& input)
 
 void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 {
-
 #if 1 // Elegoo: use elegoo slicer release
     AppConfig* app_config = wxGetApp().app_config;
     auto       version_check_url = app_config->version_check_url();

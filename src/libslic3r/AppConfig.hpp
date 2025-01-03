@@ -294,7 +294,10 @@ public:
     static const std::string SECTION_MATERIALS;
     static const std::string SECTION_EMBOSS_STYLE;
 
-	std::string getSystemLocale();
+	std::string 		getSystemLocale();
+	std::string 		message_check_url();
+	void 				set_last_pop_message_version(const std::string& version);
+	std::string 		get_last_pop_message_version();
 private:
 	template<typename T>
 	bool get_3dmouse_device_numeric_value(const std::string &device_name, const char *parameter_name, T &out) const 

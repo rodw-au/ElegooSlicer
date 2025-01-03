@@ -298,6 +298,7 @@ public:
     static const std::string SECTION_EMBOSS_STYLE;
 
 	std::string 		getSystemLocale();
+    std::string getSystemLanguage();
 	std::string 		message_check_url();
 	void 				set_last_pop_message_version(const std::string& version);
 	std::string 		get_last_pop_message_version();

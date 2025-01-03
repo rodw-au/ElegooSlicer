@@ -242,7 +242,7 @@ void IMSlider::SetTicksValues(const Info &custom_gcode_per_print_z)
 
     if (!was_empty && m_ticks.empty())
         // Switch to the "Feature type"/"Tool" from the very beginning of a new object slicing after deleting of the old one
-        ;// post_ticks_changed_event();
+        // post_ticks_changed_event();
 
     if (m_ticks.has_tick_with_code(ToolChange) && !m_can_change_color) {
         if (!wxGetApp().plater()->only_gcode_mode() && !wxGetApp().plater()->using_exported_file())
@@ -759,6 +759,7 @@ void IMSlider::draw_ticks(const ImRect& slideable_region) {
 }
 
 void IMSlider::show_tooltip(const std::string tooltip) {
+    if (tooltip.empty()) return;
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 6 * m_scale, 3 * m_scale });
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, { 3 * m_scale });
     ImGui::PushStyleColor(ImGuiCol_PopupBg, ImGuiWrapper::COL_WINDOW_BACKGROUND);

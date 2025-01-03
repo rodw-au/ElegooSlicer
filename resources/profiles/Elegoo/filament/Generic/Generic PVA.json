@@ -1,7 +1,7 @@
 {
     "type": "filament",
     "name": "Generic PVA",
-    "inherits": "Elegoo Generic PVA @base",
+    "inherits": "Generic PVA @base",
     "from": "system",
     "setting_id": "GPVA00",
     "instantiation": "true",

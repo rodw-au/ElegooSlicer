@@ -538,7 +538,7 @@ wxMenu* MenuFactory::append_submenu_add_handy_model(wxMenu* menu, ModelVolumeTyp
                 bool                                 is_stringhell = false;
                 std::string                          file_name     = item;
                 if (file_name == L("Elegoo Cube"))
-                    file_name = "ElegooCube_v2.3mf";
+                    file_name = "elegoo_cube.stl";
                 else if (file_name == L("3DBenchy"))
                     file_name = "3DBenchy.3mf";
                 else if (file_name == L("Autodesk FDM Test"))
@@ -570,7 +570,7 @@ wxMenu* MenuFactory::append_submenu_add_handy_model(wxMenu* menu, ModelVolumeTyp
                                                    "Yes - Change these settings automatically\n"
                                                    "No  - Do not change these settings for me");
 
-                            MessageDialog dialog(wxGetApp().plater(), msg_text, "Suggestion", wxICON_WARNING | wxYES | wxNO);
+                            MessageDialog dialog(wxGetApp().plater(), msg_text, _L("Suggestion"), wxICON_WARNING | wxYES | wxNO);
                             if (dialog.ShowModal() == wxID_YES) {
                                 m_config->set_key_value("min_width_top_surface", new ConfigOptionFloatOrPercent(0, false));
                                 wxGetApp().get_tab(Preset::TYPE_PRINT)->update_dirty();

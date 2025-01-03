@@ -1005,9 +1005,9 @@ void PreferencesDialog::create()
     Layout();
     Fit();
     int screen_height = wxGetDisplaySize().GetY();
-    if (this->GetSize().GetY() > screen_height)
-        this->SetSize(this->GetSize().GetX() + FromDIP(40), screen_height * 4 / 5);
-
+    // if (this->GetSize().GetY() > screen_height)
+    //     this->SetSize(this->GetSize().GetX() + FromDIP(40), screen_height * 4 / 5);
+    this->SetSize(this->GetSize().GetX() + FromDIP(40), FromDIP(600));
     CenterOnParent();
     wxPoint start_pos = this->GetPosition();
     if (start_pos.y < 0) { this->SetPosition(wxPoint(start_pos.x, 0)); }

@@ -1,7 +1,7 @@
 {
     "type": "filament",
     "name": "Generic PETG",
-    "inherits": "Elegoo Generic PETG @base",
+    "inherits": "Generic PETG @base",
     "from": "system",
     "setting_id": "GPETG00",
     "instantiation": "true",

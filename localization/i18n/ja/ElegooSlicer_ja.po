@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-30 15:44+0200\n"
+"POT-Creation-Date: 2025-01-03 10:19+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1375,8 +1375,8 @@ msgid ""
 msgstr "構成ファイル %1% がロードされましたが、一部の値が認識できませんでした"
 
 msgid ""
-"ElegooSlicer will terminate because of running out of memory.It may be a bug. "
-"It will be appreciated if you report the issue to our team."
+"ElegooSlicer will terminate because of running out of memory.It may be a "
+"bug. It will be appreciated if you report the issue to our team."
 msgstr ""
 
 msgid "Fatal error"
@@ -1498,8 +1498,8 @@ msgid ""
 "The version of ElegooSlicer is too low and needs to be updated to the latest "
 "version before it can be used normally"
 msgstr ""
-"現在のElegooSlicerはバージョンが古いため使用できません、アップデートしてくださ"
-"い。"
+"現在のElegooSlicerはバージョンが古いため使用できません、アップデートしてくだ"
+"さい。"
 
 msgid "Privacy Policy Update"
 msgstr "Privacy Policy Update"
@@ -1711,6 +1711,9 @@ msgid ""
 "for the 'Only One Wall on Top Surfaces' to work best.\n"
 "Yes - Change these settings automatically\n"
 "No  - Do not change these settings for me"
+msgstr ""
+
+msgid "Suggestion"
 msgstr ""
 
 msgid "Text"
@@ -2695,7 +2698,7 @@ msgstr "ElegooSlicerのライセンス"
 msgid "GNU Affero General Public License, version 3"
 msgstr "GNU Affero General Public License, version 3"
 
-msgid "ElegooSlicer is based on PrusaSlicer and BambuStudio"
+msgid "ElegooSlicer is based on OrcaSlicer"
 msgstr ""
 
 msgid "Libraries"
@@ -2714,23 +2717,6 @@ msgstr "%s について"
 
 msgid "ElegooSlicer "
 msgstr ""
-
-msgid "ElegooSlicer is based on BambuStudio, PrusaSlicer, and SuperSlicer."
-msgstr ""
-
-msgid "BambuStudio is originally based on PrusaSlicer by PrusaResearch."
-msgstr ""
-
-msgid "PrusaSlicer is originally based on Slic3r by Alessandro Ranellucci."
-msgstr ""
-"PrusaSlicer は、Alessandro Ranellucci 製の Slic3r に基づいて作られています。"
-
-msgid ""
-"Slic3r was created by Alessandro Ranellucci with the help of many other "
-"contributors."
-msgstr ""
-"Slic3r was created by Alessandro Ranellucci with the help of many other "
-"contributors."
 
 msgid "Version"
 msgstr "バージョン"
@@ -4254,6 +4240,9 @@ msgstr "組立て"
 msgid "Select Plate"
 msgstr "プレートを選択"
 
+msgid "All Plates Stats"
+msgstr ""
+
 msgid "Assembly Return"
 msgstr "戻る"
 
@@ -4470,6 +4459,9 @@ msgstr "「毎日のヒント」を表示"
 
 msgid "Check for Update"
 msgstr "更新を確認"
+
+msgid "Check for Presets Update"
+msgstr ""
 
 msgid "Open Network Test"
 msgstr "ネットワークテストを開く"
@@ -5060,8 +5052,8 @@ msgid "Failed to parse model information."
 msgstr "Failed to parse model information."
 
 msgid ""
-"The .gcode.3mf file contains no G-code data.Please slice it with ElegooSlicer "
-"and export a new .gcode.3mf file."
+"The .gcode.3mf file contains no G-code data.Please slice it with "
+"ElegooSlicer and export a new .gcode.3mf file."
 msgstr ""
 
 #, c-format, boost-format
@@ -5440,8 +5432,8 @@ msgid "Newer 3mf version"
 msgstr "新3mfバージョン"
 
 msgid ""
-"The 3mf file version is in Beta and it is newer than the current ElegooSlicer  "
-"version."
+"The 3mf file version is in Beta and it is newer than the current "
+"ElegooSlicer  version."
 msgstr ""
 
 msgid "If you would like to try ElegooSlicer Beta, you may click to"
@@ -5453,7 +5445,8 @@ msgstr "Download Beta Version"
 msgid "The 3mf file version is newer than the current ElegooSlicer version."
 msgstr ""
 
-msgid "Update your ElegooSlicer could enable all functionality in the 3mf file."
+msgid ""
+"Update your ElegooSlicer could enable all functionality in the 3mf file."
 msgstr ""
 
 msgid "Current Version: "
@@ -5794,8 +5787,8 @@ msgstr "適用できるフィラメントがありません、同期を行えま
 
 msgid ""
 "There are some unknown filaments mapped to generic preset. Please update "
-"ElegooSlicer or restart ElegooSlicer to check if there is an update to system "
-"presets."
+"ElegooSlicer or restart ElegooSlicer to check if there is an update to "
+"system presets."
 msgstr "不明なフィラメントがあります、ElegooSlicerを更新してください。"
 
 #, boost-format
@@ -6315,8 +6308,8 @@ msgid ""
 "\"Fix Model\" feature is currently only on Windows. Please repair the model "
 "on ElegooSlicer(windows) or CAD softwares."
 msgstr ""
-"「モデル修復」はWindowsのみご利用できます。ElegooSlicer (Windows)か他のCADソフ"
-"トウェアで修復してください。"
+"「モデル修復」はWindowsのみご利用できます。ElegooSlicer (Windows)か他のCADソ"
+"フトウェアで修復してください。"
 
 #, c-format, boost-format
 msgid ""
@@ -6361,7 +6354,7 @@ msgstr "ダウンロードフォルドを選択"
 msgid "Associate"
 msgstr ""
 
-msgid "with ElegooSlicer so that Elegoo can open models from"
+msgid "with ElegooSlicer so that ElegooSlicer can open models from"
 msgstr ""
 
 msgid "Current Association: "
@@ -6393,20 +6386,6 @@ msgstr "その他"
 
 msgid "Login Region"
 msgstr "地域"
-
-msgid "Stealth Mode"
-msgstr ""
-
-msgid ""
-"This stops the transmission of data to Bambu's cloud services. Users who "
-"don't use BBL machines or use LAN mode only can safely turn on this function."
-msgstr ""
-
-msgid "Enable network plugin"
-msgstr ""
-
-msgid "Check for stable updates only"
-msgstr ""
 
 msgid "Metric"
 msgstr "メートル"
@@ -6509,8 +6488,8 @@ msgid "Remember printer configuration"
 msgstr ""
 
 msgid ""
-"If enabled, Elegoo will remember and switch filament/process configuration for "
-"each printer automatically."
+"If enabled, ElegooSlicer will remember and switch filament/process "
+"configuration for each printer automatically."
 msgstr ""
 
 msgid "Multi-device Management(Take effect after restarting ElegooSlicer)."
@@ -6523,8 +6502,11 @@ msgstr ""
 "With this option enabled, you can send a task to multiple devices at the "
 "same time and manage multiple devices."
 
-msgid "Network"
-msgstr "ネットワーク (&N)"
+msgid "Auto arrange plate after cloning"
+msgstr ""
+
+msgid "Auto arrange plate after object cloning"
+msgstr ""
 
 msgid "Auto sync user presets(Printer/Filament/Process)"
 msgstr "ユーザープリセットの自動同期 (プリンター/フィラメント/プロセス)"
@@ -6559,7 +6541,8 @@ msgstr "デフォルトで.stlファイルをElegooSlicerで開く"
 msgid "Associate .step/.stp files to ElegooSlicer"
 msgstr ".step/.stpファイルをElegooSlicerに関連付けます。"
 
-msgid "If enabled, sets ElegooSlicer as default application to open .step files"
+msgid ""
+"If enabled, sets ElegooSlicer as default application to open .step files"
 msgstr "デフォルトで.step/.stpファイルをElegooSlicerで開く"
 
 msgid "Associate web links to ElegooSlicer"
@@ -6603,9 +6586,6 @@ msgstr "ダークモード"
 
 msgid "Enable Dark mode"
 msgstr "ダークモードを有効"
-
-msgid "Develop mode"
-msgstr "開発者モード"
 
 msgid "Skip AMS blacklist check"
 msgstr "Skip AMS blacklist check"
@@ -8121,8 +8101,9 @@ msgid "Flushing volumes for filament change"
 msgstr "フィラメントを入替える為のフラッシュ量"
 
 msgid ""
-"Elegoo would re-calculate your flushing volumes everytime the filaments color "
-"changed. You could disable the auto-calculate in ElegooSlicer > Preferences"
+"Elegoo would re-calculate your flushing volumes everytime the filaments "
+"color changed. You could disable the auto-calculate in ElegooSlicer > "
+"Preferences"
 msgstr ""
 
 msgid "Flushing volume (mm³) for each filament pair."
@@ -8476,9 +8457,6 @@ msgstr "新しいプラグイン (%s) が発見しました、インストール
 msgid "New version of ElegooSlicer"
 msgstr "新バージョン"
 
-msgid "Skip this Version"
-msgstr "Skip this Version"
-
 msgid "Done"
 msgstr "Done"
 
@@ -8526,7 +8504,8 @@ msgstr "LAN接続失敗 (造形ファイル送信)"
 
 msgid ""
 "Step 1, please confirm ElegooSlicer and your printer are in the same LAN."
-msgstr "１ElegooSlicerとプリンターが同一のLANに繋いでいること確認してください。"
+msgstr ""
+"１ElegooSlicerとプリンターが同一のLANに繋いでいること確認してください。"
 
 msgid ""
 "Step 2, if the IP and Access Code below are different from the actual values "
@@ -8606,10 +8585,8 @@ msgstr ""
 msgid ""
 "The firmware version is abnormal. Repairing and updating are required before "
 "printing. Do you want to update now? You can also update later on printer or "
-"update next time starting ElegooSlicer."
+"update next time starting Orca."
 msgstr ""
-"ファームウェアのバージョンに異常があります。印刷する前に修復と更新が必要で"
-"す。今すぐ更新しますか？"
 
 msgid "Extension Board"
 msgstr "拡張ボード"
@@ -9070,8 +9047,8 @@ msgstr ""
 msgid ""
 "The jerk setting exceeds the printer's maximum jerk (machine_max_jerk_x/"
 "machine_max_jerk_y).\n"
-"Elegoo will automatically cap the jerk speed to ensure it doesn't surpass the "
-"printer's capabilities.\n"
+"Elegoo will automatically cap the jerk speed to ensure it doesn't surpass "
+"the printer's capabilities.\n"
 "You can adjust the maximum jerk setting in your printer's configuration to "
 "get higher speeds."
 msgstr ""
@@ -14212,9 +14189,6 @@ msgstr "アップロード中"
 msgid "Cancelling"
 msgstr "Canceling"
 
-msgid "Error uploading to print host"
-msgstr "プリントホストへのアップロードに失敗"
-
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "Unable to perform boolean operation on selected parts"
 
@@ -14599,7 +14573,7 @@ msgstr ""
 msgid ""
 "\n"
 "\n"
-"Elegoo has detected that your user presets synchronization function is not "
+"Orca has detected that your user presets synchronization function is not "
 "enabled, which may result in unsuccessful Filament settings on the Device "
 "page. \n"
 "Click \"Sync user presets\" to enable the synchronization function."
@@ -15292,44 +15266,34 @@ msgstr ""
 msgid "User cancelled."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Precise wall]
-msgid ""
-"Precise wall\n"
-"Did you know that turning on precise wall can improve precision and layer "
-"consistency?"
+msgid "Connection to Elegoo Link works correctly."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Sandwich mode]
-msgid ""
-"Sandwich mode\n"
-"Did you know that you can use sandwich mode (inner-outer-inner) to improve "
-"precision and layer consistency if your model doesn't have very steep "
-"overhangs?"
+msgid "Could not connect to Elegoo Link"
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Chamber temperature]
-msgid ""
-"Chamber temperature\n"
-"Did you know that ElegooSlicer supports chamber temperature?"
+msgid "Error code not found"
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Calibration]
-msgid ""
-"Calibration\n"
-"Did you know that calibrating your printer can do wonders? Check out our "
-"beloved calibration solution in ElegooSlicer."
+msgid "The printer is busy, please check and try again."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Auxiliary fan]
-msgid ""
-"Auxiliary fan\n"
-"Did you know that ElegooSlicer supports Auxiliary part cooling fan?"
+msgid "The file is lost, please check and try again."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Air filtration]
-msgid ""
-"Air filtration/Exhaust Fan\n"
-"Did you know that ElegooSlicer can support Air filtration/Exhaust Fan?"
+msgid "The file is corrupted, please check and try again."
+msgstr ""
+
+msgid "Transmission abnormality, please check and try again."
+msgstr ""
+
+msgid "The file does not match the printer, please check and try again."
+msgstr ""
+
+msgid "Start print timeout"
+msgstr ""
+
+msgid "Start print failed"
 msgstr ""
 
 #: resources/data/hints.ini: [hint:G-code window]
@@ -15426,7 +15390,7 @@ msgstr ""
 #: resources/data/hints.ini: [hint:Search Functionality]
 msgid ""
 "Search Functionality\n"
-"Did you know that you use the Search tool to quickly find a specific Elegoo "
+"Did you know that you use the Search tool to quickly find a specific Orca "
 "Slicer setting?"
 msgstr ""
 
@@ -15461,7 +15425,7 @@ msgid ""
 "Subtract a Part\n"
 "Did you know that you can subtract one mesh from another using the Negative "
 "part modifier? That way you can, for example, create easily resizable holes "
-"directly in ElegooSlicer."
+"directly in Orca Slicer."
 msgstr ""
 
 #: resources/data/hints.ini: [hint:STEP]
@@ -15469,7 +15433,7 @@ msgid ""
 "STEP\n"
 "Did you know that you can improve your print quality by slicing a STEP file "
 "instead of an STL?\n"
-"ElegooSlicer supports slicing STEP files, providing smoother results than a "
+"Orca Slicer supports slicing STEP files, providing smoother results than a "
 "lower resolution STL. Give it a try!"
 msgstr ""
 
@@ -15612,6 +15576,38 @@ msgstr ""
 "Did you know that when printing materials that are prone to warping such as "
 "ABS, appropriately increasing the heatbed temperature can reduce the "
 "probability of warping?"
+
+#~ msgid "Error uploading to print host"
+#~ msgstr "プリントホストへのアップロードに失敗"
+
+#~ msgid "PrusaSlicer is originally based on Slic3r by Alessandro Ranellucci."
+#~ msgstr ""
+#~ "PrusaSlicer は、Alessandro Ranellucci 製の Slic3r に基づいて作られていま"
+#~ "す。"
+
+#~ msgid ""
+#~ "Slic3r was created by Alessandro Ranellucci with the help of many other "
+#~ "contributors."
+#~ msgstr ""
+#~ "Slic3r was created by Alessandro Ranellucci with the help of many other "
+#~ "contributors."
+
+#~ msgid "Network"
+#~ msgstr "ネットワーク (&N)"
+
+#~ msgid "Develop mode"
+#~ msgstr "開発者モード"
+
+#~ msgid "Skip this Version"
+#~ msgstr "Skip this Version"
+
+#~ msgid ""
+#~ "The firmware version is abnormal. Repairing and updating are required "
+#~ "before printing. Do you want to update now? You can also update later on "
+#~ "printer or update next time starting ElegooSlicer."
+#~ msgstr ""
+#~ "ファームウェアのバージョンに異常があります。印刷する前に修復と更新が必要で"
+#~ "す。今すぐ更新しますか？"
 
 #~ msgid "Please input a valid value (K in 0~0.3)"
 #~ msgstr "Please input a valid value (K in 0~0.3)"
@@ -15844,8 +15840,8 @@ msgstr ""
 
 #~ msgid "The 3mf is generated by old ElegooSlicer, load geometry data only."
 #~ msgstr ""
-#~ "3mfは古いバージョンのElegooSlicerで作成されています、ジオメトリーデータのみ"
-#~ "読込みます。"
+#~ "3mfは古いバージョンのElegooSlicerで作成されています、ジオメトリーデータの"
+#~ "み読込みます。"
 
 #~ msgid "Movement:"
 #~ msgstr "移動"

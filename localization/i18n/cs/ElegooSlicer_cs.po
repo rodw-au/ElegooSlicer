@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-30 15:44+0200\n"
+"POT-Creation-Date: 2025-01-03 10:19+0800\n"
 "PO-Revision-Date: 2023-09-30 15:15+0200\n"
 "Last-Translator: René Mošner <Renemosner@seznam.cz>\n"
 "Language-Team: \n"
@@ -1384,11 +1384,11 @@ msgstr ""
 "rozpoznány."
 
 msgid ""
-"ElegooSlicer will terminate because of running out of memory.It may be a bug. "
-"It will be appreciated if you report the issue to our team."
+"ElegooSlicer will terminate because of running out of memory.It may be a "
+"bug. It will be appreciated if you report the issue to our team."
 msgstr ""
-"ElegooSlicer se ukončí z důvodu nedostatku paměti. Může to být chyba. Uvítáme, "
-"když problém nahlásíte našemu týmu."
+"ElegooSlicer se ukončí z důvodu nedostatku paměti. Může to být chyba. "
+"Uvítáme, když problém nahlásíte našemu týmu."
 
 msgid "Fatal error"
 msgstr "Fatální chyba"
@@ -1734,6 +1734,9 @@ msgid ""
 "for the 'Only One Wall on Top Surfaces' to work best.\n"
 "Yes - Change these settings automatically\n"
 "No  - Do not change these settings for me"
+msgstr ""
+
+msgid "Suggestion"
 msgstr ""
 
 msgid "Text"
@@ -2735,7 +2738,7 @@ msgstr "ElegooSlicer je licencován pod "
 msgid "GNU Affero General Public License, version 3"
 msgstr "GNU Affero General Public License, verze 3"
 
-msgid "ElegooSlicer is based on PrusaSlicer and BambuStudio"
+msgid "ElegooSlicer is based on OrcaSlicer"
 msgstr ""
 
 msgid "Libraries"
@@ -2754,21 +2757,6 @@ msgstr "O %s"
 
 msgid "ElegooSlicer "
 msgstr "ElegooSlicer "
-
-msgid "ElegooSlicer is based on BambuStudio, PrusaSlicer, and SuperSlicer."
-msgstr "ElegooSlicer je založen na BambuStudio, PrusaSlicer a SuperSlicer."
-
-msgid "BambuStudio is originally based on PrusaSlicer by PrusaResearch."
-msgstr "BambuStudio je původně založeno na PrusaSlicer od PrusaResearch."
-
-msgid "PrusaSlicer is originally based on Slic3r by Alessandro Ranellucci."
-msgstr "PrusaSlicer je původně založen na Slic3r od Alessandra Ranellucciho."
-
-msgid ""
-"Slic3r was created by Alessandro Ranellucci with the help of many other "
-"contributors."
-msgstr ""
-"Slic3r vytvořil Alessandro Ranellucci s pomocí mnoha dalších přispěvatelů."
 
 msgid "Version"
 msgstr "Verze"
@@ -4316,6 +4304,9 @@ msgstr "Zobrazení sestavy"
 msgid "Select Plate"
 msgstr "Vybrat Podložku"
 
+msgid "All Plates Stats"
+msgstr ""
+
 msgid "Assembly Return"
 msgstr "Návrat k sestavení"
 
@@ -4537,6 +4528,9 @@ msgstr "Ukázat Tip Dne"
 
 msgid "Check for Update"
 msgstr "Zkontrolovat aktualizace"
+
+msgid "Check for Presets Update"
+msgstr ""
 
 msgid "Open Network Test"
 msgstr "Otevřít test sítě"
@@ -5138,8 +5132,8 @@ msgid "Failed to parse model information."
 msgstr ""
 
 msgid ""
-"The .gcode.3mf file contains no G-code data.Please slice it with ElegooSlicer "
-"and export a new .gcode.3mf file."
+"The .gcode.3mf file contains no G-code data.Please slice it with "
+"ElegooSlicer and export a new .gcode.3mf file."
 msgstr ""
 "Soubor .gcode.3mf neobsahuje žádná G-kód data. Prosím, slicujte ho pomocí "
 "ElegooSliceru a exportujte nový soubor .gcode.3mf."
@@ -5513,8 +5507,8 @@ msgid "Newer 3mf version"
 msgstr "Novější verze 3mf"
 
 msgid ""
-"The 3mf file version is in Beta and it is newer than the current ElegooSlicer  "
-"version."
+"The 3mf file version is in Beta and it is newer than the current "
+"ElegooSlicer  version."
 msgstr ""
 
 msgid "If you would like to try ElegooSlicer Beta, you may click to"
@@ -5526,7 +5520,8 @@ msgstr ""
 msgid "The 3mf file version is newer than the current ElegooSlicer version."
 msgstr ""
 
-msgid "Update your ElegooSlicer could enable all functionality in the 3mf file."
+msgid ""
+"Update your ElegooSlicer could enable all functionality in the 3mf file."
 msgstr ""
 
 msgid "Current Version: "
@@ -5877,12 +5872,12 @@ msgstr ""
 
 msgid ""
 "There are some unknown filaments mapped to generic preset. Please update "
-"ElegooSlicer or restart ElegooSlicer to check if there is an update to system "
-"presets."
+"ElegooSlicer or restart ElegooSlicer to check if there is an update to "
+"system presets."
 msgstr ""
 "Existují některé neznámé filamenty na mapovaná na generickou předvolbu. "
-"Aktualizujte prosím ElegooSlicer nebo restartujte ElegooSlicer a zkontrolujte, "
-"zda existuje aktualizace systému předvolby."
+"Aktualizujte prosím ElegooSlicer nebo restartujte ElegooSlicer a "
+"zkontrolujte, zda existuje aktualizace systému předvolby."
 
 #, boost-format
 msgid "Do you want to save changes to \"%1%\"?"
@@ -6449,7 +6444,7 @@ msgstr "Vyberte adresář pro stahování"
 msgid "Associate"
 msgstr ""
 
-msgid "with ElegooSlicer so that Elegoo can open models from"
+msgid "with ElegooSlicer so that ElegooSlicer can open models from"
 msgstr ""
 
 msgid "Current Association: "
@@ -6481,20 +6476,6 @@ msgstr "Ostatní"
 
 msgid "Login Region"
 msgstr "Región přihlášení"
-
-msgid "Stealth Mode"
-msgstr "Tajný Režim"
-
-msgid ""
-"This stops the transmission of data to Bambu's cloud services. Users who "
-"don't use BBL machines or use LAN mode only can safely turn on this function."
-msgstr ""
-
-msgid "Enable network plugin"
-msgstr ""
-
-msgid "Check for stable updates only"
-msgstr ""
 
 msgid "Metric"
 msgstr "Metrický"
@@ -6595,8 +6576,8 @@ msgid "Remember printer configuration"
 msgstr ""
 
 msgid ""
-"If enabled, Elegoo will remember and switch filament/process configuration for "
-"each printer automatically."
+"If enabled, ElegooSlicer will remember and switch filament/process "
+"configuration for each printer automatically."
 msgstr ""
 
 msgid "Multi-device Management(Take effect after restarting ElegooSlicer)."
@@ -6607,8 +6588,11 @@ msgid ""
 "same time and manage multiple devices."
 msgstr ""
 
-msgid "Network"
-msgstr "Síť"
+msgid "Auto arrange plate after cloning"
+msgstr ""
+
+msgid "Auto arrange plate after object cloning"
+msgstr ""
 
 msgid "Auto sync user presets(Printer/Filament/Process)"
 msgstr ""
@@ -6648,7 +6632,8 @@ msgstr ""
 msgid "Associate .step/.stp files to ElegooSlicer"
 msgstr "Přidružit soubory .step/.stp k ElegooSlicer"
 
-msgid "If enabled, sets ElegooSlicer as default application to open .step files"
+msgid ""
+"If enabled, sets ElegooSlicer as default application to open .step files"
 msgstr ""
 "Pokud je povoleno, nastaví ElegooSlicer jako výchozí aplikaci pro otevírání "
 "souborů .step"
@@ -6693,9 +6678,6 @@ msgstr "Tmavý režim"
 
 msgid "Enable Dark mode"
 msgstr "Povolit tmavý režim"
-
-msgid "Develop mode"
-msgstr "Režim vývojáře"
 
 msgid "Skip AMS blacklist check"
 msgstr "Přeskočit kontrolu černé listiny AMS"
@@ -8225,8 +8207,9 @@ msgid "Flushing volumes for filament change"
 msgstr "Čistící objemy pro výměnu filamentu"
 
 msgid ""
-"Elegoo would re-calculate your flushing volumes everytime the filaments color "
-"changed. You could disable the auto-calculate in ElegooSlicer > Preferences"
+"Elegoo would re-calculate your flushing volumes everytime the filaments "
+"color changed. You could disable the auto-calculate in ElegooSlicer > "
+"Preferences"
 msgstr ""
 
 msgid "Flushing volume (mm³) for each filament pair."
@@ -8573,8 +8556,8 @@ msgstr "Aktualizace síťového zásuvného modulu"
 msgid ""
 "Click OK to update the Network plug-in when ElegooSlicer launches next time."
 msgstr ""
-"Klepnutím na OK aktualizujte síťový zásuvný modul při příštím spuštění Elegoo "
-"Sliceru."
+"Klepnutím na OK aktualizujte síťový zásuvný modul při příštím spuštění "
+"Elegoo Sliceru."
 
 #, c-format, boost-format
 msgid "A new Network plug-in(%s) available, Do you want to install it?"
@@ -8582,9 +8565,6 @@ msgstr "Nový síťový plug-in (%s) k dispozici, chcete jej nainstalovat?"
 
 msgid "New version of ElegooSlicer"
 msgstr "Nová verze ElegooSlicer"
-
-msgid "Skip this Version"
-msgstr ""
 
 msgid "Done"
 msgstr "Hotovo"
@@ -8715,11 +8695,8 @@ msgstr ""
 msgid ""
 "The firmware version is abnormal. Repairing and updating are required before "
 "printing. Do you want to update now? You can also update later on printer or "
-"update next time starting ElegooSlicer."
+"update next time starting Orca."
 msgstr ""
-"Verze firmwaru je abnormální. Oprava a aktualizace jsou nutné před tisk. "
-"Chcete provést aktualizaci nyní? Aktualizaci můžete provést také později na "
-"tiskárně nebo aktualizovat při příštím spuštění studia."
 
 msgid "Extension Board"
 msgstr "Rozšiřující deska"
@@ -9184,8 +9161,8 @@ msgstr ""
 msgid ""
 "The jerk setting exceeds the printer's maximum jerk (machine_max_jerk_x/"
 "machine_max_jerk_y).\n"
-"Elegoo will automatically cap the jerk speed to ensure it doesn't surpass the "
-"printer's capabilities.\n"
+"Elegoo will automatically cap the jerk speed to ensure it doesn't surpass "
+"the printer's capabilities.\n"
 "You can adjust the maximum jerk setting in your printer's configuration to "
 "get higher speeds."
 msgstr ""
@@ -14626,9 +14603,6 @@ msgstr "Nahrávání"
 msgid "Cancelling"
 msgstr "Ruší se"
 
-msgid "Error uploading to print host"
-msgstr "Chyba při nahrávání do tiskového serveru"
-
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "Nelze provést booleovskou operaci na vybraných částech"
 
@@ -14982,7 +14956,7 @@ msgstr ""
 msgid ""
 "\n"
 "\n"
-"Elegoo has detected that your user presets synchronization function is not "
+"Orca has detected that your user presets synchronization function is not "
 "enabled, which may result in unsuccessful Filament settings on the Device "
 "page. \n"
 "Click \"Sync user presets\" to enable the synchronization function."
@@ -15574,44 +15548,34 @@ msgstr ""
 msgid "User cancelled."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Precise wall]
-msgid ""
-"Precise wall\n"
-"Did you know that turning on precise wall can improve precision and layer "
-"consistency?"
+msgid "Connection to Elegoo Link works correctly."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Sandwich mode]
-msgid ""
-"Sandwich mode\n"
-"Did you know that you can use sandwich mode (inner-outer-inner) to improve "
-"precision and layer consistency if your model doesn't have very steep "
-"overhangs?"
+msgid "Could not connect to Elegoo Link"
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Chamber temperature]
-msgid ""
-"Chamber temperature\n"
-"Did you know that ElegooSlicer supports chamber temperature?"
+msgid "Error code not found"
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Calibration]
-msgid ""
-"Calibration\n"
-"Did you know that calibrating your printer can do wonders? Check out our "
-"beloved calibration solution in ElegooSlicer."
+msgid "The printer is busy, please check and try again."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Auxiliary fan]
-msgid ""
-"Auxiliary fan\n"
-"Did you know that ElegooSlicer supports Auxiliary part cooling fan?"
+msgid "The file is lost, please check and try again."
 msgstr ""
 
-#: resources/data/hints.ini: [hint:Air filtration]
-msgid ""
-"Air filtration/Exhaust Fan\n"
-"Did you know that ElegooSlicer can support Air filtration/Exhaust Fan?"
+msgid "The file is corrupted, please check and try again."
+msgstr ""
+
+msgid "Transmission abnormality, please check and try again."
+msgstr ""
+
+msgid "The file does not match the printer, please check and try again."
+msgstr ""
+
+msgid "Start print timeout"
+msgstr ""
+
+msgid "Start print failed"
 msgstr ""
 
 #: resources/data/hints.ini: [hint:G-code window]
@@ -15710,7 +15674,7 @@ msgstr ""
 #: resources/data/hints.ini: [hint:Search Functionality]
 msgid ""
 "Search Functionality\n"
-"Did you know that you use the Search tool to quickly find a specific Elegoo "
+"Did you know that you use the Search tool to quickly find a specific Orca "
 "Slicer setting?"
 msgstr ""
 
@@ -15746,7 +15710,7 @@ msgid ""
 "Subtract a Part\n"
 "Did you know that you can subtract one mesh from another using the Negative "
 "part modifier? That way you can, for example, create easily resizable holes "
-"directly in ElegooSlicer."
+"directly in Orca Slicer."
 msgstr ""
 
 #: resources/data/hints.ini: [hint:STEP]
@@ -15754,14 +15718,9 @@ msgid ""
 "STEP\n"
 "Did you know that you can improve your print quality by slicing a STEP file "
 "instead of an STL?\n"
-"ElegooSlicer supports slicing STEP files, providing smoother results than a "
+"Orca Slicer supports slicing STEP files, providing smoother results than a "
 "lower resolution STL. Give it a try!"
 msgstr ""
-"STEP\n"
-"Věděli jste, že můžete zlepšit kvalitu svého tisku tím, že rozdělíte soubor "
-"STEP namísto STL?\n"
-"ElegooSlicer podporuje rozdělování souborů STEP, což poskytuje hladší "
-"výsledky než s nižším rozlišením STL. Vyzkoušejte to!"
 
 #: resources/data/hints.ini: [hint:Z seam location]
 msgid ""
@@ -15910,6 +15869,56 @@ msgid ""
 "ABS, appropriately increasing the heatbed temperature can reduce the "
 "probability of warping."
 msgstr ""
+
+#~ msgid "Error uploading to print host"
+#~ msgstr "Chyba při nahrávání do tiskového serveru"
+
+#~ msgid "ElegooSlicer is based on BambuStudio, PrusaSlicer, and SuperSlicer."
+#~ msgstr "ElegooSlicer je založen na BambuStudio, PrusaSlicer a SuperSlicer."
+
+#~ msgid "BambuStudio is originally based on PrusaSlicer by PrusaResearch."
+#~ msgstr "BambuStudio je původně založeno na PrusaSlicer od PrusaResearch."
+
+#~ msgid "PrusaSlicer is originally based on Slic3r by Alessandro Ranellucci."
+#~ msgstr ""
+#~ "PrusaSlicer je původně založen na Slic3r od Alessandra Ranellucciho."
+
+#~ msgid ""
+#~ "Slic3r was created by Alessandro Ranellucci with the help of many other "
+#~ "contributors."
+#~ msgstr ""
+#~ "Slic3r vytvořil Alessandro Ranellucci s pomocí mnoha dalších přispěvatelů."
+
+#~ msgid "Stealth Mode"
+#~ msgstr "Tajný Režim"
+
+#~ msgid "Network"
+#~ msgstr "Síť"
+
+#~ msgid "Develop mode"
+#~ msgstr "Režim vývojáře"
+
+#~ msgid ""
+#~ "The firmware version is abnormal. Repairing and updating are required "
+#~ "before printing. Do you want to update now? You can also update later on "
+#~ "printer or update next time starting ElegooSlicer."
+#~ msgstr ""
+#~ "Verze firmwaru je abnormální. Oprava a aktualizace jsou nutné před tisk. "
+#~ "Chcete provést aktualizaci nyní? Aktualizaci můžete provést také později "
+#~ "na tiskárně nebo aktualizovat při příštím spuštění studia."
+
+#~ msgid ""
+#~ "STEP\n"
+#~ "Did you know that you can improve your print quality by slicing a STEP "
+#~ "file instead of an STL?\n"
+#~ "ElegooSlicer supports slicing STEP files, providing smoother results than "
+#~ "a lower resolution STL. Give it a try!"
+#~ msgstr ""
+#~ "STEP\n"
+#~ "Věděli jste, že můžete zlepšit kvalitu svého tisku tím, že rozdělíte "
+#~ "soubor STEP namísto STL?\n"
+#~ "ElegooSlicer podporuje rozdělování souborů STEP, což poskytuje hladší "
+#~ "výsledky než s nižším rozlišením STL. Vyzkoušejte to!"
 
 #~ msgid "Printer local connection failed, please try again."
 #~ msgstr "Lokální připojení k tiskárně selhalo, zkuste to znovu."

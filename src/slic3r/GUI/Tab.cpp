@@ -1501,7 +1501,7 @@ void Tab::on_value_change(const std::string& opt_key, const boost::any& value)
             msg_text += "\n\n" + _L("Change these settings automatically? \n"
                                     "Yes - Change these settings automatically\n"
                                     "No  - Do not change these settings for me");
-            MessageDialog      dialog(wxGetApp().plater(), msg_text, "Suggestion", wxICON_WARNING | wxYES | wxNO);
+            MessageDialog      dialog(wxGetApp().plater(), msg_text, _L("Suggestion"), wxICON_WARNING | wxYES | wxNO);
             DynamicPrintConfig new_conf = *m_config;
             if (dialog.ShowModal() == wxID_YES) {
                 new_conf.set_key_value("support_top_z_distance", new ConfigOptionFloat(0));
@@ -1517,7 +1517,7 @@ void Tab::on_value_change(const std::string& opt_key, const boost::any& value)
             msg_text += "\n\n" + _L("Change these settings automatically? \n"
                                     "Yes - Change these settings automatically\n"
                                     "No  - Do not change these settings for me");
-            MessageDialog      dialog(wxGetApp().plater(), msg_text, "Suggestion", wxICON_WARNING | wxYES | wxNO);
+            MessageDialog      dialog(wxGetApp().plater(), msg_text, _L("Suggestion"), wxICON_WARNING | wxYES | wxNO);
             DynamicPrintConfig new_conf = *m_config;
             if (dialog.ShowModal() == wxID_YES) {
                 if (!is_support_filament(m_config->opt_int("support_interface_filament") - 1) && m_config->opt_float("support_top_z_distance") < 0.1)
@@ -1539,7 +1539,7 @@ void Tab::on_value_change(const std::string& opt_key, const boost::any& value)
             msg_text += "\n\n" + _L("Change these settings automatically? \n"
                                     "Yes - Change these settings automatically\n"
                                     "No  - Do not change these settings for me");
-            MessageDialog      dialog(wxGetApp().plater(), msg_text, "Suggestion", wxICON_WARNING | wxYES | wxNO);
+            MessageDialog      dialog(wxGetApp().plater(), msg_text, _("Suggestion"), wxICON_WARNING | wxYES | wxNO);
             DynamicPrintConfig new_conf = *m_config;
             if (dialog.ShowModal() == wxID_YES) {
                 new_conf.set_key_value("support_top_z_distance", new ConfigOptionFloat(0));
@@ -4458,6 +4458,21 @@ void TabPrinter::toggle_options()
         for (int i = 0; i < max_field; ++i)
             toggle_option("machine_max_acceleration_travel", gcf != gcfMarlinLegacy && gcf != gcfKlipper, i);
         toggle_line("machine_max_acceleration_travel", gcf != gcfMarlinLegacy && gcf != gcfKlipper);
+
+
+        //Elegoo
+        bool isSystem= (m_presets->get_edited_preset().is_default||m_presets->get_edited_preset().is_system);
+        std::vector<std::string> motionVec= {         
+                "machine_max_acceleration_extruding", "machine_max_acceleration_retracting", 
+                "machine_max_acceleration_x", "machine_max_acceleration_y", "machine_max_acceleration_z", "machine_max_acceleration_e",
+                "machine_max_speed_x", "machine_max_speed_y", "machine_max_speed_z", "machine_max_speed_e",
+        };
+        //if is system, disable all motion settings
+        for (auto el : motionVec)
+        {
+            for (int i = 0; i < max_field; ++i)
+                toggle_option(el, !isSystem,i);
+        }
     }
 }
 

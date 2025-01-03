@@ -52,7 +52,14 @@ function HandleModelList( pVal )
 		return;
 
     pModel=pVal['model'];
-	
+	pModel.sort((a, b) => {
+		if (a.vendor === 'Elegoo' && b.vendor !== 'Elegoo') return -1;
+		if (b.vendor === 'Elegoo' && a.vendor !== 'Elegoo') return 1;
+		if (a.vendor === 'Custom' && b.vendor !== 'Custom') return -1;
+		if (b.vendor === 'Custom' && a.vendor !== 'Custom') return 1;
+		return 0;
+	});
+
 	let nTotal=pModel.length;
 	let ModelHtml={};
 	for(let n=0;n<nTotal;n++)

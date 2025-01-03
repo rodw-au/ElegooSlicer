@@ -514,7 +514,16 @@ void AuFile::on_set_cover()
 void AuFile::on_set_delete()
 {
     fs::path bfs_path = m_file_path;
-    auto     is_fine = fs::remove(bfs_path);
+    bool    is_fine= true;
+    try {
+         is_fine = fs::remove(bfs_path);
+    } catch (const fs::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
+        BOOST_LOG_TRIVIAL(error) << "Filesystem error: " << e.what();
+    } catch (const std::exception& e) {
+        std::cerr << "General error: " << e.what() << std::endl;
+        BOOST_LOG_TRIVIAL(error) << "General error: " << e.what();
+    }
 
     if (m_cover) {
         auto full_path          = m_file_path.parent_path();

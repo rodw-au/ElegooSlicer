@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slic3rPE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 18:48+0800\n"
+"POT-Creation-Date: 2025-01-03 10:19+0800\n"
 "PO-Revision-Date: 2023-04-01 13:21+0800\n"
 "Last-Translator: ELEGOOTechSupport <softfeverever@gmail.com>\n"
 "Language-Team: \n"
@@ -4405,6 +4405,9 @@ msgstr "展示每日小贴士"
 
 msgid "Check for Update"
 msgstr "检查新版本"
+
+msgid "Check for Presets Update"
+msgstr "检查预设更新"
 
 msgid "Open Network Test"
 msgstr "打开网络测试"

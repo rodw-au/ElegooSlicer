@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 18:48+0800\n"
+"POT-Creation-Date: 2025-01-03 10:19+0800\n"
 "PO-Revision-Date: 2024-07-07 18:43+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -4613,6 +4613,9 @@ msgstr "Mostra Consell del dia"
 
 msgid "Check for Update"
 msgstr "Comprovar si hi ha actualitzacions"
+
+msgid "Check for Presets Update"
+msgstr ""
 
 msgid "Open Network Test"
 msgstr "Obrir Test de Xarxa"

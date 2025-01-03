@@ -177,6 +177,8 @@ public:
         SeriousWarningNotificationLevel,
 		// Error, no fade-out. Top most position.
 		ErrorNotificationLevel,
+		// Notification with a hyperlink to a web page, no fade-out.
+		WebLinkNotificationLevel,
 	};
 
 	NotificationManager(wxEvtHandler* evt_handler);
@@ -193,6 +195,12 @@ public:
 	// ErrorNotificationLevel are never faded out.
     void push_notification(NotificationType type, NotificationLevel level, const std::string& text, const std::string& hypertext = "",
                            std::function<bool(wxEvtHandler*)> callback = std::function<bool(wxEvtHandler*)>(), int timestamp = 0);
+	//push a messagenotification with a custom text and no fade out
+	void push_notification(NotificationType type, NotificationLevel level, const std::string& title, const std::string& text, 
+						   const std::string& hypertext = "",
+                           std::function<bool(wxEvtHandler*)> callback = std::function<bool(wxEvtHandler*)>(), 
+						   std::function<void()> closeCallback = std::function<void()>(), 
+						   int timestamp = 0);
 	// Pushes basic_notification with delay. See push_delayed_notification_data.
 	void push_delayed_notification(const NotificationType type, std::function<bool(void)> condition_callback, int64_t initial_delay, int64_t delay_interval);
 	// Removes all notifications of type from m_waiting_notifications
@@ -363,6 +371,8 @@ private:
 		int                      sub_msg_id {-1};
 		std::string        ori_text;
         bool                use_warn_color { false };
+		//
+		std::string 	  title;
 	};
 
 	// Cache of IDs to identify and reuse ImGUI windows.
@@ -539,6 +549,7 @@ private:
 		size_t	         pos_end = string::npos;
 		std::string      error_start = "<Error>";
 		std::string      error_end = "</Error>";
+		std::string 	 m_title;
 
 		// inner variables to position notification window, texts and buttons correctly
 
@@ -570,6 +581,8 @@ private:
 		wxEvtHandler*    m_evt_handler;
 
 		float m_scale = 1.0f;
+
+		int RENDER_MORE_MAX_LINE = 3;
 	};
 
 
@@ -818,6 +831,27 @@ private:
 		std::vector<std::pair<InfoItemType, size_t>> m_types_and_counts;
 	};
 
+	//ELE
+	class MessageNotification : public PopNotification
+	{
+	public:
+		MessageNotification(const NotificationData &n, NotificationIDProvider &id_provider, wxEvtHandler* evt_handler,std::function<void()> closeCallback)
+			: PopNotification(n, id_provider, evt_handler),m_closeCallback(closeCallback)
+		    {
+				RENDER_MORE_MAX_LINE = 4;
+			}
+		virtual void           close() override{ 
+			if(m_closeCallback!=nullptr)
+			{
+				m_closeCallback();
+			}
+			PopNotification::close();
+		}
+	protected:
+	private:
+		std::function<void()>  m_closeCallback;
+	};
+
 	// in SlicingProgressNotification.hpp
 	class SlicingProgressNotification;
 
@@ -869,6 +903,7 @@ private:
 		case NotificationLevel::RegularNotificationLevel: 			return 10;
 		case NotificationLevel::PrintInfoNotificationLevel:			return 10;
 		case NotificationLevel::HintNotificationLevel:				return 300;
+		case NotificationLevel::WebLinkNotificationLevel:			return 0;
 		default: return 10;
 		}
 	}

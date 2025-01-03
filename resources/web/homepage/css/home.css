@@ -465,7 +465,7 @@ body
 .CT_Item:hover
 {
 	cursor: pointer;
-	background-color: #0078D4;
+	background-color:#009688; /*ORCA color*/
 	border-radius: 4px;
 	color: #fff;
 }

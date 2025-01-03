@@ -5308,6 +5308,14 @@ bool GUI_App::load_language(wxString language, bool initial)
                 if (auto info = wxLocale::FindLanguageInfo(lang))
                     m_language_info_system = info;
 #endif
+
+#if defined(__APPLE__) || defined(__MACH__)
+                std::string local_name =  app_config->getSystemLanguage();
+                wxString lang = local_name;
+                lang.Replace('-', '_');
+                if (auto info = wxLocale::FindLanguageInfo(lang))
+                    m_language_info_system = info;
+#endif
                 BOOST_LOG_TRIVIAL(info) << boost::format("System language detected (user locales and such): %1%") % m_language_info_system->CanonicalName.ToUTF8().data();
                 // BBS set language to app config
                 app_config->set("language", m_language_info_system->CanonicalName.ToUTF8().data());

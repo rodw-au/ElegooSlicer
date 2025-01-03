@@ -780,7 +780,7 @@ bool PresetUpdater::priv::sync_config(const VendorMap &vendors)
         .timeout_connect(5)
         .on_complete([this, vendors, &ota_profiles_list](std::string body, unsigned http_status) {
             if (http_status != 200)
-                return false;
+                return;
             try {
                 json j = json::parse(body);
                 if (j.contains("profiles") && j["profiles"].is_array()) {
@@ -814,7 +814,7 @@ bool PresetUpdater::priv::sync_config(const VendorMap &vendors)
         .perform_sync();
 
     // check the cached config files
-    Semver app_semver    = SLIC3R_VERSION;
+    Semver app_semver(SLIC3R_VERSION);
     for (auto vendor_it : vendors) {
         const VendorProfile& vendor_profile = vendor_it.second;
         std::string vendor_name = vendor_profile.id;      

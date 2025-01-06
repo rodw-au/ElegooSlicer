@@ -979,38 +979,38 @@ void GUI_App::post_init()
         });
     }
 
-    if (is_user_login())
-        request_user_handle(0);
+    // if (is_user_login())
+    //     request_user_handle(0);
 
-    if(!m_networking_need_update && m_agent) {
-        m_agent->set_on_ssdp_msg_fn(
-            [this](std::string json_str) {
-                if (m_is_closing) {
-                    return;
-                }
-                GUI::wxGetApp().CallAfter([this, json_str] {
-                    if (m_device_manager) {
-                        m_device_manager->on_machine_alive(json_str);
-                    }
-                    });
-            }
-        );
-        m_agent->set_on_http_error_fn([this](unsigned int status, std::string body) {
-            this->handle_http_error(status, body);
-        });
-        m_agent->start_discovery(true, false);
-    }
+    // if(!m_networking_need_update && m_agent) {
+    //     m_agent->set_on_ssdp_msg_fn(
+    //         [this](std::string json_str) {
+    //             if (m_is_closing) {
+    //                 return;
+    //             }
+    //             GUI::wxGetApp().CallAfter([this, json_str] {
+    //                 if (m_device_manager) {
+    //                     m_device_manager->on_machine_alive(json_str);
+    //                 }
+    //                 });
+    //         }
+    //     );
+    //     m_agent->set_on_http_error_fn([this](unsigned int status, std::string body) {
+    //         this->handle_http_error(status, body);
+    //     });
+    //     m_agent->start_discovery(true, false);
+    // }
 
-    //update the plugin tips
-    CallAfter([this] {
-            mainframe->refresh_plugin_tips();
-        });
+    // //update the plugin tips
+    // CallAfter([this] {
+    //         mainframe->refresh_plugin_tips();
+    //     });
 
-    // update hms info
-    CallAfter([this] {
-            if (hms_query)
-                hms_query->check_hms_info();
-        });
+    // // update hms info
+    // CallAfter([this] {
+    //         if (hms_query)
+    //             hms_query->check_hms_info();
+    //     });
 
     CallAfter([this] {
         check_message();
@@ -4171,7 +4171,7 @@ void GUI_App::check_message()
           BOOST_LOG_TRIVIAL(error) << format("Error getting: `%1%`: HTTP %2%, %3%", "check_message", http_status,
                                              error);
         })
-        .timeout_connect(5)
+        .timeout_connect(3)
         .on_complete([this,locale_name,lastMessageVersion](std::string body, unsigned http_status) {
           // Http response OK
           if (http_status != 200)

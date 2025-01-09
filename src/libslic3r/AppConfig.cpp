@@ -1405,9 +1405,9 @@ std::string AppConfig::getSystemLocale() {
     // 将 CFStringRef 转换为 C++ 字符串
     char country[256];
     if (CFStringGetCString(countryCode, country, sizeof(country), kCFStringEncodingUTF8)) {
-        std::cout << "系统设置的国家: " << country << std::endl;
+        std::cout << "System country code: " << country << std::endl;
     } else {
-        std::cerr << "无法获取国家代码" << std::endl;
+        std::cerr << "Failed to get system country code" << std::endl;
     }
     CFRelease(localeRef);
 
@@ -1421,10 +1421,10 @@ std::string AppConfig::getSystemLocale() {
         if (pos != std::string::npos) {
             langStr = langStr.substr(0, pos);
         }
-        std::cout << "当前系统语言: " << lang << std::endl;
+        std::cout << "System language: " << lang << std::endl;
         locale = langStr + "-" + country;
     } else {
-        std::cerr << "无法获取系统语言" << std::endl;
+        std::cerr << "Failed to get system language" << std::endl;
     }
 
     CFRelease(languages);
@@ -1464,10 +1464,10 @@ std::string AppConfig::getSystemLanguage(){
         } else if (langStr == "zh-Hant") {
             langStr = "zh-TW";
         } 
-        std::cout << "当前系统语言: " << lang << std::endl;
+        std::cout << "System language: " << lang << std::endl;
         locale = langStr;
     } else {
-        std::cerr << "无法获取系统语言" << std::endl;
+        std::cerr << "Failed to get system language" << std::endl;
     }
 
     CFRelease(languages);

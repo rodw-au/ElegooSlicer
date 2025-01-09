@@ -4165,6 +4165,7 @@ void GUI_App::check_message()
     auto lastMessageVersion = app_config->get_last_pop_message_version();
     auto       message_check_url = app_config->message_check_url();
     std::string locale_name = app_config->getSystemLocale();
+    const auto language = app_config->get("language");
     Http::get(message_check_url)
         .on_error([&](std::string body, std::string error, unsigned http_status) {
           (void)body;
@@ -4172,7 +4173,7 @@ void GUI_App::check_message()
                                              error);
         })
         .timeout_connect(3)
-        .on_complete([this,locale_name,lastMessageVersion](std::string body, unsigned http_status) {
+        .on_complete([this, locale_name, language, lastMessageVersion](std::string body, unsigned http_status) {
           // Http response OK
           if (http_status != 200)
             return;
@@ -4211,7 +4212,7 @@ void GUI_App::check_message()
                     return;
                 }
                 auto messages = *op_messages;
-                if (locale_name.find("zh") != std::string::npos || locale_name.find("CN") != std::string::npos)
+                if (language.find("zh") != std::string::npos)
                 {
                     op_message = messages.get_child_optional("zh");
                 }else {
@@ -4374,7 +4375,8 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 #if 1 // Elegoo: use elegoo slicer release
     AppConfig* app_config = wxGetApp().app_config;
     auto       version_check_url = app_config->version_check_url();
-    std::string locale_name = app_config->getSystemLocale();
+    // std::string locale_name = app_config->getSystemLocale();
+    const auto language = app_config->get("language");
     Http::get(version_check_url)
         .on_error([&](std::string body, std::string error, unsigned http_status) {
           (void)body;
@@ -4382,7 +4384,7 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                                              error);
         })
         .timeout_connect(1)
-        .on_complete([this,by_user,locale_name](std::string body, unsigned http_status) {
+        .on_complete([this,by_user,language](std::string body, unsigned http_status) {
           // Http response OK
           if (http_status != 200)
             return;
@@ -4413,9 +4415,9 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                 best_release         = new_version;
                 auto description = root.get_child("description");
                 
-                BOOST_LOG_TRIVIAL(warning) << "locale: " << locale_name;
-                printf("locale: %s\n", locale_name.c_str());
-                if (locale_name.find("zh") != std::string::npos || locale_name.find("CN") != std::string::npos)
+                BOOST_LOG_TRIVIAL(warning) << "language: " << language;
+                printf("language: %s\n", language.c_str());
+                if (language.find("zh") != std::string::npos)
                 {
                     best_release_content = description.get<std::string>("zh");
                 }else {

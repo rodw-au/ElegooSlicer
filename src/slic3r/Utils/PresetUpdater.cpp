@@ -1363,9 +1363,9 @@ Updates PresetUpdater::priv::get_config_updates(const Semver& old_slic3r_version
         Version version;
         version.config_version = cached_semver;
         AppConfig* app_config = GUI::wxGetApp().app_config;
-        std::string locale_name = app_config->getSystemLocale();
-
-        if (locale_name.find("zh") != std::string::npos || locale_name.find("CN") != std::string::npos) {
+        //std::string locale_name = app_config->getSystemLocale();
+        const auto  language    = app_config->get("language");
+        if (language.find("zh") != std::string::npos) {
             description_content = description["zh"].get<std::string>();
         } else {
             description_content = description["en"].get<std::string>();

@@ -30,7 +30,7 @@
 
 namespace fs = boost::filesystem;
 namespace pt = boost::property_tree;
-
+#define MAX_UPLOAD_PACKAGE_LENGTH 1048576 //(1024*1024)
 
 namespace Slic3r {
 
@@ -274,6 +274,62 @@ namespace Slic3r {
         curl_msg="";
         return elegoo_test(curl_msg);
     }
+
+#ifdef WIN32
+    bool ElegooLink::elegoo_test_with_resolved_ip(wxString& msg) const
+    {
+        // Since the request is performed synchronously here,
+        // it is ok to refer to `msg` from within the closure
+        const char* name = get_name();
+        bool        res  = true;
+        // Msg contains ip string.
+        auto url = substitute_host(make_url(""), GUI::into_u8(msg));
+        msg.Clear();
+        std::string host = get_host_from_url(m_host);
+        auto        http = Http::get(url); // std::move(url));
+        // "Host" header is necessary here. We have resolved IP address and subsituted it into "url" variable.
+        // And when creating Http object above, libcurl automatically includes "Host" header from address it got.
+        // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back.
+        // Not changing the host would work on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse
+        // proxy is used (issue #9734). Also when allow_ip_resolve = 0, this is not needed, but it should not break anything if it stays.
+        // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
+        http.header("Host", host);
+        set_auth(http);
+        http.on_error([&](std::string body, std::string error, unsigned status) {
+                BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error getting version at %2% : %3%, HTTP %4%, body: `%5%`") % name % url %
+                                                error % status % body;
+                res = false;
+                msg = format_error(body, error, status);
+            })
+            .on_complete([&, this](std::string body, unsigned) {
+                // Check if the response contains "ELEGOO" in any case.
+                // This is a simple check to see if the response is from an Elegoo Link server.
+                std::regex  re("ELEGOO", std::regex::icase);
+                std::smatch match;
+                if (std::regex_search(body, match, re)) {
+                    res = true;
+                } else {
+                    msg = format_error(body, "Elegoo Link not detected", 0);
+                    res = false;
+                }
+            })
+            .ssl_revoke_best_effort(m_ssl_revoke_best_effort)
+            .perform_sync();
+
+        return res;
+    }
+    bool ElegooLink::test_with_resolved_ip(wxString& msg) const
+    {
+        // Elegoo supports both otcoprint and Elegoo link
+        if (OctoPrint::test_with_resolved_ip(msg)) {
+            return true;
+        }
+        msg = "";
+        return elegoo_test_with_resolved_ip(msg);
+    }
+#endif // WIN32
+
+
     wxString ElegooLink::get_test_ok_msg() const
     {
         return _L("Connection to Elegoo Link works correctly.");
@@ -287,168 +343,35 @@ namespace Slic3r {
     #ifdef WIN32
     bool ElegooLink::upload_inner_with_resolved_ip(PrintHostUpload upload_data, ProgressFn prorgess_fn, ErrorFn error_fn, InfoFn info_fn, const boost::asio::ip::address& resolved_addr) const
     {
-        info_fn(L"resolve", boost::nowide::widen(resolved_addr.to_string()));
+        wxString test_msg_or_host_ip = "";
 
+        info_fn(L"resolve", boost::nowide::widen(resolved_addr.to_string()));
         // If test fails, test_msg_or_host_ip contains the error message.
         // Otherwise on Windows it contains the resolved IP address of the host.
         // Test_msg already contains resolved ip and will be cleared on start of test().
-        wxString test_msg_or_host_ip = GUI::from_u8(resolved_addr.to_string());
-
+        test_msg_or_host_ip          = GUI::from_u8(resolved_addr.to_string());
         //Elegoo supports both otcoprint and Elegoo link
         if(OctoPrint::test_with_resolved_ip(test_msg_or_host_ip)){
             return OctoPrint::upload_inner_with_host(upload_data, prorgess_fn, error_fn, info_fn);
         }
-        test_msg_or_host_ip="";
+
+        test_msg_or_host_ip = GUI::from_u8(resolved_addr.to_string());
         if(!elegoo_test_with_resolved_ip(test_msg_or_host_ip)){
             error_fn(std::move(test_msg_or_host_ip));
             return false;
         }
 
-        std::string wsUrl = get_host_from_url_no_port(m_host);
-        WebSocketClient client;
-        if(upload_data.post_action == PrintHostPostUploadAction::StartPrint){
-            try {
-                client.connect(wsUrl, "3030","/websocket");
-            }catch(std::exception &e){
-                error_fn(std::string("\n")+wxString::FromUTF8(e.what()));
-                return false;
-            }
-        }
-        const char* name = get_name();
-        const auto upload_filename = upload_data.upload_path.filename();
-        const auto upload_parent_path = upload_data.upload_path.parent_path();
-        //calc file size
-        std::ifstream file(upload_data.source_path.string(), std::ios::binary | std::ios::ate);
-        std::streamsize size = file.tellg();
-        file.close();
-        const std::string fileSize = std::to_string(size);
-        // 创建一个随机UUID生成器
-        boost::uuids::random_generator generator;
-        // 生成一个UUID
-        boost::uuids::uuid uuid = generator();
-        // 将UUID转换为字符串
-        std::string uuid_string = to_string(uuid);
-        std::string md5;
-        bbl_calc_md5(upload_data.source_path.string(), md5);
 
         std::string url = substitute_host(make_url("uploadFile/upload"), resolved_addr.to_string());
-        bool result = true;
-
         info_fn(L"resolve", boost::nowide::widen(url));
 
-        BOOST_LOG_TRIVIAL(info) << boost::format("%1%: Uploading file %2% at %3%, filename: %4%, path: %5%, print: %6%, uuid: %7%, fileSize: %8%, md5: %9%")
-            % name
-            % upload_data.source_path
-            % url
-            % upload_filename.string()
-            % upload_parent_path.string()
-            % (upload_data.post_action == PrintHostPostUploadAction::StartPrint ? "true" : "false")
-            % uuid_string
-            % fileSize
-            % md5;
-
-        std::string host = get_host_from_url(m_host);
-        auto http = Http::post(url);//std::move(url));
-        // "Host" header is necessary here. We have resolved IP address and subsituted it into "url" variable.
-        // And when creating Http object above, libcurl automatically includes "Host" header from address it got.
-        // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back.
-        // Not changing the host would work on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse proxy is used (issue #9734).
-        // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
-        http.header("Host", host);
-        set_auth(http);
-        http.form_add("S-File-MD5", md5)
-            .form_add("Check", "1")
-            .form_add("Offset", "0")
-            .form_add("Uuid",   uuid_string)
-            .form_add("TotalSize",fileSize)
-            .form_add_file("File", upload_data.source_path.string(), upload_filename.string())
-            .on_complete([&](std::string body, unsigned status) {
-                BOOST_LOG_TRIVIAL(debug) << boost::format("%1%: File uploaded: HTTP %2%: %3%") % name % status % body;
-                if(status == 200){
-                    try{
-                        pt::ptree root;
-                        std::istringstream is(body);
-                        pt::read_json(is, root);
-                        std::string code = root.get<std::string>("code");
-                        if(code == "000000"){
-                            // info_fn(L"complete", wxString());
-                        }else{
-                            //get error messages
-                            pt::ptree messages = root.get_child("messages");
-                            std::string error_message="ErrorCode : " + code + "\n";
-                            for (pt::ptree::value_type &message : messages) {
-                                std::string field = message.second.get<std::string>("field");
-                                std::string msg = message.second.get<std::string>("message");
-                                error_message += field + ":" + msg + "\n";
-                            }
-                            error_fn(wxString::FromUTF8(error_message));
-                            result = false;
-                        }
-                    }catch(...){
-                        BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error parsing response: %2%") % name % body;
-                        error_fn(wxString::FromUTF8("Error parsing response"));
-                        result = false;
-                    }
-                }else{
-                    error_fn(format_error(body, "upload failed", status));
-                    result = false;
-                }
-            })
-            .on_error([&](std::string body, std::string error, unsigned status) {
-                BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error uploading file to %2%: %3%, HTTP %4%, body: `%5%`") % name % url % error % status % body;
-                error_fn(format_error(body, error, status));
-                result = false;
-            })
-            .on_progress([&](Http::Progress progress, bool& cancel) {
-                // If upload is finished, do not call progress_fn
-                // on_complete will be called after some time, so we do not need to call it here
-                // Because some devices will call on_complete after the upload progress reaches 100%, 
-                //so we need to process it here, based on on_complete
-                if(progress.ultotal == progress.ulnow){
-                    // Upload is finished
-                    return;
-                }
-                prorgess_fn(std::move(progress), cancel);
-                if (cancel) {
-                    // Upload was canceled
-                    BOOST_LOG_TRIVIAL(info) << name << ": Upload canceled";
-                    result = false;
-                }
-            })
-            .ssl_revoke_best_effort(m_ssl_revoke_best_effort)
-            .perform_sync();
-
-        if( result && upload_data.post_action == PrintHostPostUploadAction::StartPrint ){
-            //sleep 3s, wait for the file to be processed
-            std::this_thread::sleep_for(std::chrono::seconds(3));
-            result = print(client,upload_filename.string(),error_fn);
-        }
-        return result;
+        bool res = loopUpload(url, upload_data, prorgess_fn, error_fn, info_fn);
+        return res;
     }
     #endif //WIN32
 
     bool ElegooLink::upload_inner_with_host(PrintHostUpload upload_data, ProgressFn prorgess_fn, ErrorFn error_fn, InfoFn info_fn) const
     {
-        const char* name = get_name();
-
-        const auto upload_filename = upload_data.upload_path.filename();
-        const auto upload_parent_path = upload_data.upload_path.parent_path();
-        std::string source_path = upload_data.source_path.string();
-        //calc file size
-        std::ifstream file(upload_data.source_path.string(), std::ios::binary | std::ios::ate);
-        std::streamsize size = file.tellg();
-        file.close();
-        const std::string fileSize = std::to_string(size);
-        // 创建一个随机UUID生成器
-        boost::uuids::random_generator generator;
-        // 生成一个UUID
-        boost::uuids::uuid uuid = generator();
-        // 将UUID转换为字符串
-        std::string uuid_string = to_string(uuid);
-        std::string md5;
-
-        bbl_calc_md5(source_path, md5);
-
         // If test fails, test_msg_or_host_ip contains the error message.
         // Otherwise on Windows it contains the resolved IP address of the host.
         wxString test_msg_or_host_ip;
@@ -462,20 +385,7 @@ namespace Slic3r {
             return false;
         }
 
-
-        std::string wsUrl = get_host_from_url_no_port(m_host);
-        WebSocketClient client;
-        if(upload_data.post_action == PrintHostPostUploadAction::StartPrint){
-            try {
-                client.connect(wsUrl, "3030","/websocket");
-            }catch(std::exception &e){
-                error_fn(std::string("\n")+wxString::FromUTF8(e.what()));
-                return false;
-            }
-        }
-
         std::string url;
-        bool res = true;
     #ifdef WIN32
         // Workaround for Windows 10/11 mDNS resolve issue, where two mDNS resolves in succession fail.
         if (m_host.find("https://") == 0 || test_msg_or_host_ip.empty() || !GUI::get_app_config()->get_bool("allow_ip_resolve"))
@@ -499,78 +409,79 @@ namespace Slic3r {
         }
     #endif // _WIN32
 
-        BOOST_LOG_TRIVIAL(info) << boost::format("%1%: Uploading file %2% at %3%, filename: %4%, path: %5%, print: %6%, uuid: %7%, fileSize: %8%, md5: %9%")
-            % name
-            % upload_data.source_path
-            % url
-            % upload_filename.string()
-            % upload_parent_path.string()
-            % (upload_data.post_action == PrintHostPostUploadAction::StartPrint ? "true" : "false")
-            % uuid_string
-            % fileSize
-            % md5;
+        bool res = loopUpload(url, upload_data, prorgess_fn, error_fn, info_fn);
+        return res;
+    }
 
-        auto http = Http::post(std::move(url));
-    #ifdef WIN32
-        // "Host" header is necessary here. In the workaround above (two mDNS..) we have got IP address from test connection and subsituted it into "url" variable.
-        // And when creating Http object above, libcurl automatically includes "Host" header from address it got.
-        // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back.
-        // Not changing the host would work on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse proxy is used (issue #9734).
-        // Also when allow_ip_resolve = 0, this is not needed, but it should not break anything if it stays.
+    bool ElegooLink::validate_version_text(const boost::optional<std::string> &version_text) const
+    {
+        return  true;
+    }
+    bool ElegooLink::uploadPart(std::string url,std::string md5,std::string uuid,std::string path,
+                                std::string filename,size_t filesize,size_t offset,size_t length,
+                                ProgressFn  prorgess_fn,ErrorFn error_fn,InfoFn info_fn)const
+    {
+        const char* name   = get_name();
+        bool        result = false;
+        auto        http   = Http::post(url);
+#ifdef WIN32
+        // "Host" header is necessary here. In the workaround above (two mDNS..) we have got IP address from test connection and subsituted
+        // it into "url" variable. And when creating Http object above, libcurl automatically includes "Host" header from address it got.
+        // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back. Not changing the host would work
+        // on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse proxy is used (issue #9734). Also
+        // when allow_ip_resolve = 0, this is not needed, but it should not break anything if it stays.
         // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
         std::string host = get_host_from_url(m_host);
         http.header("Host", host);
-    #endif // _WIN32
+#endif // _WIN32
         set_auth(http);
         http.form_add("Check", "1")
             .form_add("S-File-MD5", md5)
-            .form_add("Offset", "0")
-            .form_add("Uuid", uuid_string)
-            .form_add("TotalSize", fileSize)
-            .form_add_file("File", upload_data.source_path.string(), upload_filename.string())
+            .form_add("Offset", std::to_string(offset))
+            .form_add("Uuid", uuid)
+            .form_add("TotalSize", std::to_string(filesize))
+            .form_add_file("File", path, filename, offset, length)
             .on_complete([&](std::string body, unsigned status) {
                 BOOST_LOG_TRIVIAL(debug) << boost::format("%1%: File uploaded: HTTP %2%: %3%") % name % status % body;
                 if (status == 200) {
-                    try{
-                        pt::ptree root;
+                    try {
+                        pt::ptree          root;
                         std::istringstream is(body);
                         pt::read_json(is, root);
                         std::string code = root.get<std::string>("code");
-                        if(code == "000000"){
+                        if (code == "000000") {
                             // info_fn(L"complete", wxString());
-                        }else{
-                            //get error messages
-                            pt::ptree messages = root.get_child("messages");
-                            std::string error_message="ErrorCode : " + code + "\n";
-                            for (pt::ptree::value_type &message : messages) {
+                            result = true;
+                        } else {
+                            // get error messages
+                            pt::ptree   messages      = root.get_child("messages");
+                            std::string error_message = "ErrorCode : " + code + "\n";
+                            for (pt::ptree::value_type& message : messages) {
                                 std::string field = message.second.get<std::string>("field");
-                                std::string msg = message.second.get<std::string>("message");
+                                std::string msg   = message.second.get<std::string>("message");
                                 error_message += field + ":" + msg + "\n";
                             }
                             error_fn(wxString::FromUTF8(error_message));
-                            res = false;
                         }
-                    }catch(...){
+                    } catch (...) {
                         BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error parsing response: %2%") % name % body;
                         error_fn(wxString::FromUTF8("Error parsing response"));
-                        res = false;
                     }
                 } else {
                     error_fn(format_error(body, "upload failed", status));
-                    res = false;
                 }
             })
             .on_error([&](std::string body, std::string error, unsigned status) {
-                BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error uploading file: %2%, HTTP %3%, body: `%4%`") % name % error % status % body;
+                BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error uploading file: %2%, HTTP %3%, body: `%4%`") % name % error % status %
+                                                body;
                 error_fn(format_error(body, error, status));
-                res = false;
             })
             .on_progress([&](Http::Progress progress, bool& cancel) {
                 // If upload is finished, do not call progress_fn
                 // on_complete will be called after some time, so we do not need to call it here
-                // Because some devices will call on_complete after the upload progress reaches 100%, 
-                //so we need to process it here, based on on_complete
-                if(progress.ultotal == progress.ulnow){
+                // Because some devices will call on_complete after the upload progress reaches 100%,
+                // so we need to process it here, based on on_complete
+                if (progress.ultotal == progress.ulnow) {
                     // Upload is finished
                     return;
                 }
@@ -578,25 +489,79 @@ namespace Slic3r {
                 if (cancel) {
                     // Upload was canceled
                     BOOST_LOG_TRIVIAL(info) << name << ": Upload canceled";
-                    res = false;
                 }
             })
-    #ifdef WIN32
+#ifdef WIN32
             .ssl_revoke_best_effort(m_ssl_revoke_best_effort)
-    #endif
+#endif
             .perform_sync();
-
-        if(res && upload_data.post_action == PrintHostPostUploadAction::StartPrint){
-            //sleep 3s, wait for the file to be processed
-            std::this_thread::sleep_for(std::chrono::seconds(3));
-            res = print(client,upload_filename.string(),error_fn);
-        }
-        return res;
+        return result;
     }
 
-    bool ElegooLink::validate_version_text(const boost::optional<std::string> &version_text) const
+    bool ElegooLink::loopUpload(std::string url, PrintHostUpload upload_data, ProgressFn progress_fn, ErrorFn error_fn, InfoFn info_fn) const
     {
-        return  true;
+        const char* name = get_name();
+        const auto  upload_filename    = upload_data.upload_path.filename();
+        const auto  upload_parent_path = upload_data.upload_path.parent_path();
+        std::string source_path        = upload_data.source_path.string();
+        
+        // calc file size
+        std::ifstream   file(upload_data.source_path.string(), std::ios::binary | std::ios::ate);
+        std::streamsize size = file.tellg();
+        file.close();
+        const std::string fileSize = std::to_string(size);
+
+        // generate uuid
+        boost::uuids::random_generator generator;
+        boost::uuids::uuid uuid = generator();
+        std::string uuid_string = to_string(uuid);
+
+        std::string md5;
+        bbl_calc_md5(source_path, md5);
+
+
+        // connect to websocket, since the upload is successful, the file will be printed
+        std::string     wsUrl = get_host_from_url_no_port(m_host);
+        WebSocketClient client;
+        if (upload_data.post_action == PrintHostPostUploadAction::StartPrint) {
+            try {
+                client.connect(wsUrl, "3030", "/websocket");
+            } catch (std::exception& e) {
+                error_fn(std::string("\n") + wxString::FromUTF8(e.what()));
+                return false;
+            }
+        }
+
+        bool res = false;
+        const int packageCount = (size + MAX_UPLOAD_PACKAGE_LENGTH - 1) / MAX_UPLOAD_PACKAGE_LENGTH;
+
+        for (size_t i = 0; i < packageCount; i++) {
+            BOOST_LOG_TRIVIAL(info) << boost::format("%1%: Uploading file %2%/%3%") % name % (i + 1) % packageCount;
+            const size_t offset = MAX_UPLOAD_PACKAGE_LENGTH * i;
+            size_t length = MAX_UPLOAD_PACKAGE_LENGTH;
+            // if it is the last package, the length is the remainder of the file size divided by MAX_UPLOAD_PACKAGE_LENGTH
+            if ((i == packageCount - 1) && (size % MAX_UPLOAD_PACKAGE_LENGTH > 0)){
+                length = size % MAX_UPLOAD_PACKAGE_LENGTH;
+            }
+            res = uploadPart(
+                url, md5, uuid_string, source_path, upload_filename.string(), size, offset, length,
+                [size,i,progress_fn](Http::Progress progress, bool& cancel) {
+                    Http::Progress p(0,0,size, i*MAX_UPLOAD_PACKAGE_LENGTH+ progress.ulnow,
+                    progress.buffer);
+                 progress_fn(p, cancel);
+                }, error_fn, info_fn);
+            if (!res){
+                break;
+            }
+        }
+
+        // send print command
+        if (res && upload_data.post_action == PrintHostPostUploadAction::StartPrint) {
+            // sleep 3s, wait for the file to be processed
+            std::this_thread::sleep_for(std::chrono::seconds(3));
+            res = print(client, upload_filename.string(), error_fn);
+        }
+        return res;
     }
 
     bool ElegooLink::upload(PrintHostUpload upload_data, ProgressFn prorgess_fn, ErrorFn error_fn, InfoFn info_fn) const
@@ -661,61 +626,6 @@ namespace Slic3r {
         return false;
     #endif // WIN32
     }
-
-
-    #ifdef WIN32
-
-    bool ElegooLink::elegoo_test_with_resolved_ip(wxString& msg) const{
-    // Since the request is performed synchronously here,
-    // it is ok to refer to `msg` from within the closure
-    const char* name = get_name();
-    bool res = true;
-    // Msg contains ip string.
-    auto url = substitute_host(make_url(""), GUI::into_u8(msg));
-    msg.Clear();
-    std::string host = get_host_from_url(m_host);
-    auto http = Http::get(url);//std::move(url));
-    // "Host" header is necessary here. We have resolved IP address and subsituted it into "url" variable.
-    // And when creating Http object above, libcurl automatically includes "Host" header from address it got.
-    // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back.
-    // Not changing the host would work on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse proxy is used (issue #9734).
-    // Also when allow_ip_resolve = 0, this is not needed, but it should not break anything if it stays.
-    // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
-    http.header("Host", host);
-    set_auth(http);
-    http
-        .on_error([&](std::string body, std::string error, unsigned status) {
-            BOOST_LOG_TRIVIAL(error) << boost::format("%1%: Error getting version at %2% : %3%, HTTP %4%, body: `%5%`") % name % url % error % status % body;
-            res = false;
-            msg = format_error(body, error, status);
-        })
-        .on_complete([&, this](std::string body, unsigned) {
-            // Check if the response contains "ELEGOO" in any case.
-            // This is a simple check to see if the response is from an Elegoo Link server.
-            std::regex re("ELEGOO", std::regex::icase);
-            std::smatch match;
-            if (std::regex_search(body, match, re)) {
-                res = true;
-            } else {
-                msg = format_error(body, "Elegoo Link not detected", 0);
-                res = false;
-            }
-        })
-        .ssl_revoke_best_effort(m_ssl_revoke_best_effort)
-        .perform_sync();
-
-    return res;
-    }
-    bool ElegooLink::test_with_resolved_ip(wxString &msg) const
-    {
-        //Elegoo supports both otcoprint and Elegoo link
-        if(OctoPrint::test_with_resolved_ip(msg)){
-            return true;
-        }
-        msg="";
-        return elegoo_test_with_resolved_ip(msg);
-    }
-    #endif //WIN32
 
     bool ElegooLink::print(WebSocketClient& client, const std::string filename,ErrorFn error_fn) const{
         bool res = true;

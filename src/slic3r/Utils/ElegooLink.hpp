@@ -43,6 +43,23 @@ protected:
 private:
     bool elegoo_test(wxString& curl_msg) const;
     bool print(WebSocketClient& client, const std::string filename,ErrorFn error_fn) const;
+
+    bool loopUpload(std::string url, PrintHostUpload upload_data,
+                    ProgressFn        prorgess_fn,
+                    ErrorFn           error_fn,
+                    InfoFn            info_fn) const;
+
+    bool uploadPart(std::string url,
+                    std::string       md5,
+                    std::string       uuid,
+                    std::string       path,
+                    std::string       filename,
+                    size_t            filesize,
+                    size_t            offset,
+                    size_t            length,
+                    ProgressFn        prorgess_fn,
+                    ErrorFn           error_fn,
+                    InfoFn            info_fn) const;
 };
 }
 

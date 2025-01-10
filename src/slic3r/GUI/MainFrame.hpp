@@ -378,7 +378,7 @@ public:
     ParamsDialog*         m_param_dialog{ nullptr };
     //BBS
     SettingsDialog        m_settings_dialog;
-    DiffPresetDialog      diff_dialog;
+    DiffPresetDialog      m_diff_dialog;
     wxWindow*             m_plater_page{ nullptr };
     PrintHostQueueDialog* m_printhost_queue_dlg;
 

@@ -177,7 +177,7 @@ DPIFrame(NULL, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, BORDERLESS_FRAME_
     // BBS
     , m_recent_projects(18)
     , m_settings_dialog(this)
-    , diff_dialog(this)
+    , m_diff_dialog(this)
 {
 #ifdef __WXOSX__
     set_miniaturizable(GetHandle());
@@ -613,22 +613,22 @@ void MainFrame::bind_diff_dialog()
     };
 
     auto transfer = [this, get_tab](Preset::Type type) {
-        get_tab(type)->transfer_options(diff_dialog.get_left_preset_name(type),
-                                        diff_dialog.get_right_preset_name(type),
-                                        diff_dialog.get_selected_options(type));
+        get_tab(type)->transfer_options(m_diff_dialog.get_left_preset_name(type),
+                                        m_diff_dialog.get_right_preset_name(type),
+                                        m_diff_dialog.get_selected_options(type));
     };
 
     auto process_options = [this](std::function<void(Preset::Type)> process) {
-        const Preset::Type diff_dlg_type = diff_dialog.view_type();
+        const Preset::Type diff_dlg_type = m_diff_dialog.view_type();
         if (diff_dlg_type == Preset::TYPE_INVALID) {
-            for (const Preset::Type& type : diff_dialog.types_list() )
+            for (const Preset::Type& type : m_diff_dialog.types_list() )
                 process(type);
         }
         else
             process(diff_dlg_type);
     };
 
-    diff_dialog.Bind(EVT_DIFF_DIALOG_TRANSFER,      [process_options, transfer](SimpleEvent&)         { process_options(transfer); });
+    m_diff_dialog.Bind(EVT_DIFF_DIALOG_TRANSFER,      [process_options, transfer](SimpleEvent&)         { process_options(transfer); });
 }
 
 
@@ -2107,6 +2107,9 @@ void MainFrame::on_sys_color_changed()
         m_monitor->on_sys_color_changed();
     if(m_calibration)
         m_calibration->on_sys_color_changed();
+
+    m_diff_dialog.force_color_changed();
+
     // update Tabs
     for (auto tab : wxGetApp().tabs_list)
         tab->sys_color_changed();

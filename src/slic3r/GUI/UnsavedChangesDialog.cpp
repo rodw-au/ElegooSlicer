@@ -2311,6 +2311,7 @@ void DiffPresetDialog::on_sys_color_changed()
 
     // msw_rescale updates just icons, so use it
     m_tree->Rescale();
+    update_tree();
     Refresh();
 }
 

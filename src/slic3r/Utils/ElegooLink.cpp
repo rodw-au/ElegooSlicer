@@ -500,11 +500,11 @@ namespace Slic3r {
 
     bool ElegooLink::loopUpload(std::string url, PrintHostUpload upload_data, ProgressFn progress_fn, ErrorFn error_fn, InfoFn info_fn) const
     {
-        const char* name = get_name();
+        const char* name               = get_name();
         const auto  upload_filename    = upload_data.upload_path.filename();
         const auto  upload_parent_path = upload_data.upload_path.parent_path();
         std::string source_path        = upload_data.source_path.string();
-        
+
         // calc file size
         std::ifstream   file(upload_data.source_path.string(), std::ios::binary | std::ios::ate);
         std::streamsize size = file.tellg();
@@ -513,53 +513,59 @@ namespace Slic3r {
 
         // generate uuid
         boost::uuids::random_generator generator;
-        boost::uuids::uuid uuid = generator();
-        std::string uuid_string = to_string(uuid);
+        boost::uuids::uuid             uuid        = generator();
+        std::string                    uuid_string = to_string(uuid);
 
         std::string md5;
         bbl_calc_md5(source_path, md5);
 
-
-        // connect to websocket, since the upload is successful, the file will be printed
-        std::string     wsUrl = get_host_from_url_no_port(m_host);
-        WebSocketClient client;
-        if (upload_data.post_action == PrintHostPostUploadAction::StartPrint) {
-            try {
-                client.connect(wsUrl, "3030", "/websocket");
-            } catch (std::exception& e) {
-                error_fn(std::string("\n") + wxString::FromUTF8(e.what()));
-                return false;
-            }
-        }
-
-        bool res = false;
+        bool      res          = false;
         const int packageCount = (size + MAX_UPLOAD_PACKAGE_LENGTH - 1) / MAX_UPLOAD_PACKAGE_LENGTH;
 
         for (size_t i = 0; i < packageCount; i++) {
             BOOST_LOG_TRIVIAL(info) << boost::format("%1%: Uploading file %2%/%3%") % name % (i + 1) % packageCount;
             const size_t offset = MAX_UPLOAD_PACKAGE_LENGTH * i;
-            size_t length = MAX_UPLOAD_PACKAGE_LENGTH;
+            size_t       length = MAX_UPLOAD_PACKAGE_LENGTH;
             // if it is the last package, the length is the remainder of the file size divided by MAX_UPLOAD_PACKAGE_LENGTH
-            if ((i == packageCount - 1) && (size % MAX_UPLOAD_PACKAGE_LENGTH > 0)){
+            if ((i == packageCount - 1) && (size % MAX_UPLOAD_PACKAGE_LENGTH > 0)) {
                 length = size % MAX_UPLOAD_PACKAGE_LENGTH;
             }
             res = uploadPart(
                 url, md5, uuid_string, source_path, upload_filename.string(), size, offset, length,
-                [size,i,progress_fn](Http::Progress progress, bool& cancel) {
-                    Http::Progress p(0,0,size, i*MAX_UPLOAD_PACKAGE_LENGTH+ progress.ulnow,
-                    progress.buffer);
-                 progress_fn(p, cancel);
-                }, error_fn, info_fn);
-            if (!res){
+                [size, i, progress_fn](Http::Progress progress, bool& cancel) {
+                    Http::Progress p(0, 0, size, i * MAX_UPLOAD_PACKAGE_LENGTH + progress.ulnow, progress.buffer);
+                    progress_fn(p, cancel);
+                },
+                error_fn, info_fn);
+            if (!res) {
                 break;
             }
         }
 
-        // send print command
-        if (res && upload_data.post_action == PrintHostPostUploadAction::StartPrint) {
-            // sleep 3s, wait for the file to be processed
-            std::this_thread::sleep_for(std::chrono::seconds(3));
-            res = print(client, upload_filename.string(), error_fn);
+        if (res) {
+            if (upload_data.post_action == PrintHostPostUploadAction::StartPrint) {
+                // sleep 3s, wait for the file to be processed
+                std::this_thread::sleep_for(std::chrono::seconds(3));
+                // connect to websocket, since the upload is successful, the file will be printed
+                std::string     wsUrl = get_host_from_url_no_port(m_host);
+                WebSocketClient client;
+                try {
+                    client.connect(wsUrl, "3030", "/websocket");
+                } catch (std::exception& e) {
+                    const auto errorString = std::string(e.what());
+                    if (errorString.find("The WebSocket handshake was declined by the remote peer") != std::string::npos) {
+                        // error_fn(
+                        //     _L("The number of printer connections has exceeded the limit. Please disconnect other connections, restart the "
+                        //        "printer and slicer, and then try again."));
+                        error_fn(_L("The file has been transferred, but some unknown errors occurred. Please check the device page for the file and try to start printing again."));
+                    } else {
+                        error_fn(std::string("\n") + wxString::FromUTF8(e.what()));
+                    }
+                    return false;
+                }
+                // send print command
+                res = print(client, upload_filename.string(), error_fn);
+            }
         }
         return res;
     }
@@ -744,7 +750,7 @@ namespace Slic3r {
             } catch (const std::exception& e) {
                 std::cerr << "Error: " << e.what() << std::endl;
                 BOOST_LOG_TRIVIAL(error) << "start print error: " << e.what();
-                error_fn(_(L("Start print failed")) +"\n" +GUI::from_u8(e.what()));
+                error_fn(_L("Start print failed") +"\n" +GUI::from_u8(e.what()));
                 res=false;
             }
         return res;

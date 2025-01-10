@@ -323,7 +323,7 @@ Temp_Calibration_Dlg::Temp_Calibration_Dlg(wxWindow* parent, wxWindowID id, Plat
         if(!ti->GetTextCtrl()->GetValue().ToULong(&t))
             return;
         if(t> 350 || t < 170){
-            MessageDialog msg_dlg(nullptr, wxString::Format(L"Supported range: 170%s - 350%s",_L("\u2103"),_L("\u2103")), wxEmptyString, wxICON_WARNING | wxOK);
+            MessageDialog msg_dlg(nullptr, wxString::Format(_L("Supported range: 170%s - 350%s"),_L("\u2103"),_L("\u2103")), wxEmptyString, wxICON_WARNING | wxOK);
             msg_dlg.ShowModal();
             if(t > 350)
                 t = 350;

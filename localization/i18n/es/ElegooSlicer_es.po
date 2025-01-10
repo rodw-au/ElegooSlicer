@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-03 14:50+0800\n"
+"POT-Creation-Date: 2025-01-10 14:18+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Carlos Fco. Caruncho Serrano <puzzlero@gmail.com>\n"
 "Language-Team: \n"
@@ -15432,6 +15432,10 @@ msgstr "Temperatura final: "
 msgid "Temp step: "
 msgstr "Paso temperatura: "
 
+#, c-format, boost-format
+msgid "Supported range: 170%s - 350%s"
+msgstr ""
+
 msgid ""
 "Please input valid values:\n"
 "Start temp: <= 350\n"
@@ -16688,6 +16692,11 @@ msgstr ""
 msgid "Could not connect to Elegoo Link"
 msgstr ""
 
+msgid ""
+"The file has been transferred, but some unknown errors occurred. Please "
+"check the device page for the file and try to start printing again."
+msgstr ""
+
 msgid "Error code not found"
 msgstr ""
 
@@ -16710,6 +16719,44 @@ msgid "Start print timeout"
 msgstr ""
 
 msgid "Start print failed"
+msgstr ""
+
+msgid ""
+"Connection timed out. Please check if the printer and computer network are "
+"functioning properly."
+msgstr ""
+
+msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
+msgstr ""
+
+msgid ""
+"File/data transfer interrupted. Please check the printer and network, then "
+"try it again."
+msgstr ""
+
+msgid "Add Emboss text object"
+msgstr ""
+
+msgid "Created text volume is empty. Change text or font."
+msgstr ""
+
+msgid ""
+"It is used default volume for embossed text, try to change text or font to "
+"fix it."
+msgstr ""
+
+#. TRN: This is the title of the action appearing in undo/redo stack.
+#. It is same for Text and SVG.
+msgid "Emboss attribute change"
+msgstr ""
+
+msgid "Add Emboss text Volume"
+msgstr ""
+
+msgid "Font doesn't have any shape for given text."
+msgstr ""
+
+msgid "There is no valid surface for text projection."
 msgstr ""
 
 #: resources/data/hints.ini: [hint:G-code window]

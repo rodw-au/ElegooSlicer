@@ -2108,8 +2108,10 @@ void MainFrame::on_sys_color_changed()
     if(m_calibration)
         m_calibration->on_sys_color_changed();
 
+#ifdef _WIN32
     m_diff_dialog.force_color_changed();
-
+#endif
+ 
     // update Tabs
     for (auto tab : wxGetApp().tabs_list)
         tab->sys_color_changed();

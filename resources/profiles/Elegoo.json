@@ -1463,6 +1463,10 @@
         {
             "name": "Generic PETG-CF",
             "sub_path": "filament/Generic/Generic PETG-CF.json"
+        },
+        {
+            "name": "Generic PLA",
+            "sub_path": "filament/Generic/Generic PLA.json"
         }
     ],
     "machine_list": [

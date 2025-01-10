@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slic3rPE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-03 14:50+0800\n"
+"POT-Creation-Date: 2025-01-10 14:18+0800\n"
 "PO-Revision-Date: 2023-04-01 13:21+0800\n"
 "Last-Translator: ELEGOOTechSupport <softfeverever@gmail.com>\n"
 "Language-Team: \n"
@@ -4592,10 +4592,10 @@ msgid "Clone copies of selections"
 msgstr "克隆多份所选项"
 
 msgid "Duplicate Current Plate"
-msgstr ""
+msgstr "复制当前板"
 
 msgid "Duplicate the current plate"
-msgstr ""
+msgstr "复制当前板"
 
 msgid "Select all"
 msgstr "选中所有"
@@ -14392,6 +14392,10 @@ msgstr "结束温度"
 msgid "Temp step: "
 msgstr "温度步距"
 
+#, c-format, boost-format
+msgid "Supported range: 170%s - 350%s"
+msgstr "支持范围: 170%s - 350%s"
+
 msgid ""
 "Please input valid values:\n"
 "Start temp: <= 350\n"
@@ -15525,6 +15529,13 @@ msgstr "已成功连接到Elegoo Link"
 msgid "Could not connect to Elegoo Link"
 msgstr "无法连接到Elegoo Link"
 
+msgid ""
+"The file has been transferred, but some unknown errors occurred. Please "
+"check the device page for the file and try to start printing again."
+msgstr ""
+"文件已经完成传输，但是发生一些未知的错误，请前往设备页面检查文件并尝试重新启"
+"动打印。"
+
 msgid "Error code not found"
 msgstr "未发现错误码。"
 
@@ -15548,6 +15559,44 @@ msgstr "启动打印超时。"
 
 msgid "Start print failed"
 msgstr "启动打印失败。"
+
+msgid ""
+"Connection timed out. Please check if the printer and computer network are "
+"functioning properly."
+msgstr "连接打印机超时，请检查打印机以及电脑网络是否正常。"
+
+msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
+msgstr "无法解析输入的主机名/IP/URL，请重新输入。"
+
+msgid ""
+"File/data transfer interrupted. Please check the printer and network, then "
+"try it again."
+msgstr "文件/数据传输中断，请检查打印机及网络后重新尝试。"
+
+msgid "Add Emboss text object"
+msgstr "添加浮雕文本对象"
+
+msgid "Created text volume is empty. Change text or font."
+msgstr "选择的字体不支持输入文字，请更换字体或输入该字体支持的文本。"
+
+msgid ""
+"It is used default volume for embossed text, try to change text or font to "
+"fix it."
+msgstr "它使用浮雕文本的默认体积，尝试更改文本或字体来修复它。"
+
+#. TRN: This is the title of the action appearing in undo/redo stack.
+#. It is same for Text and SVG.
+msgid "Emboss attribute change"
+msgstr ""
+
+msgid "Add Emboss text Volume"
+msgstr ""
+
+msgid "Font doesn't have any shape for given text."
+msgstr ""
+
+msgid "There is no valid surface for text projection."
+msgstr ""
 
 #: resources/data/hints.ini: [hint:G-code window]
 msgid ""
@@ -15841,6 +15890,20 @@ msgid ""
 msgstr ""
 "避免翘曲\n"
 "您知道吗？打印ABS这类易翘曲材料时，适当提高热床温度可以降低翘曲的概率。"
+
+#~ msgid ""
+#~ "The number of printer connections has exceeded the limit. Please "
+#~ "disconnect other connections, restart the printer and slicer, and then "
+#~ "try again."
+#~ msgstr ""
+#~ "打印机的连接数量超过上限，请退出其它连接，并且重启打印机和软件，然后再次重"
+#~ "试。"
+
+#~ msgid ""
+#~ "Connection timed out. Please check if the printer and computer network "
+#~ "are functioning properly and ensure they are on the same network."
+#~ msgstr ""
+#~ "连接打印机超时，请检查打印机以及电脑网络是否正常，并且处于同一个网络。"
 
 #, boost-format
 #~ msgid "Fatal error, exception caught: %1%"

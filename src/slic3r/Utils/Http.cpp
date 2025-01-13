@@ -192,6 +192,15 @@ Http::priv::priv(const std::string &url)
 	::curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 	::curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 	::curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+
+	// https://everything.curl.dev/http/post/expect100.html
+	// remove the Expect: header, it will add a second delay to each request,
+	// if the file is uploaded in packets, it will cause the upload time to be longer
+	headerlist = curl_slist_append(headerlist, "Expect:");
+
+    //// Set the debug proxy
+    //curl_easy_setopt(curl, CURLOPT_PROXY, "127.0.0.1:8888");
+
 }
 
 Http::priv::~priv()

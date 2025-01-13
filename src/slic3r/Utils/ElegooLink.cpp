@@ -433,6 +433,7 @@ namespace Slic3r {
         // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
         std::string host = get_host_from_url(m_host);
         http.header("Host", host);
+        http.header("Accept", "application/json, text/plain, */*");
 #endif // _WIN32
         set_auth(http);
         http.form_add("Check", "1")

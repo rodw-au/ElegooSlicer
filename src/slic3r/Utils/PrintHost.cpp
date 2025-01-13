@@ -50,7 +50,7 @@ PrintHost* PrintHost::get_print_host(DynamicPrintConfig *config)
 
     if (tech == ptFFF) {
         const auto opt = config->option<ConfigOptionEnum<PrintHostType>>("host_type");
-        const auto host_type = opt != nullptr ? opt->value : htOctoPrint;
+        const auto host_type = opt != nullptr ? opt->value : htElegooLink;
 
         switch (host_type) {
             case htElegooLink: return new ElegooLink(config);

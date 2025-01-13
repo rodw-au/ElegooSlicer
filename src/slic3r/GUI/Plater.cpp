@@ -7400,35 +7400,35 @@ void Plater::priv::on_filament_color_changed(wxCommandEvent &event)
 
 void Plater::priv::install_network_plugin(wxCommandEvent &event)
 {
-    wxGetApp().ShowDownNetPluginDlg();
-    return;
+    // wxGetApp().ShowDownNetPluginDlg();
+    // return;
 }
 
 void Plater::priv::update_plugin_when_launch(wxCommandEvent &event)
 {
-    std::string data_dir_str = data_dir();
-    boost::filesystem::path data_dir_path(data_dir_str);
-    auto cache_folder = data_dir_path / "ota";
-    std::string changelog_file = cache_folder.string() + "/network_plugins.json";
+    // std::string data_dir_str = data_dir();
+    // boost::filesystem::path data_dir_path(data_dir_str);
+    // auto cache_folder = data_dir_path / "ota";
+    // std::string changelog_file = cache_folder.string() + "/network_plugins.json";
 
-    UpdatePluginDialog dlg(wxGetApp().mainframe);
-    dlg.update_info(changelog_file);
-    auto result = dlg.ShowModal();
+    // UpdatePluginDialog dlg(wxGetApp().mainframe);
+    // dlg.update_info(changelog_file);
+    // auto result = dlg.ShowModal();
 
-    auto app_config = wxGetApp().app_config;
-    if (!app_config) return;
+    // auto app_config = wxGetApp().app_config;
+    // if (!app_config) return;
 
-    if (result == wxID_OK) {
-        app_config->set("update_network_plugin", "true");
-    }
-    else if (result == wxID_NO) {
-        app_config->set("update_network_plugin", "false");
-    }
+    // if (result == wxID_OK) {
+    //     app_config->set("update_network_plugin", "true");
+    // }
+    // else if (result == wxID_NO) {
+    //     app_config->set("update_network_plugin", "false");
+    // }
 }
 
 void Plater::priv::show_install_plugin_hint(wxCommandEvent &event)
 {
-    notification_manager->bbl_show_plugin_install_notification(into_u8(_L("Network Plug-in is not detected. Network related features are unavailable.")));
+    // notification_manager->bbl_show_plugin_install_notification(into_u8(_L("Network Plug-in is not detected. Network related features are unavailable.")));
 }
 
 void Plater::priv::show_preview_only_hint(wxCommandEvent &event)

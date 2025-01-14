@@ -45,7 +45,7 @@ public:
     void update_mode();
 private:
     void SendAPIKey();
-
+    void OnScriptMessage(wxWebViewEvent& event);
     wxWebView* m_browser;
     long m_zoomFactor;
     wxString m_apikey;

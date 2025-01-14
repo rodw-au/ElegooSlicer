@@ -49,7 +49,7 @@ private:
                     ErrorFn           error_fn,
                     InfoFn            info_fn) const;
 
-    bool uploadPart(std::string url,
+    bool uploadPart(Http &http,
                     std::string       md5,
                     std::string       uuid,
                     std::string       path,

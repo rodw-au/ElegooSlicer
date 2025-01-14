@@ -417,25 +417,13 @@ namespace Slic3r {
     {
         return  true;
     }
-    bool ElegooLink::uploadPart(std::string url,std::string md5,std::string uuid,std::string path,
+    bool ElegooLink::uploadPart(Http &http,std::string md5,std::string uuid,std::string path,
                                 std::string filename,size_t filesize,size_t offset,size_t length,
                                 ProgressFn  prorgess_fn,ErrorFn error_fn,InfoFn info_fn)const
     {
         const char* name   = get_name();
         bool        result = false;
-        auto        http   = Http::post(url);
-#ifdef WIN32
-        // "Host" header is necessary here. In the workaround above (two mDNS..) we have got IP address from test connection and subsituted
-        // it into "url" variable. And when creating Http object above, libcurl automatically includes "Host" header from address it got.
-        // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back. Not changing the host would work
-        // on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse proxy is used (issue #9734). Also
-        // when allow_ip_resolve = 0, this is not needed, but it should not break anything if it stays.
-        // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
-        std::string host = get_host_from_url(m_host);
-        http.header("Host", host);
-        http.header("Accept", "application/json, text/plain, */*");
-#endif // _WIN32
-        set_auth(http);
+        http.form_clear();
         http.form_add("Check", "1")
             .form_add("S-File-MD5", md5)
             .form_add("Offset", std::to_string(offset))
@@ -502,12 +490,11 @@ namespace Slic3r {
     bool ElegooLink::loopUpload(std::string url, PrintHostUpload upload_data, ProgressFn progress_fn, ErrorFn error_fn, InfoFn info_fn) const
     {
         const char* name               = get_name();
-        const auto  upload_filename    = upload_data.upload_path.filename();
-        const auto  upload_parent_path = upload_data.upload_path.parent_path();
+        const auto  upload_filename    = upload_data.upload_path.filename().string();
         std::string source_path        = upload_data.source_path.string();
 
         // calc file size
-        std::ifstream   file(upload_data.source_path.string(), std::ios::binary | std::ios::ate);
+        std::ifstream   file(source_path, std::ios::binary | std::ios::ate);
         std::streamsize size = file.tellg();
         file.close();
         const std::string fileSize = std::to_string(size);
@@ -519,6 +506,20 @@ namespace Slic3r {
 
         std::string md5;
         bbl_calc_md5(source_path, md5);
+
+        auto        http   = Http::post(url);
+#ifdef WIN32
+        // "Host" header is necessary here. In the workaround above (two mDNS..) we have got IP address from test connection and subsituted
+        // it into "url" variable. And when creating Http object above, libcurl automatically includes "Host" header from address it got.
+        // Thus "Host" is set to the resolved IP instead of host filled by user. We need to change it back. Not changing the host would work
+        // on the most cases (where there is 1 service on 1 hostname) but would break when f.e. reverse proxy is used (issue #9734). Also
+        // when allow_ip_resolve = 0, this is not needed, but it should not break anything if it stays.
+        // https://www.rfc-editor.org/rfc/rfc7230#section-5.4
+        std::string host = get_host_from_url(m_host);
+        http.header("Host", host);
+        http.header("Accept", "application/json, text/plain, */*");
+#endif // _WIN32
+        set_auth(http);
 
         bool      res          = false;
         const int packageCount = (size + MAX_UPLOAD_PACKAGE_LENGTH - 1) / MAX_UPLOAD_PACKAGE_LENGTH;
@@ -532,7 +533,7 @@ namespace Slic3r {
                 length = size % MAX_UPLOAD_PACKAGE_LENGTH;
             }
             res = uploadPart(
-                url, md5, uuid_string, source_path, upload_filename.string(), size, offset, length,
+                http, md5, uuid_string, source_path, upload_filename, size, offset, length,
                 [size, i, progress_fn](Http::Progress progress, bool& cancel) {
                     Http::Progress p(0, 0, size, i * MAX_UPLOAD_PACKAGE_LENGTH + progress.ulnow, progress.buffer);
                     progress_fn(p, cancel);
@@ -565,7 +566,7 @@ namespace Slic3r {
                     return false;
                 }
                 // send print command
-                res = print(client, upload_filename.string(), error_fn);
+                res = print(client, upload_filename, error_fn);
             }
         }
         return res;

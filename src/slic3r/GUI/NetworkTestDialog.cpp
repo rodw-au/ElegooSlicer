@@ -22,7 +22,8 @@ static wxString NA_STR = _L("N/A");
 NetworkTestDialog::NetworkTestDialog(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : DPIDialog(parent,wxID_ANY,from_u8((boost::format(_utf8(L("Network Test")))).str()),wxDefaultPosition,
             wxSize(1000, 700),
-            /*wxCAPTION*/wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER)
+                /*wxCAPTION*/ wxDEFAULT_DIALOG_STYLE | wxMAXIMIZE_BOX | wxMINIMIZE_BOX | wxRESIZE_BORDER)
+    , m_closing(false)
 {
     this->SetBackgroundColour(wxColour(255, 255, 255));
 
@@ -189,7 +190,18 @@ wxBoxSizer* NetworkTestDialog::create_result_sizer(wxWindow* parent)
 
 NetworkTestDialog::~NetworkTestDialog()
 {
-    ;
+    for (int i = 0; i < TEST_JOB_MAX; i++) {
+        if (test_job[i]) {
+            test_job[i]->join();
+            delete test_job[i];
+            test_job[i] = nullptr;
+        }
+    }
+    if (m_sequence_job) {
+        m_sequence_job->join();
+        delete m_sequence_job;
+        m_sequence_job = nullptr;
+    }
 }
 
 void NetworkTestDialog::init_bind()
@@ -246,13 +258,21 @@ void NetworkTestDialog::start_all_job()
 
 void NetworkTestDialog::start_all_job_sequence()
 {
-	m_sequence_job = new boost::thread([this] {
+    if (m_isSequenceTest) {
+        return;
+	}
+    m_isSequenceTest = true;
+    m_sequence_job = new boost::thread([this] {
+        
 		update_status(-1, "start_test_sequence");
         start_test_url(TEST_BING_JOB, "Bing", "http://www.bing.com");
-        if (m_closing) return;
+        if (m_closing)
+            return;
 		start_test_url(TEST_ORCA_JOB, "ElegooSlicer(GitHub)", "https://github.com/ELEGOO-3D/ElegooSlicer");
-		if (m_closing) return;
+        if (m_closing)
+            return;
 		update_status(-1, "end_test_sequence");
+        m_isSequenceTest = false;
 	});
 }
 
@@ -267,10 +287,9 @@ void NetworkTestDialog::start_test_url(TestJob job, wxString name, wxString url)
 	info = wxString::Format("[test %s]: url=%s", name,url);
 
     update_status(-1, info);
-
     int result = -1;
 	http.timeout_max(10)
-		.on_complete([this, &result](std::string body, unsigned status) {
+        .on_complete([this, &result](std::string body, unsigned status) {
 			try {
 				if (status == 200) {
 					result = 0;
@@ -284,7 +303,7 @@ void NetworkTestDialog::start_test_url(TestJob job, wxString name, wxString url)
 			wxString ip_report = wxString::Format("test %s ip resolved = %s", name, ip);
 			update_status(job, ip_report);
 		})
-		.on_error([this,name,job](std::string body, std::string error, unsigned int status) {
+        .on_error([this, name, job](std::string body, std::string error, unsigned int status) {
 		wxString info = wxString::Format("status=%u, body=%s, error=%s", status, body, error);
         this->update_status(job, wxString::Format("test %s failed", name));
         this->update_status(-1, info);
@@ -320,16 +339,21 @@ void NetworkTestDialog::start_test_bing_thread()
 
 void NetworkTestDialog::on_close(wxCloseEvent& event)
 {
-	m_download_cancel = true;
-	m_closing = true;
-	for (int i = 0; i < TEST_JOB_MAX; i++) {
-		if (test_job[i]) {
-			test_job[i]->join();
-			test_job[i] = nullptr;
-		}
-	}
-
-	event.Skip();
+    m_download_cancel = true;
+    m_closing = true;
+    for (int i = 0; i < TEST_JOB_MAX; i++) {
+        if (test_job[i]) {
+            test_job[i]->join();
+            delete test_job[i];
+            test_job[i] = nullptr;
+        }
+    }
+    if (m_sequence_job) {
+        m_sequence_job->join();
+        delete m_sequence_job;
+        m_sequence_job = nullptr;
+    }
+    event.Skip();
 }
 
 

@@ -11285,16 +11285,26 @@ static long GetNumberFromUser(  const wxString& msg,
                                 long max,
                                 wxWindow* parent)
 {
-#ifdef _WIN32
+// #ifdef _WIN32
     wxNumberEntryDialog dialog(parent, msg, prompt, title, value, min, max, wxDefaultPosition);
     wxGetApp().UpdateDlgDarkUI(&dialog);
+
+    wxWindow* okButton = dialog.FindWindow(wxID_OK);
+    if (okButton) {
+        okButton->SetLabel(_L("OK"));
+    }
+    wxWindow* cancelButton = dialog.FindWindow(wxID_CANCEL);
+    if (cancelButton) {
+        cancelButton->SetLabel(_L("Cancel"));
+    }
+
     if (dialog.ShowModal() == wxID_OK)
         return dialog.GetValue();
 
     return -1;
-#else
-    return wxGetNumberFromUser(msg, prompt, title, value, min, max, parent);
-#endif
+// #else
+//     return wxGetNumberFromUser(msg, prompt, title, value, min, max, parent);
+// #endif
 }
 
 void Plater::set_number_of_copies(/*size_t num*/)
@@ -13418,7 +13428,7 @@ void Plater::clone_selection()
 {
     if (is_selection_empty())
         return;
-    long res = wxGetNumberFromUser("",
+    long res = GetNumberFromUser("",
         _L("Clone"),
         _L("Number of copies:"),
         1, 0, 1000, this);

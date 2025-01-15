@@ -16,6 +16,7 @@
 #include "Widgets/RadioBox.hpp"
 #include "Widgets/TextInput.hpp"
 #include <wx/listimpl.cpp>
+#include <wx/display.h>
 #include <map>
 
 #ifdef __WINDOWS__
@@ -1005,9 +1006,9 @@ void PreferencesDialog::create()
     Layout();
     Fit();
     int screen_height = wxGetDisplaySize().GetY();
-    if (this->GetSize().GetY() > screen_height)
-        this->SetSize(this->GetSize().GetX() + FromDIP(40), screen_height * 4 / 5);
-
+    // if (this->GetSize().GetY() > screen_height)
+    //     this->SetSize(this->GetSize().GetX() + FromDIP(40), screen_height * 4 / 5);
+    this->SetSize(this->GetSize().GetX() + FromDIP(40), FromDIP(600));
     CenterOnParent();
     wxPoint start_pos = this->GetPosition();
     if (start_pos.y < 0) { this->SetPosition(wxPoint(start_pos.x, 0)); }
@@ -1177,7 +1178,7 @@ wxWindow* PreferencesDialog::create_general_page()
     // auto item_backup = create_item_switch(_L("Backup switch"), page, _L("Backup switch"), "units");
     auto item_gcodes_warning = create_item_checkbox(_L("No warnings when loading 3MF with modified G-codes"), page,_L("No warnings when loading 3MF with modified G-codes"), 50, "no_warn_when_modified_gcodes");
     auto item_backup  = create_item_checkbox(_L("Auto-Backup"), page,_L("Backup your project periodically for restoring from the occasional crash."), 50, "backup_switch");
-    auto item_backup_interval = create_item_backup_input(_L("every"), page, _L("The peroid of backup in seconds."), "backup_interval");
+    auto item_backup_interval = create_item_backup_input(_L("every"), page, _L("The period of backup in seconds."), "backup_interval");
 
     //downloads
     auto title_downloads = create_item_title(_L("Downloads"), page, _L("Downloads"));

@@ -49,8 +49,18 @@ namespace Slic3r {
 
 static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repos/ELEGOO-3D/ElegooSlicer/releases/latest";
 static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/ELEGOO-3D/ElegooSlicer/releases";
-static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/ELEGOO-3D/elegooslicer-profiles/releases/tags";
+
+//DEV TEST PROD
+#if ELEGOO_TEST
+static const std::string PROFILE_UPDATE_URL = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer_profiles";
+static const std::string ELEGOO_UPDATE_URL_STABLE = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer/update_config.test.json";
+static const std::string MESSAGE_CHECK_URL = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer/message.test.json";
+#else
+static const std::string PROFILE_UPDATE_URL = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer_profiles";
 static const std::string ELEGOO_UPDATE_URL_STABLE = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer/update_config.json";
+static const std::string MESSAGE_CHECK_URL = "https://elegoo-downloads.oss-us-west-1.aliyuncs.com/software/ElegooSlicer/message.json";
+#endif
+
 
 static const std::string MODELS_STR = "models";
 
@@ -92,6 +102,15 @@ std::string AppConfig::get_hms_host()
 // #else
     return "e.bambulab.com";
 // #endif
+}
+
+bool AppConfig::get_stealth_mode()
+{
+    // always return true when user did not finish setup wizard yet
+    if (!get_bool("firstguide","finish")) {
+        return true;
+    }
+    return get_bool("stealth_mode");
 }
 
 void AppConfig::reset()
@@ -202,6 +221,8 @@ void AppConfig::set_defaults()
     if (get("show_3d_navigator").empty())
         set_bool("show_3d_navigator", true);
 
+    if (get("show_outline").empty())
+        set_bool("show_outline", false);
 
 #ifdef _WIN32
 
@@ -1337,7 +1358,26 @@ std::string AppConfig::version_check_url(bool stable_only/* = false*/) const
 
 std::string AppConfig::profile_update_url() const
 {
-    return PROFILE_UPDATE_URL;
+    Semver elegoo_version;
+    auto version = Semver::parse(ELEGOOSLICER_VERSION);
+    if(!version) {
+        BOOST_LOG_TRIVIAL(error) << "[ElegooSlicer Updater]: failed to parse ElegooSlicer version";
+        return "";
+    }
+    elegoo_version = *version;
+    std::ostringstream oss;
+    oss << std::setw(2) << std::setfill('0') << elegoo_version.maj() << "."
+        << std::setw(2) << std::setfill('0') << elegoo_version.min() << "."
+        << "00.00";
+    std::string version_str = oss.str();
+    std::string profile_update_url;
+    #if ELEGOO_TEST
+        profile_update_url = PROFILE_UPDATE_URL + "/elegoo.ota.profiles." + version_str + ".test.json";
+    #else   
+        profile_update_url = PROFILE_UPDATE_URL + "/elegoo.ota.profiles." + version_str + ".json";
+    #endif
+
+    return profile_update_url;
 }
 
 bool AppConfig::exists()
@@ -1359,14 +1399,91 @@ std::string AppConfig::getSystemLocale() {
 #elif defined(__APPLE__) || defined(__MACH__)
     // macOS specific code
     CFLocaleRef localeRef = CFLocaleCopyCurrent();
-    CFStringRef localeStr = CFLocaleGetIdentifier(localeRef);
-    char localeName[256];
-    if (CFStringGetCString(localeStr, localeName, sizeof(localeName), kCFStringEncodingUTF8)) {
-        locale = localeName;
+    // 获取国家代码
+    CFStringRef countryCode = (CFStringRef)CFLocaleGetValue(localeRef, kCFLocaleCountryCode);
+    
+    // 将 CFStringRef 转换为 C++ 字符串
+    char country[256];
+    if (CFStringGetCString(countryCode, country, sizeof(country), kCFStringEncodingUTF8)) {
+        std::cout << "System country code: " << country << std::endl;
+    } else {
+        std::cerr << "Failed to get system country code" << std::endl;
     }
     CFRelease(localeRef);
+
+    CFArrayRef languages = CFLocaleCopyPreferredLanguages();
+    CFStringRef language = (CFStringRef)CFArrayGetValueAtIndex(languages, 0);
+    
+    char lang[256];
+    if (CFStringGetCString(language, lang, sizeof(lang), kCFStringEncodingUTF8)) {
+        std::string langStr(lang);
+        size_t pos = langStr.find('-');
+        if (pos != std::string::npos) {
+            langStr = langStr.substr(0, pos);
+        }
+        std::cout << "System language: " << lang << std::endl;
+        locale = langStr + "-" + country;
+    } else {
+        std::cerr << "Failed to get system language" << std::endl;
+    }
+
+    CFRelease(languages);
 #endif
 
     return locale;
 }
+
+std::string AppConfig::getSystemLanguage(){
+    std::string locale;
+
+#if defined(_WIN32) || defined(_WIN64)
+    // Windows specific code
+    wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
+    if (GetUserDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH)) {
+        char localeNameChar[LOCALE_NAME_MAX_LENGTH];
+        wcstombs(localeNameChar, localeName, LOCALE_NAME_MAX_LENGTH);
+        locale = localeNameChar;
+    }
+#elif defined(__APPLE__) || defined(__MACH__)
+
+    CFArrayRef languages = CFLocaleCopyPreferredLanguages();
+    CFStringRef language = (CFStringRef)CFArrayGetValueAtIndex(languages, 0);
+    
+    char lang[256];
+    if (CFStringGetCString(language, lang, sizeof(lang), kCFStringEncodingUTF8)) {
+        std::string langStr(lang);
+        //查找最后一个'-'的位置
+        size_t pos = langStr.rfind('-');
+        if (pos != std::string::npos) {
+            langStr = langStr.substr(0, pos);
+        }
+        if(langStr == "zh") {
+            langStr = "zh-CN";
+        } else if (langStr == "zh-Hans") {
+            langStr = "zh-CN";
+        } else if (langStr == "zh-Hant") {
+            langStr = "zh-TW";
+        } 
+        std::cout << "System language: " << lang << std::endl;
+        locale = langStr;
+    } else {
+        std::cerr << "Failed to get system language" << std::endl;
+    }
+
+    CFRelease(languages);
+#endif
+
+    return locale;
+}
+
+std::string AppConfig::message_check_url(){
+    return MESSAGE_CHECK_URL;
+}
+void AppConfig::set_last_pop_message_version(const std::string& version){
+    set("message", "last_pop_message_version", version);
+}
+std::string AppConfig::get_last_pop_message_version(){
+    return get("message", "last_pop_message_version");
+}
+
 }; // namespace Slic3r

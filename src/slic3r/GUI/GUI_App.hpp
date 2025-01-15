@@ -344,6 +344,9 @@ private:
     bool show_3d_navigator() const { return app_config->get_bool("show_3d_navigator"); }
     void toggle_show_3d_navigator() const { app_config->set_bool("show_3d_navigator", !show_3d_navigator()); }
 
+    bool show_outline() const { return app_config->get_bool("show_outline"); }
+    void toggle_show_outline() const { app_config->set_bool("show_outline", !show_outline()); }
+
     wxString get_inf_dialog_contect () {return m_info_dialog_content;};
 
     std::vector<std::string> split_str(std::string src, std::string separator);
@@ -466,6 +469,7 @@ private:
     bool            m_studio_active = true;
     std::chrono::system_clock::time_point  last_active_point;
 
+    void            check_message();
     void            check_update(bool show_tips, int by_user);
     void            check_new_version(bool show_tips = false, int by_user = 0);
     void            check_new_version_sf(bool show_tips = false, int by_user = 0);
@@ -665,6 +669,7 @@ private:
     void            cancel_networking_install();
     void            restart_networking();
     void            check_config_updates_from_updater() { check_updates(false); }
+    void            check_config_updates_from_menu() { check_updates(true); }
 
 private:
     int             updating_bambu_networking();

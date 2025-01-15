@@ -514,7 +514,16 @@ void AuFile::on_set_cover()
 void AuFile::on_set_delete()
 {
     fs::path bfs_path = m_file_path;
-    auto     is_fine = fs::remove(bfs_path);
+    bool    is_fine= true;
+    try {
+         is_fine = fs::remove(bfs_path);
+    } catch (const fs::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
+        BOOST_LOG_TRIVIAL(error) << "Filesystem error: " << e.what();
+    } catch (const std::exception& e) {
+        std::cerr << "General error: " << e.what() << std::endl;
+        BOOST_LOG_TRIVIAL(error) << "General error: " << e.what();
+    }
 
     if (m_cover) {
         auto full_path          = m_file_path.parent_path();
@@ -843,6 +852,7 @@ void AuxiliaryPanel::init_tabpanel()
     auto back_btn = new Button(this, _L("return"), "assemble_return", wxBORDER_NONE | wxBU_LEFT | wxBU_EXACTFIT);
     back_btn->SetSize(wxSize(FromDIP(220), FromDIP(18)));
     back_btn->SetBackgroundColor(btn_bg_green);
+    back_btn->SetTextColor(StateColor (std::pair<wxColour, int>(wxColour("#FDFFFD"), StateColor::Normal))); // ORCA fixes color change on text. icon stays white color but text changes to black without this
     back_btn->SetCornerRadius(0);
     back_btn->Bind(wxEVT_COMMAND_BUTTON_CLICKED, [this](wxEvent& e) {
         auto event = wxCommandEvent(EVT_AUXILIARY_DONE);

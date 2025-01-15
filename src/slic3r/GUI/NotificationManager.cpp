@@ -146,6 +146,7 @@ NotificationManager::PopNotification::PopNotification(const NotificationData &n,
 	, m_text2               (n.text2)
 	, m_evt_handler         (evt_handler)
 	, m_notification_start  (GLCanvas3D::timestamp_now())
+	, m_title				(n.title)
 {
     m_ErrorColor  = ImVec4(0.9, 0.36, 0.36, 1);
     m_WarnColor   = ImVec4(0.99, 0.69, 0.455, 1);
@@ -306,7 +307,7 @@ void NotificationManager::PopNotification::render(GLCanvas3D& canvas, float init
 		render_text(imgui, win_size.x, win_size.y, win_pos.x, win_pos.y);
 		render_close_button(imgui, win_size.x, win_size.y, win_pos.x, win_pos.y);
         m_minimize_b_visible = false;
-        if (m_multiline && m_lines_count > 3)
+        if (m_multiline && m_lines_count > RENDER_MORE_MAX_LINE)
 			render_minimize_button(imgui, win_pos.x, win_pos.y);
 	}
 	imgui.end();
@@ -544,6 +545,11 @@ void NotificationManager::PopNotification::count_lines()
 		}
 	}
 
+	//ELE
+	if(!m_title.empty()){
+		m_lines_count++;
+	}
+
 	// m_text_2 (text after hypertext) is not used for regular notifications right now.
 	// its caluculation is in HintNotification::count_lines()
 }
@@ -572,6 +578,11 @@ void NotificationManager::PopNotification::set_next_window_size(ImGuiWrapper& im
 		std::max(m_lines_count, (size_t)2) * m_line_height :
 		2 * m_line_height;
 	m_window_height += 1 * m_line_height; // top and bottom
+
+	if(!m_title.empty())
+	{
+		m_window_height += m_multiline? 0.2 * m_line_height: 1.2 * m_line_height;
+	}
 }
 
 void NotificationManager::PopNotification::bbl_render_block_notif_text(ImGuiWrapper& imgui, const float win_size_x, const float win_size_y, const float win_pos_x, const float win_pos_y)
@@ -643,6 +654,15 @@ void NotificationManager::PopNotification::render_text(ImGuiWrapper& imgui, cons
 	float	starting_y = (m_lines_count == 2 ? win_size_y / 2 - m_line_height : (m_lines_count == 1 ? win_size_y / 2 - m_line_height / 2 : m_line_height / 2));
 	float	shift_y = m_line_height;
 	std::string line;
+
+	if(!m_title.empty()){
+		ImGui::SetCursorPosX(x_offset);
+		ImGui::SetCursorPosY(starting_y);
+		imgui.push_bold_font();
+		imgui.text(m_title.c_str());
+		imgui.pop_bold_font();
+		starting_y+= 1.2 * m_line_height;
+	}
 
 	for (size_t i = 0; i < (m_multiline ? m_endlines.size() : std::min(m_endlines.size(), (size_t)2)); i++) {
 		assert(m_endlines.size() > i && m_text1.size() >= m_endlines[i]);
@@ -1794,7 +1814,16 @@ void NotificationManager::push_notification(NotificationType type,
 	int duration = get_standard_duration(level);
     push_notification_data({ type, level, duration, text, hypertext, callback }, timestamp);
 }
-
+void NotificationManager::push_notification(NotificationType type, NotificationLevel level, const std::string& title,  const std::string& text, const std::string& hypertext,
+                           std::function<bool(wxEvtHandler*)> callback, 
+						   std::function<void()> closeCallback, 
+						   int timestamp)
+{
+	int duration = get_standard_duration(level);
+	NotificationData data { type, level, duration, text, hypertext, callback };
+	data.title = title;
+    push_notification_data(std::make_unique<MessageNotification>(data, m_id_provider, m_evt_handler, closeCallback), timestamp);
+}
 void NotificationManager::push_delayed_notification(const NotificationType type, std::function<bool(void)> condition_callback, int64_t initial_delay, int64_t delay_interval)
 {
 	auto it = std::find_if(std::begin(basic_notifications), std::end(basic_notifications),

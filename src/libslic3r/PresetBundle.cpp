@@ -44,10 +44,10 @@ static std::vector<std::string> s_project_options {
 };
 
 //BBS: add BBL as default
-const char *PresetBundle::BBL_BUNDLE = "Custom";
-const char *PresetBundle::BBL_DEFAULT_PRINTER_MODEL = "MyKlipper 0.4 nozzle";
+const char *PresetBundle::BBL_BUNDLE = "Elegoo";
+const char *PresetBundle::BBL_DEFAULT_PRINTER_MODEL = "Elegoo Centauri Carbon 0.4 nozzle";
 const char *PresetBundle::BBL_DEFAULT_PRINTER_VARIANT = "0.4";
-const char *PresetBundle::BBL_DEFAULT_FILAMENT = "My Generic PLA";
+const char *PresetBundle::BBL_DEFAULT_FILAMENT = "Elegoo PLA";
 
 PresetBundle::PresetBundle()
     : prints(Preset::TYPE_PRINT, Preset::print_options(), static_cast<const PrintRegionConfig &>(FullPrintConfig::defaults()))
@@ -2276,7 +2276,7 @@ DynamicPrintConfig PresetBundle::full_fff_config() const
     //BBS: add logic for settings check between different system presets
     out.erase("different_settings_to_system");
 
-    static const char *keys[] = { "support_filament", "support_interface_filament" };
+    static const char* keys[] = {"support_filament", "support_interface_filament", "wipe_tower_filament"};
     for (size_t i = 0; i < sizeof(keys) / sizeof(keys[0]); ++ i) {
         std::string key = std::string(keys[i]);
         auto *opt = dynamic_cast<ConfigOptionInt*>(out.option(key, false));
@@ -2284,6 +2284,14 @@ DynamicPrintConfig PresetBundle::full_fff_config() const
         opt->value = boost::algorithm::clamp<int>(opt->value, 0, int(num_filaments));
     }
 
+    static const char* keys_1based[] = {"wall_filament", "sparse_infill_filament", "solid_infill_filament"};
+    for (size_t i = 0; i < sizeof(keys_1based) / sizeof(keys_1based[0]); ++ i) {
+        std::string key = std::string(keys_1based[i]);
+        auto *opt = dynamic_cast<ConfigOptionInt*>(out.option(key, false));
+        assert(opt != nullptr);
+        if(opt->value < 1 || opt->value > int(num_filaments))
+            opt->value = 1;
+    }
     out.option<ConfigOptionString >("print_settings_id",    true)->value  = this->prints.get_selected_preset_name();
     out.option<ConfigOptionStrings>("filament_settings_id", true)->values = this->filament_presets;
     out.option<ConfigOptionString >("printer_settings_id",  true)->value  = this->printers.get_selected_preset_name();

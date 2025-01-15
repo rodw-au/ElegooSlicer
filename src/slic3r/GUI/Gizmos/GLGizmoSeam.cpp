@@ -240,7 +240,8 @@ void GLGizmoSeam::on_render_input_window(float x, float y, float bottom_limit)
 
         if (i != 0) ImGui::SameLine((empty_button_width + m_imgui->scaled(1.75f)) * i + m_imgui->scaled(1.3f));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0);
-		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.f, 1.f, 1.f, 1.f));						// ORCA: Fixes icon rendered without colors while using Light theme
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));                     // ORCA Removes button background on dark mode
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.f, 1.f, 1.f, 1.f));                       // ORCA: Fixes icon rendered without colors while using Light theme
         if (m_current_tool == tool_ids[i]) {
             ImGui::PushStyleColor(ImGuiCol_Button,			ImVec4(0.0f, 0.47f, 0.74f, 0.25f));	// ORCA use orca color for selected tool / brush
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	ImVec4(0.0f, 0.47f, 0.74f, 0.25f));	// ORCA use orca color for selected tool / brush
@@ -255,7 +256,7 @@ void GLGizmoSeam::on_render_input_window(float x, float y, float bottom_limit)
             ImGui::PopStyleColor(4);
             ImGui::PopStyleVar(2);
         }
-        ImGui::PopStyleColor(1);
+        ImGui::PopStyleColor(2);
         ImGui::PopStyleVar(1);
         if (btn_clicked && m_current_tool != tool_ids[i]) {
             m_current_tool = tool_ids[i];

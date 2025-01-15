@@ -35,10 +35,33 @@ PrinterWebView::PrinterWebView(wxWindow *parent)
 
     m_browser->Bind(wxEVT_WEBVIEW_ERROR, &PrinterWebView::OnError, this);
     m_browser->Bind(wxEVT_WEBVIEW_LOADED, &PrinterWebView::OnLoaded, this);
-
+    m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &PrinterWebView::OnScriptMessage, this);
     SetSizer(topsizer);
 
+    // Add user script, that will handle the opening of links in a new tab
+    bool ret = m_browser->AddUserScript(R"(
+        console.log('User script added.');
+        document.addEventListener('click', function(event) {
+            if (event.target.tagName === 'A' && event.target.target === '_blank') {
+                if (event.target.href == null || event.target.href === "") {
+                    return;
+                }
+                console.info('Open URL: ' + event.target.href);
+                event.preventDefault();
+                try {
+                    wx.postMessage({cmd:'open', data: {url: event.target.href}});
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        });
+      )");
+    if (!ret) {
+        wxLogError("Could not add user script");
+    }
     topsizer->Add(m_browser, wxSizerFlags().Expand().Proportion(1));
+
+    update_mode();
 
     // Log backend information
     /* m_browser->GetUserAgent() may lead crash
@@ -85,6 +108,12 @@ void PrinterWebView::reload()
 {
     m_browser->Reload();
 }
+
+void PrinterWebView::update_mode()
+{
+    m_browser->EnableAccessToDevTools(wxGetApp().app_config->get_bool("developer_mode"));
+}
+
 /**
  * Method that retrieves the current state from the web control and updates the
  * GUI the reflect this current state.
@@ -116,7 +145,7 @@ void PrinterWebView::SendAPIKey()
     }
 )",
                                        m_apikey);
-    m_browser->RemoveAllUserScripts();
+    // m_browser->RemoveAllUserScripts();
 
     m_browser->AddUserScript(script);
     m_browser->Reload();
@@ -160,6 +189,25 @@ void PrinterWebView::OnLoaded(wxWebViewEvent &evt)
         return;
     SendAPIKey();
 }
+void PrinterWebView::OnScriptMessage(wxWebViewEvent& event)
+{
+    wxString message = event.GetString();
+    wxLogMessage("Received message: %s", message);
 
+    try {
+        //{cmd:'open', data: {url: event.target.href}}
+        boost::property_tree::ptree root;
+        std::stringstream           json_stream(message.ToStdString());
+        boost::property_tree::read_json(json_stream, root);
+        std::string cmd = root.get<std::string>("cmd");
+        if (cmd == "open") {
+            std::string url = root.get<std::string>("data.url");
+            wxLogMessage("Open URL: %s", url);
+            wxLaunchDefaultBrowser(url);
+        }
+    } catch (std::exception& e) {
+        wxLogMessage("Error: %s", e.what());
+    }
+}
 } // GUI
 } // Slic3r

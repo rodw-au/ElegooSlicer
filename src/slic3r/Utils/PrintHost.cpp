@@ -21,6 +21,7 @@
 #include "Repetier.hpp"
 #include "MKS.hpp"
 #include "ESP3D.hpp"
+#include "CrealityPrint.hpp"
 #include "../GUI/PrintHostDialogs.hpp"
 #include "../GUI/MainFrame.hpp"
 #include "Obico.hpp"
@@ -49,7 +50,7 @@ PrintHost* PrintHost::get_print_host(DynamicPrintConfig *config)
 
     if (tech == ptFFF) {
         const auto opt = config->option<ConfigOptionEnum<PrintHostType>>("host_type");
-        const auto host_type = opt != nullptr ? opt->value : htOctoPrint;
+        const auto host_type = opt != nullptr ? opt->value : htElegooLink;
 
         switch (host_type) {
             case htElegooLink: return new ElegooLink(config);
@@ -62,6 +63,7 @@ PrintHost* PrintHost::get_print_host(DynamicPrintConfig *config)
             case htPrusaConnect: return new PrusaConnect(config);
             case htMKS:       return new MKS(config);
             case htESP3D:       return new ESP3D(config);
+            case htCrealityPrint:    return new CrealityPrint(config);
             case htObico:     return new Obico(config);
             case htFlashforge: return new Flashforge(config);
             case htSimplyPrint: return new SimplyPrint(config);
@@ -78,7 +80,16 @@ wxString PrintHost::format_error(const std::string &body, const std::string &err
         auto wxbody = wxString::FromUTF8(body.data());
         return wxString::Format("HTTP %u: %s", status, wxbody);
     } else {
-        return wxString::FromUTF8(error.data());
+        if (error.find("curl:Timeout was reached") != std::string::npos) {
+            return _L("Connection timed out. Please check if the printer and computer network are functioning properly.");
+        }else if(error.find("curl:Couldn't resolve host name")!= std::string::npos){
+            return _L("The Hostname/IP/URL could not be parsed, please check it and try again.");
+        } else if (error.find("Connection was reset") != std::string::npos){
+            return _L("File/data transfer interrupted. Please check the printer and network, then try it again.");
+        }
+        else {
+            return wxString::FromUTF8(error.data());
+        }
     }
 }
 

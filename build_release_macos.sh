@@ -3,7 +3,7 @@
 set -e
 set -o pipefail
 
-while getopts ":dpa:snt:xbc:h" opt; do
+while getopts ":dpa:snt:xbc:eh" opt; do
   case "${opt}" in
     d )
         export BUILD_TARGET="deps"
@@ -37,6 +37,9 @@ while getopts ":dpa:snt:xbc:h" opt; do
     1 )
         export CMAKE_BUILD_PARALLEL_LEVEL=1
         ;;
+    e )
+        export ELEGOO_TEST="1"
+        ;;
     h ) echo "Usage: ./build_release_macos.sh [-d]"
         echo "   -d: Build deps only"
         echo "   -a: Set ARCHITECTURE (arm64 or x86_64)"
@@ -47,6 +50,7 @@ while getopts ":dpa:snt:xbc:h" opt; do
         echo "   -b: Build without reconfiguring CMake"
         echo "   -c: Set CMake build configuration, default is Release"
         echo "   -1: Use single job for building"
+        echo "   -e: Test environment"
         exit 0
         ;;
     * )
@@ -85,12 +89,16 @@ if [ -z "$OSX_DEPLOYMENT_TARGET" ]; then
   export OSX_DEPLOYMENT_TARGET="11.3"
 fi
 
+if [ -z "$ELEGOO_TEST" ]; then
+  export ELEGOO_TEST="0"
+fi
 echo "Build params:"
 echo " - ARCH: $ARCH"
 echo " - BUILD_CONFIG: $BUILD_CONFIG"
 echo " - BUILD_TARGET: $BUILD_TARGET"
 echo " - CMAKE_GENERATOR: $SLICER_CMAKE_GENERATOR for Slicer, $DEPS_CMAKE_GENERATOR for deps"
 echo " - OSX_DEPLOYMENT_TARGET: $OSX_DEPLOYMENT_TARGET"
+echo " - ELEGOO_TEST: $ELEGOO_TEST"
 echo
 
 # if which -s brew; then
@@ -165,7 +173,8 @@ function build_slicer() {
                 -DCMAKE_INSTALL_RPATH="${DEPS}/usr/local" \
                 -DCMAKE_MACOSX_BUNDLE=ON \
                 -DCMAKE_OSX_ARCHITECTURES="${ARCH}" \
-                -DCMAKE_OSX_DEPLOYMENT_TARGET="${OSX_DEPLOYMENT_TARGET}"
+                -DCMAKE_OSX_DEPLOYMENT_TARGET="${OSX_DEPLOYMENT_TARGET}" \
+                -DELEGOO_TEST="${ELEGOO_TEST}"
         fi
         cmake --build . --config "$BUILD_CONFIG" --target "$SLICER_BUILD_TARGET"
     )

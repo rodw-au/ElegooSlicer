@@ -35,30 +35,40 @@ PrinterWebView::PrinterWebView(wxWindow *parent)
 
     m_browser->Bind(wxEVT_WEBVIEW_ERROR, &PrinterWebView::OnError, this);
     m_browser->Bind(wxEVT_WEBVIEW_LOADED, &PrinterWebView::OnLoaded, this);
-    m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &PrinterWebView::OnScriptMessage, this);
     SetSizer(topsizer);
 
+#if defined(__APPLE__) || defined(__MACH__)
+    m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &PrinterWebView::OnScriptMessage, this);
     // Add user script, that will handle the opening of links in a new tab
     bool ret = m_browser->AddUserScript(R"(
         console.log('User script added.');
-        document.addEventListener('click', function(event) {
-            if (event.target.tagName === 'A' && event.target.target === '_blank') {
-                if (event.target.href == null || event.target.href === "") {
-                    return;
-                }
-                console.info('Open URL: ' + event.target.href);
-                event.preventDefault();
-                try {
-                    wx.postMessage({cmd:'open', data: {url: event.target.href}});
-                } catch (e) {
-                    console.error(e);
-                }
+        document.addEventListener('click', function (event) {
+            let target = event.target;
+            while (target && target.tagName.toLowerCase() !== 'a') {
+                target = target.parentElement;
+            }
+            if (!target || target.tagName.toLowerCase() !== 'a' || !target.href) {
+                return;
+            }
+            const blank = target.target === '_blank';
+            const needDownload = target.download !== undefined && target.download !== null;
+            if (!blank && !needDownload) {
+                return;
+            }
+            console.info('Open URL: ' + target.href);
+            event.preventDefault();
+            try {
+                wx.postMessage({ cmd: 'open', data: { url: target.href, needDownload: needDownload } });
+            } catch (e) {
+                console.error(e);
             }
         });
       )");
     if (!ret) {
         wxLogError("Could not add user script");
     }
+#endif
+
     topsizer->Add(m_browser, wxSizerFlags().Expand().Proportion(1));
 
     update_mode();
@@ -191,6 +201,7 @@ void PrinterWebView::OnLoaded(wxWebViewEvent &evt)
 }
 void PrinterWebView::OnScriptMessage(wxWebViewEvent& event)
 {
+#if defined(__APPLE__) || defined(__MACH__)
     wxString message = event.GetString();
     wxLogMessage("Received message: %s", message);
 
@@ -208,6 +219,7 @@ void PrinterWebView::OnScriptMessage(wxWebViewEvent& event)
     } catch (std::exception& e) {
         wxLogMessage("Error: %s", e.what());
     }
+#endif
 }
 } // GUI
 } // Slic3r

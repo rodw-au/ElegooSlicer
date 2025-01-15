@@ -780,7 +780,7 @@ bool PresetUpdater::priv::sync_config(const VendorMap &vendors)
         .timeout_connect(5)
         .on_complete([this, vendors, &ota_profiles_list](std::string body, unsigned http_status) {
             if (http_status != 200)
-                return false;
+                return;
             try {
                 json j = json::parse(body);
                 if (j.contains("profiles") && j["profiles"].is_array()) {
@@ -814,7 +814,7 @@ bool PresetUpdater::priv::sync_config(const VendorMap &vendors)
         .perform_sync();
 
     // check the cached config files
-    Semver app_semver    = SLIC3R_VERSION;
+    Semver app_semver(SLIC3R_VERSION);
     for (auto vendor_it : vendors) {
         const VendorProfile& vendor_profile = vendor_it.second;
         std::string vendor_name = vendor_profile.id;      
@@ -1363,9 +1363,9 @@ Updates PresetUpdater::priv::get_config_updates(const Semver& old_slic3r_version
         Version version;
         version.config_version = cached_semver;
         AppConfig* app_config = GUI::wxGetApp().app_config;
-        std::string locale_name = app_config->getSystemLocale();
-
-        if (locale_name.find("zh") != std::string::npos || locale_name.find("CN") != std::string::npos) {
+        //std::string locale_name = app_config->getSystemLocale();
+        const auto  language    = app_config->get("language");
+        if (language.find("zh") != std::string::npos) {
             description_content = description["zh"].get<std::string>();
         } else {
             description_content = description["en"].get<std::string>();
@@ -1498,7 +1498,7 @@ void PresetUpdater::sync(std::string http_url, std::string language, std::string
         }
 		if (p->cancel)
 			return;
-        this->p->sync_plugins(http_url, plugin_version);
+        // this->p->sync_plugins(http_url, plugin_version);
         this->p->sync_printer_config(http_url);
 		//if (p->cancel)
 		//	return;

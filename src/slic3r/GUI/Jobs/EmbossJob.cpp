@@ -404,7 +404,7 @@ void UpdateJob::process(Ctl &ctl)
     m_result = ::try_create_mesh(*m_input.base, was_canceled);
     if (was_canceled()) return;
     if (m_result.its.empty())
-        throw JobException("Created text volume is empty. Change text or font.");
+        throw JobException(_L("Created text volume is empty. Change text or font.").utf8_string());
 }
 
 void UpdateJob::finalize(bool canceled, std::exception_ptr &eptr)
@@ -962,7 +962,7 @@ TriangleMesh create_mesh(DataBase &input, const Fnc& was_canceled, Job::Ctl& ctl
             return {};
         // only info
         ctl.call_on_main_thread([]() {
-            create_message("It is used default volume for embossed text, try to change text or font to fix it.");
+            create_message(_L("It is used default volume for embossed text, try to change text or font to fix it.").utf8_string());
         });
     }
 

@@ -941,7 +941,7 @@ void GUI_App::post_init()
     }
 #endif
 
-    if (app_config->get("stealth_mode") == "false")
+    if (!app_config->get_stealth_mode())
         hms_query = new HMSQuery();
 
     m_show_gcode_window = app_config->get_bool("show_gcode_window");
@@ -972,45 +972,45 @@ void GUI_App::post_init()
             this->preset_updater->sync(http_url, language, network_ver, sys_preset ? preset_bundle : nullptr);
 
             this->check_new_version_sf();
-            if (is_user_login() && app_config->get("stealth_mode") == "false") {
+            if (is_user_login() && !app_config->get_stealth_mode()) {
               // this->check_privacy_version(0);
               request_user_handle(0);
             }
         });
     }
 
-    if (is_user_login())
-        request_user_handle(0);
+    // if (is_user_login())
+    //     request_user_handle(0);
 
-    if(!m_networking_need_update && m_agent) {
-        m_agent->set_on_ssdp_msg_fn(
-            [this](std::string json_str) {
-                if (m_is_closing) {
-                    return;
-                }
-                GUI::wxGetApp().CallAfter([this, json_str] {
-                    if (m_device_manager) {
-                        m_device_manager->on_machine_alive(json_str);
-                    }
-                    });
-            }
-        );
-        m_agent->set_on_http_error_fn([this](unsigned int status, std::string body) {
-            this->handle_http_error(status, body);
-        });
-        m_agent->start_discovery(true, false);
-    }
+    // if(!m_networking_need_update && m_agent) {
+    //     m_agent->set_on_ssdp_msg_fn(
+    //         [this](std::string json_str) {
+    //             if (m_is_closing) {
+    //                 return;
+    //             }
+    //             GUI::wxGetApp().CallAfter([this, json_str] {
+    //                 if (m_device_manager) {
+    //                     m_device_manager->on_machine_alive(json_str);
+    //                 }
+    //                 });
+    //         }
+    //     );
+    //     m_agent->set_on_http_error_fn([this](unsigned int status, std::string body) {
+    //         this->handle_http_error(status, body);
+    //     });
+    //     m_agent->start_discovery(true, false);
+    // }
 
-    //update the plugin tips
-    CallAfter([this] {
-            mainframe->refresh_plugin_tips();
-        });
+    // //update the plugin tips
+    // CallAfter([this] {
+    //         mainframe->refresh_plugin_tips();
+    //     });
 
-    // update hms info
-    CallAfter([this] {
-            if (hms_query)
-                hms_query->check_hms_info();
-        });
+    // // update hms info
+    // CallAfter([this] {
+    //         if (hms_query)
+    //             hms_query->check_hms_info();
+    //     });
 
     CallAfter([this] {
         check_message();
@@ -1029,7 +1029,7 @@ void GUI_App::post_init()
                try {
                    std::time_t lw_t = boost::filesystem::last_write_time(temp_path) ;
                    files_vec.push_back({ lw_t, temp_path.filename().string() });
-               } catch (const std::exception &ex) {
+               } catch (const std::exception &) {
                }
            }
            std::sort(files_vec.begin(), files_vec.end(), [](
@@ -1110,50 +1110,50 @@ void GUI_App::shutdown()
 std::string GUI_App::get_http_url(std::string country_code, std::string path)
 {
     std::string url;
-    if (country_code == "US") {
-        url = "https://api.bambulab.com/";
-    }
-    else if (country_code == "CN") {
-        url = "https://api.bambulab.cn/";
-    }
-    else if (country_code == "ENV_CN_DEV") {
-        url = "https://api-dev.bambu-lab.com/";
-    }
-    else if (country_code == "ENV_CN_QA") {
-        url = "https://api-qa.bambu-lab.com/";
-    }
-    else if (country_code == "ENV_CN_PRE") {
-        url = "https://api-pre.bambu-lab.com/";
-    }
-    else {
-        url = "https://api.bambulab.com/";
-    }
+    // if (country_code == "US") {
+    //     url = "https://api.bambulab.com/";
+    // }
+    // else if (country_code == "CN") {
+    //     url = "https://api.bambulab.cn/";
+    // }
+    // else if (country_code == "ENV_CN_DEV") {
+    //     url = "https://api-dev.bambu-lab.com/";
+    // }
+    // else if (country_code == "ENV_CN_QA") {
+    //     url = "https://api-qa.bambu-lab.com/";
+    // }
+    // else if (country_code == "ENV_CN_PRE") {
+    //     url = "https://api-pre.bambu-lab.com/";
+    // }
+    // else {
+    //     url = "https://api.bambulab.com/";
+    // }
 
-    url += path.empty() ? "v1/iot-service/api/slicer/resource" : path;
+    // url += path.empty() ? "v1/iot-service/api/slicer/resource" : path;
     return url;
 }
 
 std::string GUI_App::get_model_http_url(std::string country_code)
 {
     std::string url;
-    if (country_code == "US") {
-        url = "https://makerworld.com/";
-    }
-    else if (country_code == "CN") {
-        url = "https://makerworld.com/";
-    }
-    else if (country_code == "ENV_CN_DEV") {
-        url = "https://makerhub-dev.bambu-lab.com/";
-    }
-    else if (country_code == "ENV_CN_QA") {
-        url = "https://makerhub-qa.bambu-lab.com/";
-    }
-    else if (country_code == "ENV_CN_PRE") {
-        url = "https://makerhub-pre.bambu-lab.com/";
-    }
-    else {
-        url = "https://makerworld.com/";
-    }
+    // if (country_code == "US") {
+    //     url = "https://makerworld.com/";
+    // }
+    // else if (country_code == "CN") {
+    //     url = "https://makerworld.com/";
+    // }
+    // else if (country_code == "ENV_CN_DEV") {
+    //     url = "https://makerhub-dev.bambu-lab.com/";
+    // }
+    // else if (country_code == "ENV_CN_QA") {
+    //     url = "https://makerhub-qa.bambu-lab.com/";
+    // }
+    // else if (country_code == "ENV_CN_PRE") {
+    //     url = "https://makerhub-pre.bambu-lab.com/";
+    // }
+    // else {
+    //     url = "https://makerworld.com/";
+    // }
 
     return url;
 }
@@ -1913,23 +1913,40 @@ void GUI_App::init_app_config()
 	// Mac : "~/Library/Application Support/Slic3r"
 
     if (data_dir().empty()) {
-        boost::filesystem::path data_dir_path;
-        #ifndef __linux__
-            std::string data_dir = wxStandardPaths::Get().GetUserDataDir().ToUTF8().data();
-            //BBS create folder if not exists
-            data_dir_path = boost::filesystem::path(data_dir);
-            set_data_dir(data_dir);
-        #else
-            // Since version 2.3, config dir on Linux is in ${XDG_CONFIG_HOME}.
-            // https://github.com/prusa3d/PrusaSlicer/issues/2911
-            wxString dir;
-            if (! wxGetEnv(wxS("XDG_CONFIG_HOME"), &dir) || dir.empty() )
-                dir = wxFileName::GetHomeDir() + wxS("/.config");
-            set_data_dir((dir + "/" + GetAppName()).ToUTF8().data());
-            data_dir_path = boost::filesystem::path(data_dir());
-        #endif
-        if (!boost::filesystem::exists(data_dir_path)){
-            boost::filesystem::create_directory(data_dir_path);
+        // Orca: check if data_dir folder exists in application folder use it if it exists
+        // Note:wxStandardPaths::Get().GetExecutablePath() return following paths
+        // Unix: /usr/local/bin/exename
+        // Windows: "C:\Programs\AppFolder\exename.exe"
+        // Mac: /Applications/exename.app/Contents/MacOS/exename
+        // TODO: have no idea what to do with Linux bundles
+        auto _app_folder = boost::filesystem::path(wxStandardPaths::Get().GetExecutablePath().ToUTF8().data()).parent_path();
+#ifdef __APPLE__
+        // On macOS, the executable is inside the .app bundle.
+        _app_folder = _app_folder.parent_path().parent_path().parent_path();
+#endif
+        boost::filesystem::path app_data_dir_path = _app_folder / "data_dir";
+        if (boost::filesystem::exists(app_data_dir_path)) {
+            set_data_dir(app_data_dir_path.string());
+        }
+        else{
+            boost::filesystem::path data_dir_path;
+            #ifndef __linux__
+                std::string data_dir = wxStandardPaths::Get().GetUserDataDir().ToUTF8().data();
+                //BBS create folder if not exists
+                data_dir_path = boost::filesystem::path(data_dir);
+                set_data_dir(data_dir);
+            #else
+                // Since version 2.3, config dir on Linux is in ${XDG_CONFIG_HOME}.
+                // https://github.com/prusa3d/PrusaSlicer/issues/2911
+                wxString dir;
+                if (! wxGetEnv(wxS("XDG_CONFIG_HOME"), &dir) || dir.empty() )
+                    dir = wxFileName::GetHomeDir() + wxS("/.config");
+                set_data_dir((dir + "/" + GetAppName()).ToUTF8().data());
+                data_dir_path = boost::filesystem::path(data_dir());
+            #endif
+            if (!boost::filesystem::exists(data_dir_path)){
+                boost::filesystem::create_directory(data_dir_path);
+            }
         }
 
         // Change current dirtory of application
@@ -2887,7 +2904,7 @@ void GUI_App::init_label_colours()
 #if defined(_WIN32) || defined(__linux__) || defined(__APPLE__)
     m_color_label_default           = is_dark_mode ? wxColour(250, 250, 250) : m_color_label_sys; // wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
     m_color_highlight_label_default = is_dark_mode ? wxColour(230, 230, 230): wxSystemSettings::GetColour(/*wxSYS_COLOUR_HIGHLIGHTTEXT*/wxSYS_COLOUR_WINDOWTEXT);
-    m_color_highlight_default       = is_dark_mode ? wxColour(78, 78, 78)   : wxSystemSettings::GetColour(wxSYS_COLOUR_3DLIGHT);
+    m_color_highlight_default       = is_dark_mode ? wxColour("#36363B") : wxColour("#F1F1F1"); // ORCA row highlighting
     m_color_hovered_btn_label       = is_dark_mode ? wxColour(255, 255, 254) : wxColour(0,0,0);
     m_color_default_btn_label       = is_dark_mode ? wxColour(255, 255, 254): wxColour(0,0,0);
     m_color_selected_btn_bg         = is_dark_mode ? wxColour(84, 84, 91)   : wxColour(206, 206, 206);
@@ -3376,7 +3393,7 @@ if (res) {
             mainframe->refresh_plugin_tips();
             // BBS: remove SLA related message
         }
-    } catch (std::exception &e) {
+    } catch (std::exception &) {
         // wxMessageBox(e.what(), "", MB_OK);
     }
 }
@@ -3391,7 +3408,7 @@ void GUI_App::ShowDownNetPluginDlg() {
             return;
         DownloadProgressDialog dlg(_L("Downloading Bambu Network Plug-in"));
         dlg.ShowModal();
-    } catch (std::exception &e) {
+    } catch (std::exception &) {
         ;
     }
 #endif
@@ -3409,7 +3426,7 @@ void GUI_App::ShowUserLogin(bool show)
                 login_dlg = new ZUserLogin();
             }
             login_dlg->ShowModal();
-        } catch (std::exception &e) {
+        } catch (std::exception &) {
             ;
         }
     } else {
@@ -3431,7 +3448,7 @@ void GUI_App::ShowOnlyFilament() {
 
             // BBS: remove SLA related message
         }
-    } catch (std::exception &e) {
+    } catch (std::exception &) {
         // wxMessageBox(e.what(), "", MB_OK);
     }
 }
@@ -3685,7 +3702,7 @@ void GUI_App::request_user_logout()
         /* delete old user settings */
         bool     transfer_preset_changes = false;
         wxString header = _L("Some presets are modified.") + "\n" +
-            _L("You can keep the modifield presets to the new project, discard or save changes as new presets.");
+            _L("You can keep the modified presets to the new project, discard or save changes as new presets.");
         wxGetApp().check_and_keep_current_preset_changes(_L("User logged out"), header, ActionButtons::KEEP | ActionButtons::SAVE, &transfer_preset_changes);
 
         m_device_manager->clean_user_info();
@@ -3995,16 +4012,18 @@ void GUI_App::on_http_error(wxCommandEvent &evt)
     wxString result;
     if (status >= 400 && status < 500) {
         try {
-        json j = json::parse(evt.GetString());
-        if (j.contains("code")) {
-            if (!j["code"].is_null())
-                code = j["code"].get<int>();
+        auto evt_str = evt.GetString();
+        if (!evt_str.empty()) {
+            json j = json::parse(evt_str);
+            if (j.contains("code")) {
+                if (!j["code"].is_null())
+                    code = j["code"].get<int>();
+            }
+            if (j.contains("error"))
+                if (!j["error"].is_null())
+                    error = j["error"].get<std::string>();
         }
-        if (j.contains("error"))
-            if (!j["error"].is_null())
-                error = j["error"].get<std::string>();
-        }
-        catch (...) {}
+        } catch (...) {}
     }
 
     // Version limit
@@ -4146,14 +4165,15 @@ void GUI_App::check_message()
     auto lastMessageVersion = app_config->get_last_pop_message_version();
     auto       message_check_url = app_config->message_check_url();
     std::string locale_name = app_config->getSystemLocale();
+    const auto language = app_config->get("language");
     Http::get(message_check_url)
         .on_error([&](std::string body, std::string error, unsigned http_status) {
           (void)body;
           BOOST_LOG_TRIVIAL(error) << format("Error getting: `%1%`: HTTP %2%, %3%", "check_message", http_status,
                                              error);
         })
-        .timeout_connect(5)
-        .on_complete([this,locale_name,lastMessageVersion](std::string body, unsigned http_status) {
+        .timeout_connect(3)
+        .on_complete([this, locale_name, language, lastMessageVersion](std::string body, unsigned http_status) {
           // Http response OK
           if (http_status != 200)
             return;
@@ -4192,7 +4212,7 @@ void GUI_App::check_message()
                     return;
                 }
                 auto messages = *op_messages;
-                if (locale_name.find("zh") != std::string::npos || locale_name.find("CN") != std::string::npos)
+                if (language.find("zh") != std::string::npos)
                 {
                     op_message = messages.get_child_optional("zh");
                 }else {
@@ -4272,6 +4292,7 @@ void GUI_App::check_update(bool show_tips, int by_user)
 
 void GUI_App::check_new_version(bool show_tips, int by_user)
 {
+    return; // orca: not used, see check_new_version_sf
     std::string platform = "windows";
 
 #ifdef __WINDOWS__
@@ -4354,7 +4375,8 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 #if 1 // Elegoo: use elegoo slicer release
     AppConfig* app_config = wxGetApp().app_config;
     auto       version_check_url = app_config->version_check_url();
-    std::string locale_name = app_config->getSystemLocale();
+    // std::string locale_name = app_config->getSystemLocale();
+    const auto language = app_config->get("language");
     Http::get(version_check_url)
         .on_error([&](std::string body, std::string error, unsigned http_status) {
           (void)body;
@@ -4362,7 +4384,7 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                                              error);
         })
         .timeout_connect(1)
-        .on_complete([this,by_user,locale_name](std::string body, unsigned http_status) {
+        .on_complete([this,by_user,language](std::string body, unsigned http_status) {
           // Http response OK
           if (http_status != 200)
             return;
@@ -4393,9 +4415,9 @@ void GUI_App::check_new_version_sf(bool show_tips, int by_user)
                 best_release         = new_version;
                 auto description = root.get_child("description");
                 
-                BOOST_LOG_TRIVIAL(warning) << "locale: " << locale_name;
-                printf("locale: %s\n", locale_name.c_str());
-                if (locale_name.find("zh") != std::string::npos || locale_name.find("CN") != std::string::npos)
+                BOOST_LOG_TRIVIAL(warning) << "language: " << language;
+                printf("language: %s\n", language.c_str());
+                if (language.find("zh") != std::string::npos)
                 {
                     best_release_content = description.get<std::string>("zh");
                 }else {
@@ -4947,7 +4969,7 @@ void GUI_App::sync_preset(Preset* preset)
 
 void GUI_App::start_sync_user_preset(bool with_progress_dlg)
 {
-    if (app_config->get("stealth_mode") == "true")
+    if (app_config->get_stealth_mode())
         return;
 
     if (!m_agent || !m_agent->is_user_login()) return;
@@ -5537,6 +5559,8 @@ void GUI_App::update_mode()
         mainframe->m_param_panel->update_mode();
     if (mainframe->m_param_dialog)
         mainframe->m_param_dialog->panel()->update_mode();
+    if (mainframe->m_printer_view)
+        mainframe->m_printer_view->update_mode();
     mainframe->m_webview->update_mode();
 
 #ifdef _MSW_DARK_MODE
@@ -5556,6 +5580,8 @@ void GUI_App::update_mode()
 
 void GUI_App::update_internal_development() {
     mainframe->m_webview->update_mode();
+    if (mainframe->m_printer_view)
+        mainframe->m_printer_view->update_mode();
 }
 
 void GUI_App::show_ip_address_enter_dialog(wxString title)
@@ -6782,8 +6808,6 @@ static bool del_win_registry(HKEY hkeyHive, const wchar_t *pszVar, const wchar_t
         return false;
 
     if (!bDidntExist) {
-        DWORD dwDisposition;
-        HKEY  hkey;
         iRC      = ::RegDeleteKeyExW(hkeyHive, pszVar, KEY_ALL_ACCESS, 0);
         if (iRC == ERROR_SUCCESS) {
             return true;

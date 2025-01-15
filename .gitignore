@@ -36,3 +36,4 @@ src/ElegooSlicer-doc/
 resources/profiles/user/default
 CMakePresets.json
 *.env
+*.code-workspace

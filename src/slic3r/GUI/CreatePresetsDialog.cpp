@@ -47,17 +47,17 @@ static const std::vector<std::string> filament_vendors =
      "Duramic",                "ELEGOO",                 "Eryone",                 "Essentium",              "eSUN",
      "Extrudr",                "Fiberforce",             "Fiberlogy",              "FilaCube",               "Filamentive",
      "Fillamentum",            "FLASHFORGE",             "Formfutura",             "Francofil",              "FilamentOne",
-     "GEEETECH",               "Giantarm",               "Gizmo Dorks",            "GreenGate3D",            "HATCHBOX",
-     "Hello3D",                "IC3D",                   "IEMAI",                  "IIID Max",               "INLAND",
-     "iProspect",              "iSANMATE",               "Justmaker",              "Keene Village Plastics", "Kexcelled",
-     "MakerBot",               "MatterHackers",          "MIKA3D",                 "NinjaTek",               "Nobufil",
-     "Novamaker",              "OVERTURE",               "OVVNYXE",                "Polymaker",              "Priline",
-     "Printed Solid",          "Protopasta",             "Prusament",              "Push Plastic",           "R3D",
-     "Re-pet3D",               "Recreus",                "Regen",                  "Sain SMART",             "SliceWorx",
-     "Snapmaker",              "SnoLabs",                "Spectrum",               "SUNLU",                  "TTYT3D",
-     "Tianse",                 "UltiMaker",              "Valment",                "Verbatim",               "VO3D",
-     "Voxelab",                "VOXELPLA",               "YOOPAI",                 "Yousu",                  "Ziro",
-     "Zyltech"};
+     "Fil X",                  "GEEETECH",               "Giantarm",               "Gizmo Dorks",            "GreenGate3D",
+     "HATCHBOX",               "Hello3D",                "IC3D",                   "IEMAI",                  "IIID Max",
+     "INLAND",                 "iProspect",              "iSANMATE",               "Justmaker",              "Keene Village Plastics",
+     "Kexcelled",              "MakerBot",               "MatterHackers",          "MIKA3D",                 "NinjaTek",
+     "Nobufil",                "Novamaker",              "OVERTURE",               "OVVNYXE",                "Polymaker",
+     "Priline",                "Printed Solid",          "Protopasta",             "Prusament",              "Push Plastic",
+     "R3D",                    "Re-pet3D",               "Recreus",                "Regen",                  "Sain SMART",
+     "SliceWorx",              "Snapmaker",              "SnoLabs",                "Spectrum",               "SUNLU",
+     "TTYT3D",                 "Tianse",                 "UltiMaker",              "Valment",                "Verbatim",
+     "VO3D",                   "Voxelab",                "VOXELPLA",               "YOOPAI",                 "Yousu",
+     "Ziro",                   "Zyltech"};
 
      
 static const std::vector<std::string> filament_types = {"PLA",    "rPLA",  "PLA+",      "PLA Tough", "PETG",  "ABS",    "ASA",    "FLEX",   "HIPS",   "PA",     "PACF",
@@ -65,57 +65,69 @@ static const std::vector<std::string> filament_types = {"PLA",    "rPLA",  "PLA+
                                                         "PETGCF", "PTBA",  "PTBA90A",   "PEEK",  "TPU93A", "TPU75D", "TPU",       "TPU92A", "TPU98A", "Misc",
                                                         "TPE",    "GLAZE", "Nylon",     "CPE",   "METAL",  "ABST",   "Carbon Fiber", "SBS"};
 
-static const std::vector<std::string> printer_vendors = {"Anker",    "Anycubic",    "Artillery", "Bambulab",       "BIQU",
-                                                         "Comgrow",  "CONSTRUCT3D", "Creality",  "Custom Printer", "Dremel",
-                                                         "Elegoo",   "Flashforge",  "FLSun",     "FlyingBear",     "Folgertech",
-                                                         "Geeetech", "InfiMech",    "Kingroon",  "MagicMaker",     "Orca Arena Printer",
-                                                         "Peopoly",  "Positron 3D", "Prusa",     "Qidi",           "Raise3D",
-                                                         "RatRig",   "SecKit",      "Snapmaker", "Sovol",          "Tronxy",
-                                                         "TwoTrees", "UltiMaker",   "Vivedino",  "Voron",          "Voxelab",
-                                                         "Vzbot",    "Wanhao"};
+static const std::vector<std::string> printer_vendors = {"Anker",    "Anycubic",       "Artillery",  "Bambulab",  "BIQU",
+                                                         "Blocks",   "Chuanying",      "Co Print",   "Comgrow",   "CONSTRUCT3D",
+                                                         "Creality", "Custom Printer", "Dremel",     "Elegoo",    "Flashforge",
+                                                         "FLSun",    "FlyingBear",     "Folgertech", "Geeetech",  "Ginger Additive",
+                                                         "InfiMech", "Kingroon",       "MagicMaker", "Mellow",    "Orca Arena Printer",
+                                                         "Peopoly",  "Positron 3D",    "Prusa",      "Qidi",      "Raise3D",
+                                                         "RatRig",   "RolohaunDesign", "SecKit",     "Snapmaker", "Sovol",
+                                                         "Tronxy",   "TwoTrees",       "UltiMaker",  "Vivedino",  "Voron",
+                                                         "Voxelab",  "Vzbot",          "Wanhao"};
 
 static const std::unordered_map<std::string, std::vector<std::string>> printer_model_map =
-    {{"Anker",             {"Anker M5",                   "Anker M5 All-Metal Hot End", "Anker M5C"}},
-     {"Anycubic",          {"Anycubic i3 Mega S",  "Anycubic Chiron",     "Anycubic Vyper",      "Anycubic Kobra Max",  "Anycubic Kobra Plus",
-                            "Anycubic 4Max Pro",   "Anycubic 4Max Pro 2", "Anycubic Kobra 2"}},
-     {"Artillery",         {"Artillery Sidewinder X1", "Artillery Genius",        "Artillery Genius Pro",    "Artillery Sidewinder X2", "Artillery Hornet"}},
+     {{"Anker",             {"Anker M5",                   "Anker M5 All-Metal Hot End", "Anker M5C"}},
+     {"Anycubic",          {"Anycubic i3 Mega S",    "Anycubic Chiron",       "Anycubic Vyper",        "Anycubic Kobra",        "Anycubic Kobra Max",
+                            "Anycubic Kobra Plus",   "Anycubic 4Max Pro",     "Anycubic 4Max Pro 2",   "Anycubic Kobra 2",      "Anycubic Kobra 2 Plus",
+                            "Anycubic Kobra 2 Max",  "Anycubic Kobra 2 Pro",  "Anycubic Kobra 2 Neo",  "Anycubic Kobra 3"}},
+     {"Artillery",         {"Artillery Sidewinder X1",      "Artillery Genius",             "Artillery Genius Pro",         "Artillery Sidewinder X2",      "Artillery Hornet",
+                            "Artillery Sidewinder X3 Pro",  "Artillery Sidewinder X3 Plus", "Artillery Sidewinder X4 Pro",  "Artillery Sidewinder X4 Plus"}},
      {"Bambulab",          {"Bambu Lab X1 Carbon", "Bambu Lab X1",        "Bambu Lab X1E",       "Bambu Lab P1P",       "Bambu Lab P1S",
                             "Bambu Lab A1 mini",   "Bambu Lab A1"}},
      {"BIQU",              {"BIQU B1",      "BIQU BX",      "BIQU Hurakan"}},
+     {"Blocks",            {"BLOCKS Pro S100", "BLOCKS RD50 V2",  "BLOCKS RF50"}},
+     {"Chuanying",         {"Chuanying X1"}},
+     {"Co Print",          {"Co Print ChromaSet"}},
      {"Comgrow",           {"Comgrow T500"}},
      {"CONSTRUCT3D",       {"Construct 1 XL", "Construct 1"}},
      {"Creality",          {"Creality CR-10 V2",           "Creality CR-10 Max",          "Creality CR-10 SE",           "Creality CR-6 SE",            "Creality CR-6 Max",
-                            "Creality Ender-3 V2",         "Creality Ender-3 V2 Neo",     "Creality Ender-3 S1",         "Creality Ender-3",            "Creality Ender-3 Pro",
-                            "Creality Ender-3 S1 Pro",     "Creality Ender-3 S1 Plus",    "Creality Ender-3 V3 SE",      "Creality Ender-3 V3 KE",      "Creality Ender-3 V3",
-                            "Creality Ender-3 V3 Plus",    "Creality Ender-5",            "Creality Ender-5 Plus",       "Creality Ender-5 Pro (2019)", "Creality Ender-5S",
-                            "Creality Ender-5 S1",         "Creality Ender-6",            "Creality Sermoon V1",         "Creality K1",                 "Creality K1C",
-                            "Creality K1 Max"}},
-     {"Custom Printer",    {"Generic Klipper Printer", "Generic Marlin Printer",  "Generic RRF Printer"}},
+                            "Creality CR-M4",              "Creality Ender-3 V2",         "Creality Ender-3 V2 Neo",     "Creality Ender-3 S1",         "Creality Ender-3",
+                            "Creality Ender-3 Pro",        "Creality Ender-3 S1 Pro",     "Creality Ender-3 S1 Plus",    "Creality Ender-3 V3 SE",      "Creality Ender-3 V3 KE",
+                            "Creality Ender-3 V3",         "Creality Ender-3 V3 Plus",    "Creality Ender-5",            "Creality Ender-5 Plus",       "Creality Ender-5 Pro (2019)",
+                            "Creality Ender-5S",           "Creality Ender-5 S1",         "Creality Ender-6",            "Creality Sermoon V1",         "Creality K1",
+                            "Creality K1C",                "Creality K1 Max",             "Creality K1 SE",              "Creality K2 Plus"}},
+     {"Custom Printer",    {"Generic Klipper Printer",     "Generic Marlin Printer",      "Generic RRF Printer",         "Generic ToolChanger Printer"}},
      {"Dremel",            {"Dremel 3D20", "Dremel 3D40", "Dremel 3D45"}},
      {"Elegoo",            {"Elegoo Centauri Carbon",  "Elegoo Centauri",         "Elegoo OrangeStorm Giga", "Elegoo Neptune 4 Max",    "Elegoo Neptune 4 Plus",
                             "Elegoo Neptune 4 Pro",    "Elegoo Neptune 4",        "Elegoo Neptune 3 Max",    "Elegoo Neptune 3 Plus",   "Elegoo Neptune 3 Pro",
                             "Elegoo Neptune 3",        "Elegoo Neptune X",        "Elegoo Neptune 2S",       "Elegoo Neptune 2D",       "Elegoo Neptune 2",
                             "Elegoo Neptune"}},
      {"Flashforge",        {"Flashforge Adventurer 5M",       "Flashforge Adventurer 5M Pro",   "Flashforge Adventurer 3 Series", "Flashforge Guider 3 Ultra",      "Flashforge Guider 2s"}},
-     {"FLSun",             {"FLSun Q5",               "FLSun QQ-S Pro",         "FLSun Super Racer (SR)", "FLSun V400"}},
+     {"FLSun",             {"FLSun Q5",               "FLSun QQ-S Pro",         "FLSun Super Racer (SR)", "FLSun V400",             "FLSun T1",
+                            "FLSun S1"}},
      {"FlyingBear",        {"FlyingBear Reborn3", "FlyingBear S1",      "FlyingBear Ghost 6"}},
      {"Folgertech",        {"Folgertech i3",   "Folgertech FT-5", "Folgertech FT-6"}},
      {"Geeetech",          {"Geeetech Thunder",   "Geeetech Mizar M",   "Geeetech Mizar S",   "Geeetech Mizar Pro", "Geeetech Mizar Max",
                             "Geeetech Mizar",     "Geeetech A10 Pro",   "Geeetech A10 M",     "Geeetech A10 T",     "Geeetech A20",
-                            "Geeetech A20 M",     "Geeetech A20 T",     "Geeetech A30 Pro",   "Geeetech A30 M",     "Geeetech A30 T"}},
-     {"InfiMech",          {"InfiMech TX"}},
-     {"Kingroon",          {"Kingroon KP3S PRO S1", "Kingroon KP3S PRO V2", "Kingroon KP3S 3.0"}},
+                            "Geeetech A20 M",     "Geeetech A20 T",     "Geeetech A30 Pro",   "Geeetech A30 M",     "Geeetech A30 T",
+                            "Geeetech M1"}},
+     {"Ginger Additive",   {"ginger G1"}},
+     {"InfiMech",          {"InfiMech TX",                       "InfiMech TX Hardened Steel Nozzle"}},
+     {"Kingroon",          {"Kingroon KP3S PRO S1", "Kingroon KP3S PRO V2", "Kingroon KP3S 3.0",    "Kingroon KP3S V1",     "Kingroon KLP1"}},
      {"MagicMaker",        {"MM hqs hj",   "MM hqs SF",   "MM hj SK",    "MM BoneKing", "MM slb"}},
+     {"Mellow",            {"M1"}},
      {"Orca Arena Printer",{"Orca Arena X1 Carbon"}},
      {"Peopoly",           {"Peopoly Magneto X"}},
      {"Positron 3D",       {"The Positron"}},
-     {"Prusa",             {"MK4IS",    "MINIIS",   "MK3S",     "MINI",     "Prusa XL"}},
-     {"Qidi",              {"Qidi Q1 Pro",    "Qidi X-Max 3",   "Qidi X-Plus 3",  "Qidi X-Smart 3", "Qidi X-Plus",
-                            "Qidi X-Max",     "Qidi X-CF Pro"}},
+     {"Prusa",             {"MK4IS",       "MINIIS",      "MK3S",        "MINI",        "MK3.5",
+                            "Prusa XL",    "Prusa XL 5T"}},
+     {"Qidi",              {"Qidi X-Plus 4",  "Qidi Q1 Pro",    "Qidi X-Max 3",   "Qidi X-Plus 3",  "Qidi X-Smart 3",
+                            "Qidi X-Plus",    "Qidi X-Max",     "Qidi X-CF Pro"}},
      {"Raise3D",           {"Raise3D Pro3",      "Raise3D Pro3 Plus"}},
      {"RatRig",            {"RatRig V-Core 3 200",        "RatRig V-Core 3 300",        "RatRig V-Core 3 400",        "RatRig V-Core 3 500",        "RatRig V-Minion",
                             "RatRig V-Cast",              "RatRig V-Core 4 300",        "RatRig V-Core 4 400",        "RatRig V-Core 4 500",        "RatRig V-Core 4 HYBRID 300",
                             "RatRig V-Core 4 HYBRID 400", "RatRig V-Core 4 HYBRID 500"}},
+     {"RolohaunDesign",    {"Rook MK1 LDO"}},
      {"SecKit",            {"SecKit SK-Tank", "Seckit Go3"}},
      {"Snapmaker",         {"Snapmaker J1",                 "Snapmaker A250",               "Snapmaker A350",               "Snapmaker A250 Dual",          "Snapmaker A350 Dual",
                             "Snapmaker A250 QSKit",         "Snapmaker A350 QSKit",         "Snapmaker A250 BKit",          "Snapmaker A350 BKit",          "Snapmaker A250 QS+B Kit",
@@ -161,6 +173,15 @@ static bool str_is_all_digit(const std::string &str) {
         if (!std::isdigit(c)) return false;
     }
     return true; 
+}
+
+// Custom comparator for case-insensitive sorting
+static bool caseInsensitiveCompare(const std::string& a, const std::string& b) {
+    std::string lowerA = a;
+    std::string lowerB = b;
+    std::transform(lowerA.begin(), lowerA.end(), lowerA.begin(), ::tolower);
+    std::transform(lowerB.begin(), lowerB.end(), lowerB.begin(), ::tolower);
+    return lowerA < lowerB;
 }
 
 static bool delete_filament_preset_by_name(std::string delete_preset_name, std::string &selected_preset_name)
@@ -297,7 +318,7 @@ static wxArrayString get_exist_vendor_choices(VendorMap& vendors)
         vendors[users_models.name] = users_models;
     }
 
-    for (const pair<std::string, VendorProfile> &vendor : vendors) {
+    for (const auto& vendor : vendors) {
         if (vendor.second.models.empty() || vendor.second.id.empty()) continue;
         choices.Add(vendor.first);
     }
@@ -608,9 +629,9 @@ CreateFilamentPresetDialog::CreateFilamentPresetDialog(wxWindow *parent)
     m_main_sizer->Add(m_line_top, 0, wxEXPAND, 0);
     m_main_sizer->Add(0, 0, 0, wxTOP, FromDIP(5));
 
-    wxStaticText *basic_infomation = new wxStaticText(this, wxID_ANY, _L("Basic Information"));
-    basic_infomation->SetFont(Label::Head_16);
-    m_main_sizer->Add(basic_infomation, 0, wxLEFT, FromDIP(10));
+    wxStaticText *basic_information = new wxStaticText(this, wxID_ANY, _L("Basic Information"));
+    basic_information->SetFont(Label::Head_16);
+    m_main_sizer->Add(basic_information, 0, wxLEFT, FromDIP(10));
 
     m_main_sizer->Add(create_item(FilamentOptionType::VENDOR), 0, wxEXPAND | wxALL, FromDIP(5));
     m_main_sizer->Add(create_item(FilamentOptionType::TYPE), 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(5));
@@ -622,9 +643,9 @@ CreateFilamentPresetDialog::CreateFilamentPresetDialog(wxWindow *parent)
     m_main_sizer->Add(line_divider, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(10));
     m_main_sizer->Add(0, 0, 0, wxTOP, FromDIP(5));
 
-    wxStaticText *presets_infomation = new wxStaticText(this, wxID_ANY, _L("Add Filament Preset under this filament"));
-    presets_infomation->SetFont(Label::Head_16);
-    m_main_sizer->Add(presets_infomation, 0, wxLEFT | wxRIGHT, FromDIP(15));
+    wxStaticText *presets_information = new wxStaticText(this, wxID_ANY, _L("Add Filament Preset under this filament"));
+    presets_information->SetFont(Label::Head_16);
+    m_main_sizer->Add(presets_information, 0, wxLEFT | wxRIGHT, FromDIP(15));
 
     m_main_sizer->Add(create_item(FilamentOptionType::FILAMENT_PRESET), 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(5));
 
@@ -678,11 +699,11 @@ void CreateFilamentPresetDialog::on_dpi_changed(const wxRect &suggested_rect) {
 
 bool CreateFilamentPresetDialog::is_check_box_selected()
 {
-    for (const std::pair<::CheckBox *, std::pair<std::string, Preset *>> &checkbox_preset : m_filament_preset) {
+    for (const auto& checkbox_preset : m_filament_preset) {
         if (checkbox_preset.first->GetValue()) { return true; }
     }
 
-    for (const std::pair<::CheckBox *, std::pair<std::string, Preset *>> &checkbox_preset : m_machint_filament_preset) {
+    for (const auto& checkbox_preset : m_machint_filament_preset) {
         if (checkbox_preset.first->GetValue()) { return true; }
     }
 
@@ -712,11 +733,19 @@ wxBoxSizer *CreateFilamentPresetDialog::create_vendor_item()
     optionSizer->SetMinSize(OPTION_SIZE);
     horizontal_sizer->Add(optionSizer, 0, wxEXPAND | wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(5)); 
 
-    wxArrayString choices;
-    for (const wxString &vendor : filament_vendors) {
-        choices.push_back(vendor);
+    // Convert all std::any to std::string
+    std::vector<std::string> string_vendors;
+    for (const auto& vendor_any : filament_vendors) {
+        string_vendors.push_back(std::any_cast<std::string>(vendor_any));
     }
-    choices.Sort();
+
+    // Sort the vendors alphabetically
+    std::sort(string_vendors.begin(), string_vendors.end(), caseInsensitiveCompare);
+
+    wxArrayString choices;
+    for (const std::string &vendor : string_vendors) {
+        choices.push_back(wxString(vendor)); // Convert std::string to wxString before adding
+    }
 
     wxBoxSizer *vendor_sizer   = new wxBoxSizer(wxHORIZONTAL);
     m_filament_vendor_combobox = new ComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, NAME_OPTION_COMBOBOX_SIZE, 0, nullptr, wxCB_READONLY);
@@ -795,7 +824,7 @@ wxBoxSizer *CreateFilamentPresetDialog::create_type_item()
     horizontal_sizer->Add(optionSizer, 0, wxEXPAND | wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(5));
 
     wxArrayString filament_type;
-    for (const wxString &filament : m_system_filament_types_set) {
+    for (const wxString filament : m_system_filament_types_set) {
         filament_type.Add(filament);
     }
     filament_type.Sort();
@@ -1015,7 +1044,7 @@ wxBoxSizer *CreateFilamentPresetDialog::create_button_item()
         wxString    serial_str = m_filament_serial_input->GetTextCtrl()->GetValue();
         std::string serial_name;
         if (serial_str.empty()) {
-            MessageDialog dlg(this, _L("Filament serial is not inputed, please input serial."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"),
+            MessageDialog dlg(this, _L("Filament serial is not entered, please enter serial."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"),
                               wxYES | wxYES_DEFAULT | wxCENTRE);
             dlg.ShowModal();
             return;
@@ -1070,7 +1099,7 @@ wxBoxSizer *CreateFilamentPresetDialog::create_button_item()
         
         if (curr_create_type == m_create_type.base_filament) {
             BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ":clone filament  create type  filament ";
-            for (const std::pair<::CheckBox *, std::pair<std::string, Preset *>> &checkbox_preset : m_filament_preset) {
+            for (const auto& checkbox_preset : m_filament_preset) {
                 if (checkbox_preset.first->GetValue()) { 
                     std::string compatible_printer_name = checkbox_preset.second.first;
                     std::vector<std::string> failures;
@@ -1097,7 +1126,7 @@ wxBoxSizer *CreateFilamentPresetDialog::create_button_item()
             }
         } else if (curr_create_type == m_create_type.base_filament_preset) {
             BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ":clone filament presets  create type  filament preset";
-            for (const std::pair<::CheckBox *, std::pair<std::string, Preset *>> &checkbox_preset : m_machint_filament_preset) {
+            for (const auto& checkbox_preset : m_machint_filament_preset) {
                 if (checkbox_preset.first->GetValue()) {
                     std::string compatible_printer_name = checkbox_preset.second.first;
                     std::vector<std::string> failures;
@@ -1175,7 +1204,7 @@ wxArrayString CreateFilamentPresetDialog::get_filament_preset_choices()
     }
     
     int suffix = 0;
-    for (const pair<std::string, std::vector<Preset *>> &preset : m_filament_choice_map) { 
+    for (const auto& preset : m_filament_choice_map) {
         if (preset.second.empty()) continue;
         std::set<wxString> preset_name_set;
         for (Preset* filament_preset : preset.second) { 
@@ -1661,7 +1690,7 @@ wxBoxSizer *CreatePrinterPresetDialog::create_printer_item(wxWindow *parent)
                 m_select_model->SetLabelColor(*wxBLACK);
             }
         } else {
-            MessageDialog dlg(this, _L("The model is not found, place reselect vendor."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES | wxYES_DEFAULT | wxCENTRE);
+            MessageDialog dlg(this, _L("The model is not found, please reselect vendor."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES | wxYES_DEFAULT | wxCENTRE);
             dlg.ShowModal();
         }
         e.Skip();
@@ -1772,7 +1801,7 @@ wxBoxSizer *CreatePrinterPresetDialog::create_nozzle_diameter_item(wxWindow *par
     wxBoxSizer *comboBoxSizer = new wxBoxSizer(wxVERTICAL);
     m_nozzle_diameter         = new ComboBox(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, OPTION_SIZE, 0, nullptr, wxCB_READONLY);
     wxArrayString nozzle_diameters;
-    for (const std::string nozzle : nozzle_diameter_vec) { 
+    for (const std::string& nozzle : nozzle_diameter_vec) {
         nozzle_diameters.Add(nozzle + " mm");
     }
     m_nozzle_diameter->Set(nozzle_diameters);
@@ -2141,7 +2170,7 @@ bool CreatePrinterPresetDialog::load_system_and_user_presets_with_curr_model(Pre
         varient = model_varient.substr(index_at + 3, index_nozzle - index_at - 4);
     } else {
         BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << "get nozzle failed";
-        MessageDialog dlg(this, _L("The nozzle diameter is not found, place reselect."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES_NO | wxYES_DEFAULT | wxCENTRE);
+        MessageDialog dlg(this, _L("The nozzle diameter is not found, please reselect."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES_NO | wxYES_DEFAULT | wxCENTRE);
         dlg.ShowModal();
         return false;
     }
@@ -2152,7 +2181,7 @@ bool CreatePrinterPresetDialog::load_system_and_user_presets_with_curr_model(Pre
     if (temp_printer_preset) {
         m_printer_preset = new Preset(*temp_printer_preset);
     } else {
-        MessageDialog dlg(this, _L("The printer preset is not found, place reselect."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES_NO | wxYES_DEFAULT | wxCENTRE);
+        MessageDialog dlg(this, _L("The printer preset is not found, please reselect."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES_NO | wxYES_DEFAULT | wxCENTRE);
         dlg.ShowModal();
         return false;
     }
@@ -2610,7 +2639,7 @@ wxBoxSizer *CreatePrinterPresetDialog::create_page2_btns_item(wxWindow *parent)
                 std::string custom_vendor = into_u8(m_custom_vendor_text_ctrl->GetValue());
                 std::string custom_model  = into_u8(m_custom_model_text_ctrl->GetValue());
                 if (custom_vendor.empty() || custom_model.empty()) {
-                    MessageDialog dlg(this, _L("The custom printer or model is not inputed, place input."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"),
+                    MessageDialog dlg(this, _L("The custom printer or model is not entered, please enter it."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"),
                                       wxYES | wxYES_DEFAULT | wxCENTRE);
                     dlg.ShowModal();
                     show_page1();
@@ -3136,7 +3165,7 @@ bool CreatePrinterPresetDialog::validate_input_valid()
             model_name  = into_u8(m_select_model->GetStringSelection());
         }
         if ((vendor_name.empty() || model_name.empty())) {
-            MessageDialog dlg(this, _L("You have not selected the vendor and model or inputed the custom vendor and model."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"),
+            MessageDialog dlg(this, _L("You have not selected the vendor and model or entered the custom vendor and model."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"),
                               wxYES | wxYES_DEFAULT | wxCENTRE);
             dlg.ShowModal();
             return false;
@@ -3562,7 +3591,7 @@ wxBoxSizer *ExportConfigsDialog::create_export_config_item(wxWindow *parent)
     static_export_printer_preset_bundle_text->SetForegroundColour(wxColour("#6B6B6B"));
     radioBoxSizer->Add(static_export_printer_preset_bundle_text, 0, wxEXPAND | wxLEFT, FromDIP(22));
     radioBoxSizer->Add(create_radio_item(m_exprot_type.filament_bundle, parent, wxEmptyString, m_export_type_btns), 0, wxEXPAND | wxTOP, FromDIP(10));
-    wxStaticText *static_export_filament_preset_bundle_text = new wxStaticText(parent, wxID_ANY, _L("User's fillment preset set. \nCan be shared with others."), wxDefaultPosition, wxDefaultSize);
+    wxStaticText *static_export_filament_preset_bundle_text = new wxStaticText(parent, wxID_ANY, _L("User's filament preset set. \nCan be shared with others."), wxDefaultPosition, wxDefaultSize);
     static_export_filament_preset_bundle_text->SetFont(Label::Body_12);
     static_export_filament_preset_bundle_text->SetForegroundColour(wxColour("#6B6B6B"));
     radioBoxSizer->Add(static_export_filament_preset_bundle_text, 0, wxEXPAND | wxLEFT, FromDIP(22));
@@ -3919,7 +3948,7 @@ ExportConfigsDialog::ExportCase ExportConfigsDialog::archive_filament_bundle_to_
                 BOOST_LOG_TRIVIAL(info) << "Filament preset json add successful: " << filament_preset->name;
             }
             
-            for (const std::pair<std::string, json>& vendor_name_to_json : vendor_structure) {
+            for (const auto& vendor_name_to_json : vendor_structure) {
                 json j;
                 std::string printer_vendor = vendor_name_to_json.first;
                 j["vendor"]                = printer_vendor;
@@ -4142,13 +4171,13 @@ wxBoxSizer *ExportConfigsDialog::create_select_printer(wxWindow *parent)
     horizontal_sizer->Add(optionSizer, 0, wxEXPAND | wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(10));
     m_scrolled_preset_window = new wxScrolledWindow(parent);
     m_scrolled_preset_window->SetScrollRate(5, 5);
-    m_scrolled_preset_window->SetBackgroundColour(PRINTER_LIST_COLOUR);
+    m_scrolled_preset_window->SetBackgroundColour(*wxWHITE);
     m_scrolled_preset_window->SetMaxSize(wxSize(FromDIP(660), FromDIP(400)));
     m_scrolled_preset_window->SetSize(wxSize(FromDIP(660), FromDIP(400)));
     wxBoxSizer *scrolled_window = new wxBoxSizer(wxHORIZONTAL);
 
     m_presets_window = new wxPanel(m_scrolled_preset_window, wxID_ANY);
-    m_presets_window->SetBackgroundColour(PRINTER_LIST_COLOUR);
+    m_presets_window->SetBackgroundColour(*wxWHITE);
     wxBoxSizer *select_printer_sizer  = new wxBoxSizer(wxVERTICAL);
 
     m_preset_sizer = new wxGridSizer(3, FromDIP(5), FromDIP(5));
@@ -4235,7 +4264,7 @@ void ExportConfigsDialog::data_init()
     }
 }
 
-EditFilamentPresetDialog::EditFilamentPresetDialog(wxWindow *parent, FilamentInfomation *filament_info)
+EditFilamentPresetDialog::EditFilamentPresetDialog(wxWindow *parent, Filamentinformation *filament_info)
     : DPIDialog(parent ? parent : nullptr, wxID_ANY, _L("Edit Filament"), wxDefaultPosition, wxDefaultSize, wxCAPTION | wxCLOSE_BOX)
     , m_filament_id("")
     , m_filament_name("")
@@ -4258,10 +4287,10 @@ EditFilamentPresetDialog::EditFilamentPresetDialog(wxWindow *parent, FilamentInf
     m_main_sizer->Add(m_line_top, 0, wxEXPAND, 0);
     m_main_sizer->Add(0, 0, 0, wxTOP, FromDIP(5));
 
-    wxStaticText* basic_infomation = new wxStaticText(this, wxID_ANY, _L("Basic Information")); 
-    basic_infomation->SetFont(Label::Head_16);
+    wxStaticText* basic_information = new wxStaticText(this, wxID_ANY, _L("Basic Information")); 
+    basic_information->SetFont(Label::Head_16);
     
-    m_main_sizer->Add(basic_infomation, 0, wxALL, FromDIP(10));
+    m_main_sizer->Add(basic_information, 0, wxALL, FromDIP(10));
     m_filament_id = filament_info->filament_id;
     //std::string filament_name = filament_info->filament_name;
     bool get_filament_presets = get_same_filament_id_presets(m_filament_id);
@@ -4300,9 +4329,9 @@ EditFilamentPresetDialog::EditFilamentPresetDialog(wxWindow *parent, FilamentInf
     m_main_sizer->Add(line_divider, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(10));
     m_main_sizer->Add(0, 0, 0, wxTOP, FromDIP(5));
 
-    wxStaticText *presets_infomation = new wxStaticText(this, wxID_ANY, _L("Filament presets under this filament"));
-    presets_infomation->SetFont(Label::Head_16);
-    m_main_sizer->Add(presets_infomation, 0, wxLEFT | wxRIGHT, FromDIP(10));
+    wxStaticText *presets_information = new wxStaticText(this, wxID_ANY, _L("Filament presets under this filament"));
+    presets_information->SetFont(Label::Head_16);
+    m_main_sizer->Add(presets_information, 0, wxLEFT | wxRIGHT, FromDIP(10));
 
     m_main_sizer->Add(create_add_filament_btn(), 0, wxEXPAND | wxALL, 0);
     m_main_sizer->Add(create_preset_tree_sizer(), 0, wxEXPAND | wxALL, 0);
@@ -4715,9 +4744,9 @@ CreatePresetForPrinterDialog::CreatePresetForPrinterDialog(wxWindow *parent, std
     main_sizer->Add(m_line_top, 0, wxEXPAND, 0);
     main_sizer->Add(0, 0, 0, wxTOP, FromDIP(5));
 
-    wxStaticText *basic_infomation = new wxStaticText(this, wxID_ANY, _L("Add preset for new printer"));
-    basic_infomation->SetFont(Label::Head_16);
-    main_sizer->Add(basic_infomation, 0, wxALL, FromDIP(10));
+    wxStaticText *basic_information = new wxStaticText(this, wxID_ANY, _L("Add preset for new printer"));
+    basic_information->SetFont(Label::Head_16);
+    main_sizer->Add(basic_information, 0, wxALL, FromDIP(10));
 
     main_sizer->Add(create_selected_printer_preset_sizer(), 0, wxALL, FromDIP(10));
     main_sizer->Add(create_selected_filament_preset_sizer(), 0, wxALL, FromDIP(10));

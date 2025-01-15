@@ -104,6 +104,15 @@ std::string AppConfig::get_hms_host()
 // #endif
 }
 
+bool AppConfig::get_stealth_mode()
+{
+    // always return true when user did not finish setup wizard yet
+    if (!get_bool("firstguide","finish")) {
+        return true;
+    }
+    return get_bool("stealth_mode");
+}
+
 void AppConfig::reset()
 {
     m_storage.clear();
@@ -212,6 +221,8 @@ void AppConfig::set_defaults()
     if (get("show_3d_navigator").empty())
         set_bool("show_3d_navigator", true);
 
+    if (get("show_outline").empty())
+        set_bool("show_outline", false);
 
 #ifdef _WIN32
 
@@ -1394,9 +1405,9 @@ std::string AppConfig::getSystemLocale() {
     // 将 CFStringRef 转换为 C++ 字符串
     char country[256];
     if (CFStringGetCString(countryCode, country, sizeof(country), kCFStringEncodingUTF8)) {
-        std::cout << "系统设置的国家: " << country << std::endl;
+        std::cout << "System country code: " << country << std::endl;
     } else {
-        std::cerr << "无法获取国家代码" << std::endl;
+        std::cerr << "Failed to get system country code" << std::endl;
     }
     CFRelease(localeRef);
 
@@ -1410,10 +1421,10 @@ std::string AppConfig::getSystemLocale() {
         if (pos != std::string::npos) {
             langStr = langStr.substr(0, pos);
         }
-        std::cout << "当前系统语言: " << lang << std::endl;
+        std::cout << "System language: " << lang << std::endl;
         locale = langStr + "-" + country;
     } else {
-        std::cerr << "无法获取系统语言" << std::endl;
+        std::cerr << "Failed to get system language" << std::endl;
     }
 
     CFRelease(languages);
@@ -1453,10 +1464,10 @@ std::string AppConfig::getSystemLanguage(){
         } else if (langStr == "zh-Hant") {
             langStr = "zh-TW";
         } 
-        std::cout << "当前系统语言: " << lang << std::endl;
+        std::cout << "System language: " << lang << std::endl;
         locale = langStr;
     } else {
-        std::cerr << "无法获取系统语言" << std::endl;
+        std::cerr << "Failed to get system language" << std::endl;
     }
 
     CFRelease(languages);

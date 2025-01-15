@@ -325,12 +325,11 @@ wxString HMSQuery::query_print_error_url_action(int print_error, std::string dev
 
 int HMSQuery::check_hms_info()
 {
-    boost::thread check_thread = boost::thread([this] {
-
-        download_hms_related(QUERY_HMS_INFO, &m_hms_info_json);
-        download_hms_related(QUERY_HMS_ACTION, &m_hms_action_json);
-        return 0;
-    });
+    // boost::thread check_thread = boost::thread([this] {
+    //     download_hms_related(QUERY_HMS_INFO, &m_hms_info_json);
+    //     download_hms_related(QUERY_HMS_ACTION, &m_hms_action_json);
+    //     return 0;
+    // });
     return 0;
 }
 

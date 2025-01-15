@@ -110,6 +110,7 @@ var LangText = {
     elegoo3: "Stealth Mode",
     elegoo4: "This stops the transmission of data to Bambu's cloud services. Users who don't use BBL machines or use LAN mode only can safely turn on this function.",
     elegoo5: "Enable Stealth Mode.",
+    tSearchDevice: "Search device",
   },
     ca_ES: {
     t1: "Benvingut a ElegooSlicer",
@@ -781,6 +782,7 @@ var LangText = {
     wk16: "使用3D文本工具，用户可以轻松地在项目中创建各种3D文本形状，使模型更加个性化。ElegooSlicer提供了数十种字体，并支持粗体和斜体样式，使文本具有更大的灵活性。",
     elegoo1: "编辑项目信息",
     elegoo2: "该模型没有相关信息",
+    tSearchDevice: "搜索设备",
   },
   zh_TW: {
     t1: "歡迎使用 ElegooSlicer",
@@ -1447,6 +1449,12 @@ function TranslatePage() {
     let tid = $(OneNode).attr("tid");
     if (LangText[strLang].hasOwnProperty(tid)) {
       $(OneNode).html(LangText[strLang][tid]);
+    }
+
+    //placeholder
+    let tplaceholder = $(OneNode).attr("tplaceholder");
+    if (LangText[strLang].hasOwnProperty(tplaceholder)) {
+      $(OneNode).attr("placeholder", LangText[strLang][tplaceholder]);
     }
   }
 }

@@ -12696,7 +12696,7 @@ msgstr ""
 "悬垂下创建与正常支撑类似的结构（默认）。"
 
 msgid "Default (Grid/Organic"
-msgstr ""
+msgstr "缺省"
 
 msgid "Snug"
 msgstr "紧贴"

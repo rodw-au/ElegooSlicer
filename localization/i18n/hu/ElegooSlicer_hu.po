@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-17 11:36+0800\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -6163,12 +6163,6 @@ msgstr "%d tálca szeletelése"
 
 msgid "Please resolve the slicing errors and publish again."
 msgstr "Kérjük, orvosold a szeletelési hibákat, és próbáld meg újra."
-
-msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr ""
-"Nem található a hálózati bővítmény. A hálózattal kapcsolatos szolgáltatások "
-"nem érhetők el."
 
 msgid ""
 "Preview only mode:\n"
@@ -14870,6 +14864,23 @@ msgstr "Feltöltés"
 msgid "Cancelling"
 msgstr "Megszakítás"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr ""
+
+msgid "Time-lapse"
+msgstr ""
+
+msgid "Heated Bed Leveling"
+msgstr ""
+
+msgid "Textured Build Plate (Side A)"
+msgstr ""
+
+msgid "Smooth Build Plate (Side B)"
+msgstr ""
+
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "Nem lehet logikai műveletet végrehajtani a kiválasztott tárgyakon"
 
@@ -15951,10 +15962,10 @@ msgstr ""
 msgid "User cancelled."
 msgstr ""
 
-msgid "Connection to Elegoo Link works correctly."
+msgid "Connection to ElegooLink works correctly."
 msgstr ""
 
-msgid "Could not connect to Elegoo Link"
+msgid "Could not connect to ElegooLink"
 msgstr ""
 
 msgid ""
@@ -15965,7 +15976,9 @@ msgstr ""
 msgid "Error code not found"
 msgstr ""
 
-msgid "The printer is busy, please check and try again."
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
 msgstr ""
 
 msgid "The file is lost, please check and try again."
@@ -15988,7 +16001,7 @@ msgstr ""
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
+"functioning properly, and confirm that they are on the same network."
 msgstr ""
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
@@ -16324,6 +16337,12 @@ msgstr ""
 "Vetemedés elkerülése\n"
 "Tudtad, hogy a vetemedésre hajlamos anyagok (például ABS) nyomtatásakor a "
 "tárgyasztal hőmérsékletének növelése csökkentheti a vetemedés valószínűségét?"
+
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr ""
+#~ "Nem található a hálózati bővítmény. A hálózattal kapcsolatos "
+#~ "szolgáltatások nem érhetők el."
 
 #, boost-format
 #~ msgid "Fatal error, exception caught: %1%"

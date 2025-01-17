@@ -228,7 +228,7 @@ namespace Slic3r {
 
     }
 
-    const char* ElegooLink::get_name() const { return "Elegoo Link"; }
+    const char* ElegooLink::get_name() const { return "ElegooLink"; }
 
     bool ElegooLink::elegoo_test(wxString& msg) const{
 
@@ -246,13 +246,13 @@ namespace Slic3r {
         .on_complete([&, this](std::string body, unsigned) {
             BOOST_LOG_TRIVIAL(debug) << boost::format("%1%: Got version: %2%") % name % body;
             // Check if the response contains "ELEGOO" in any case.
-            // This is a simple check to see if the response is from an Elegoo Link server.
+            // This is a simple check to see if the response is from an ElegooLink server.
             std::regex re("ELEGOO", std::regex::icase);
             std::smatch match;
             if (std::regex_search(body, match, re)) {
                 res = true;
             } else {
-                msg = format_error(body, "Elegoo Link not detected", 0);
+                msg = format_error(body, "ElegooLink not detected", 0);
                 res = false;
             }
         })
@@ -303,13 +303,13 @@ namespace Slic3r {
             })
             .on_complete([&, this](std::string body, unsigned) {
                 // Check if the response contains "ELEGOO" in any case.
-                // This is a simple check to see if the response is from an Elegoo Link server.
+                // This is a simple check to see if the response is from an ElegooLink server.
                 std::regex  re("ELEGOO", std::regex::icase);
                 std::smatch match;
                 if (std::regex_search(body, match, re)) {
                     res = true;
                 } else {
-                    msg = format_error(body, "Elegoo Link not detected", 0);
+                    msg = format_error(body, "ElegooLink not detected", 0);
                     res = false;
                 }
             })
@@ -332,12 +332,12 @@ namespace Slic3r {
 
     wxString ElegooLink::get_test_ok_msg() const
     {
-        return _L("Connection to Elegoo Link works correctly.");
+        return _L("Connection to ElegooLink works correctly.");
     }
 
     wxString ElegooLink::get_test_failed_msg(wxString& msg) const
     {
-        return GUI::format_wxstr("%s: %s", _L("Could not connect to Elegoo Link"), msg);
+        return GUI::format_wxstr("%s: %s", _L("Could not connect to ElegooLink"), msg);
     }
 
     #ifdef WIN32
@@ -490,7 +490,7 @@ namespace Slic3r {
     bool ElegooLink::loopUpload(std::string url, PrintHostUpload upload_data, ProgressFn progress_fn, ErrorFn error_fn, InfoFn info_fn) const
     {
         const char* name               = get_name();
-        const auto  upload_filename    = upload_data.upload_path.filename().string();
+        const auto  upload_filename = upload_data.upload_path.filename().string();
         std::string source_path        = upload_data.source_path.string();
 
         // calc file size
@@ -546,8 +546,6 @@ namespace Slic3r {
 
         if (res) {
             if (upload_data.post_action == PrintHostPostUploadAction::StartPrint) {
-                // sleep 3s, wait for the file to be processed
-                std::this_thread::sleep_for(std::chrono::seconds(3));
                 // connect to websocket, since the upload is successful, the file will be printed
                 std::string     wsUrl = get_host_from_url_no_port(m_host);
                 WebSocketClient client;
@@ -565,8 +563,27 @@ namespace Slic3r {
                     }
                     return false;
                 }
-                // send print command
-                res = print(client, upload_filename, error_fn);
+                std::string timeLapse = "0";
+                std::string heatedBedLeveling = "0";
+                std::string bedType           = "0";
+
+                if (!upload_data.other.has_value()) {
+                    BOOST_LOG_TRIVIAL(error) << "ElegooLink: upload data does not contain other data";
+                } else {
+                    auto s = std::any_cast<std::map<std::string, std::string>>(upload_data.other);
+                   
+                    timeLapse         = s["timeLapse"];
+                    heatedBedLeveling = s["heatedBedLeveling"];
+                    bedType           = s["bedType"];
+                }
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+                if (checkResult(client, error_fn)) {
+                    // send print command
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                    res = print(client, timeLapse, heatedBedLeveling, bedType, upload_filename, error_fn);
+                }else{
+                    res = false;
+                }
             }
         }
         return res;
@@ -635,8 +652,21 @@ namespace Slic3r {
     #endif // WIN32
     }
 
-    bool ElegooLink::print(WebSocketClient& client, const std::string filename,ErrorFn error_fn) const{
-        bool res = true;
+    bool ElegooLink::print(WebSocketClient&  client,
+                           std::string       timeLapse,
+                           std::string       heatedBedLeveling,
+                           std::string       bedType,
+                           const std::string filename,
+                           ErrorFn           error_fn) const
+    {
+
+        // convert bedType to 0 or 1, 0 is PTE, 1 is PC
+        if (bedType == std::to_string((int)BedType::btPC)){
+            bedType = "1";
+        }else{
+            bedType = "0";
+        }
+        bool res = false;
         // create a random UUID generator
         boost::uuids::random_generator generator;
         // generate a UUID
@@ -655,9 +685,9 @@ namespace Slic3r {
                                             "Data":{
                                                 "Filename":"/local/)" + filename + R"(",
                                                 "StartLayer":0,
-                                                "Calibration_switch":0,
-                                                "PrintPlatformType":0,
-                                                "Tlp_Switch":0
+                                                "Calibration_switch":)" + heatedBedLeveling + R"(,
+                                                "PrintPlatformType":)" + bedType + R"(,
+                                                "Tlp_Switch":)" + timeLapse + R"(
                                             },
                                             "RequestID":")"+ uuid_string + R"(",
                                             "MainboardID":"",
@@ -668,7 +698,8 @@ namespace Slic3r {
                     std::cout << "send: " << jsonString << std::endl;
                     BOOST_LOG_TRIVIAL(info) << "start print, param: " << jsonString;
                     client.send(jsonString);
-                    int count = 0;
+                    // wait 30s
+                    auto start_time = std::chrono::steady_clock::now();
                     do{
                         std::string response = client.receive();
                         std::cout << "Received: " << response << std::endl;
@@ -707,7 +738,7 @@ namespace Slic3r {
                                 switch(ack){
                                     case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_BUSY:
                                     {   
-                                        error_message =_L("The printer is busy, please check and try again.");
+                                        error_message =_L("The printer is busy, Please check the device page for the file and try to start printing again.");
                                         break;
                                     }
                                     case ElegooLinkStartPrintAck::SDCP_PRINT_CTRL_ACK_NOT_FOUND:
@@ -744,8 +775,8 @@ namespace Slic3r {
                             }
                             break;
                         }
-                    }while(++count < 15);
-                    if(count >= 15){
+                    } while (std::chrono::steady_clock::now() - start_time < std::chrono::seconds(30));
+                    if (std::chrono::steady_clock::now() - start_time >= std::chrono::seconds(30)) {
                         res = false;
                         error_fn(_L("Start print timeout"));
                     }
@@ -757,4 +788,82 @@ namespace Slic3r {
             }
         return res;
     }
-}
+
+    bool ElegooLink::checkResult(WebSocketClient& client, ErrorFn error_fn) const
+    {
+        bool res = true;
+        // create a random UUID generator
+        boost::uuids::random_generator generator;
+        // generate a UUID
+        boost::uuids::uuid uuid        = generator();
+        std::string        uuid_string = to_string(uuid);
+        try {
+            std::string requestID    = uuid_string;
+            auto        now          = std::chrono::system_clock::now();
+            auto        duration     = now.time_since_epoch();
+            auto        milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+            std::string timestamp    = std::to_string(milliseconds);
+            std::string jsonString   = R"({
+                                        "Id":"",
+                                        "Data":{
+                                            "Cmd":)" +
+                                     std::to_string(ElegooLinkCommand::ELEGOO_GET_STATUS) + R"(,
+                                            "Data":{},
+                                            "RequestID":")" +
+                                     uuid_string + R"(",
+                                            "MainboardID":"",
+                                            "TimeStamp":)" +
+                                     timestamp + R"(,
+                                            "From":1
+                                        }
+                                    })";
+            std::cout << "send: " << jsonString << std::endl;
+            BOOST_LOG_TRIVIAL(info) << "start print, param: " << jsonString;
+            bool needWrite = true;
+            // wait 60s
+            auto start_time = std::chrono::steady_clock::now();
+            do {
+                if (needWrite) {
+                    client.send(jsonString);
+                    needWrite = false;
+                }
+                std::string response = client.receive();
+                std::cout << "Received: " << response << std::endl;
+                BOOST_LOG_TRIVIAL(info) << "Received: " << response;
+                pt::ptree          root;
+                std::istringstream is(response);
+                pt::read_json(is, root);
+                auto status = root.get_child_optional("Status");
+                if (status) {
+                    auto currentStatus = status->get_child_optional("CurrentStatus");
+                    if (currentStatus) {
+                        std::vector<int> status;
+                        for (auto& item : *currentStatus) {
+                            status.push_back(item.second.get_value<int>());
+                        }
+                        if (std::find(status.begin(), status.end(), 8) != status.end()) {
+                            // 8 is check file status, need to wait
+                            needWrite = true;
+                            // sleep 1s
+                            std::this_thread::sleep_for(std::chrono::seconds(1));
+                        } else {
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            } while (std::chrono::steady_clock::now() - start_time < std::chrono::seconds(60));
+            if (std::chrono::steady_clock::now() - start_time >= std::chrono::seconds(60)) {
+                res = false;
+                error_fn(_L("Start print timeout"));
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+            BOOST_LOG_TRIVIAL(error) << "start print error: " << e.what();
+            error_fn(_L("Start print failed") + "\n" + GUI::from_u8(e.what()));
+            res = false;
+        }
+        return res;
+    }
+    }

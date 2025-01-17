@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-17 11:36+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Guislain Cyril, Thomas Lété\n"
@@ -6341,12 +6341,6 @@ msgstr "Découpe du plateau %d"
 
 msgid "Please resolve the slicing errors and publish again."
 msgstr "Veuillez résoudre les erreurs de découpage et republier."
-
-msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr ""
-"Le plug-in réseau n'est pas détecté. Les fonctionnalités liées au réseau ne "
-"sont pas disponibles."
 
 msgid ""
 "Preview only mode:\n"
@@ -16289,6 +16283,23 @@ msgstr "Téléversement"
 msgid "Cancelling"
 msgstr "Annulation"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr ""
+
+msgid "Time-lapse"
+msgstr ""
+
+msgid "Heated Bed Leveling"
+msgstr ""
+
+msgid "Textured Build Plate (Side A)"
+msgstr ""
+
+msgid "Smooth Build Plate (Side B)"
+msgstr ""
+
 msgid "Unable to perform boolean operation on selected parts"
 msgstr ""
 "Impossible d’effectuer une opération booléenne sur les pièces sélectionnées"
@@ -17452,10 +17463,10 @@ msgstr ""
 msgid "User cancelled."
 msgstr "L’utilisateur a annulé."
 
-msgid "Connection to Elegoo Link works correctly."
+msgid "Connection to ElegooLink works correctly."
 msgstr ""
 
-msgid "Could not connect to Elegoo Link"
+msgid "Could not connect to ElegooLink"
 msgstr ""
 
 msgid ""
@@ -17466,7 +17477,9 @@ msgstr ""
 msgid "Error code not found"
 msgstr ""
 
-msgid "The printer is busy, please check and try again."
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
 msgstr ""
 
 msgid "The file is lost, please check and try again."
@@ -17489,7 +17502,7 @@ msgstr ""
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
+"functioning properly, and confirm that they are on the same network."
 msgstr ""
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
@@ -17850,6 +17863,12 @@ msgstr ""
 "Saviez-vous que lors de l’impression de matériaux susceptibles de se "
 "déformer, tels que l’ABS, une augmentation appropriée de la température du "
 "plateau chauffant peut réduire la probabilité de déformation."
+
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr ""
+#~ "Le plug-in réseau n'est pas détecté. Les fonctionnalités liées au réseau "
+#~ "ne sont pas disponibles."
 
 #, boost-format
 #~ msgid "Fatal error, exception caught: %1%"

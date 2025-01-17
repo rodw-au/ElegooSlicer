@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-17 11:36+0800\n"
 "PO-Revision-Date: 2024-06-01 21:51-0300\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese, Brazilian\n"
@@ -6285,12 +6285,6 @@ msgstr "Fatiando Mesa %d"
 
 msgid "Please resolve the slicing errors and publish again."
 msgstr "Por favor, resolva os erros de fatiamento e publique novamente."
-
-msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr ""
-"O plug-in de rede não está detectado. Recursos relacionados à rede estão "
-"indisponíveis."
 
 msgid ""
 "Preview only mode:\n"
@@ -15591,6 +15585,23 @@ msgstr "Enviando"
 msgid "Cancelling"
 msgstr "Cancelando"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr ""
+
+msgid "Time-lapse"
+msgstr ""
+
+msgid "Heated Bed Leveling"
+msgstr ""
+
+msgid "Textured Build Plate (Side A)"
+msgstr ""
+
+msgid "Smooth Build Plate (Side B)"
+msgstr ""
+
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "Não é possível realizar operação booleana nas peças selecionadas"
 
@@ -16711,10 +16722,10 @@ msgstr ""
 msgid "User cancelled."
 msgstr "O usuário cancelou."
 
-msgid "Connection to Elegoo Link works correctly."
+msgid "Connection to ElegooLink works correctly."
 msgstr ""
 
-msgid "Could not connect to Elegoo Link"
+msgid "Could not connect to ElegooLink"
 msgstr ""
 
 msgid ""
@@ -16725,7 +16736,9 @@ msgstr ""
 msgid "Error code not found"
 msgstr ""
 
-msgid "The printer is busy, please check and try again."
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
 msgstr ""
 
 msgid "The file is lost, please check and try again."
@@ -16748,7 +16761,7 @@ msgstr ""
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
+"functioning properly, and confirm that they are on the same network."
 msgstr ""
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
@@ -17101,6 +17114,12 @@ msgstr ""
 "Você sabia que ao imprimir materiais propensos ao empenamento, como ABS, "
 "aumentar adequadamente a temperatura da mesa aquecida pode reduzir a "
 "probabilidade de empenamento?"
+
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr ""
+#~ "O plug-in de rede não está detectado. Recursos relacionados à rede estão "
+#~ "indisponíveis."
 
 #, boost-format
 #~ msgid "Fatal error, exception caught: %1%"

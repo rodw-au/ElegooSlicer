@@ -65,13 +65,16 @@
             }
         }, 0);
 
-        setInterval(() => {
+        setTimeout(() => {
+            if(window.is_loading_printer){
+                return;
+            }
             if (typeof wx !== 'undefined') {
                 wx.postMessage({ cmd: 'reload' });
             } else {
                 console.error('wx is not defined');
             }
-        }, 30000);
+        }, 15000);
     </script>
 </head>
 

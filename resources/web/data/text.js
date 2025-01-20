@@ -117,6 +117,8 @@ var LangText = {
     printer_connection_failed4: "2. Computer and printer network connection.",
     printer_connection_failed5: "3. Both are on the same network.",
     connecting_device: "Connecting device...",
+    printer_connection: "Printer Connection",
+    setup_printer: "Please set up your printer connection to view the device.",
   },
     ca_ES: {
     t1: "Benvingut a ElegooSlicer",
@@ -795,6 +797,8 @@ var LangText = {
     printer_connection_failed4: "2. 电脑及打印机的网络是否正常。",
     printer_connection_failed5: "3. 电脑与打印机是否处于同一个网络。",
     connecting_device: "正在连接设备...",
+    printer_connection: "连接打印机",
+    setup_printer: "请设置您的打印机连接以查看设备。",
   },
   zh_TW: {
     t1: "歡迎使用 ElegooSlicer",

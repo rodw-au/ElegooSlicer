@@ -6,7 +6,7 @@ if (navigator.userAgent.indexOf('Windows') !== -1) {
     console.log('Windows detected');
 }
 function hookNativeFunction() {
-    if (!isWin) {
+
         document.addEventListener('click', function (event) {
             let target = event.target;
             while (target && target.tagName.toLowerCase() !== 'a') {
@@ -16,9 +16,24 @@ function hookNativeFunction() {
                 return;
             }
             const blank = target.target === '_blank';
-            const needDownload = target.download !== undefined && target.download !== null;
+            const needDownload = target.download !== undefined && target.download !== '';
             if (!blank && !needDownload) {
                 return;
+            }    
+            if (isWin) {
+                if(needDownload){
+                    return;
+                }
+                const href = target.href;
+                const index = href.indexOf('?');
+                if (index !== -1) {
+                    href = href.substring(0, index);
+                }
+                const ext = href.split('.').pop().toLowerCase();
+                const exts = ['3mf','stl','obj','gcode','mp3','mp4','jpg','jpeg','png','gif','bmp','avi','mov','mpg','mpeg','wmv','flv','mkv','webm','pdf','doc','docx','xls','xlsx','ppt','pptx','txt','zip','rar','7z','tar','gz','bz'];
+                if (exts.includes(ext)) {
+                    return;
+                }
             }
             console.info('Open URL: ' + target.href);
             event.preventDefault();
@@ -32,7 +47,7 @@ function hookNativeFunction() {
                 console.error(e);
             }
         });
-    }
+    
 }
 
 function slicerAddButtons() {

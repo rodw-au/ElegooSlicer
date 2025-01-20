@@ -114,6 +114,7 @@ to {
         reconnectButton.classList.add('is-loading');
         setTimeout(function () {
             if (typeof wx !== 'undefined') {
+                window.is_loading_printer = true;
                 wx.postMessage({ cmd: 'reload' });
             } else {
                 console.error('wx is not defined');

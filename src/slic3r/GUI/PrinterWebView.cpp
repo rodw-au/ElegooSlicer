@@ -117,7 +117,8 @@ void PrinterWebView::load_url(wxString& url, wxString apikey)
 void PrinterWebView::OnNavgating(wxWebViewEvent& event) {
     auto url = event.GetURL();     
     if ((m_loadState != PWLoadState::CONNECTING_LOADING && m_connectiongUrl == url) ||
-        (m_loadState != PWLoadState::FAILED_LOADING && m_failedUrl == url)) {
+        (m_loadState != PWLoadState::FAILED_LOADING && url.StartsWith(m_failedUrl))) {
+        m_loadState = PWLoadState::CONNECTING_LOADING;
         event.Veto();
         loadConnectingPage();
     }  
@@ -202,6 +203,17 @@ void PrinterWebView::OnError(wxWebViewEvent &evt)
       }
     BOOST_LOG_TRIVIAL(info) << __FUNCTION__<< boost::format(": error loading page %1% %2% %3% %4%") %evt.GetURL() %evt.GetTarget() %e %evt.GetString();
 
+    std::string url = evt.GetURL().ToStdString();
+    std::string target = evt.GetTarget().ToStdString();
+    std::string error = e;
+    std::string message = evt.GetString().ToStdString();
+    
+    if(evt.GetInt() == wxWEBVIEW_NAV_ERR_USER_CANCELLED){
+        return;
+    }
+    if(message=="COREWEBVIEW2_WEB_ERROR_STATUS_CONNECTION_ABORTED"){
+        return;
+    }
     loadFailedPage();
 }
 
@@ -209,15 +221,15 @@ void PrinterWebView::OnLoaded(wxWebViewEvent &evt)
 {
     if (m_loadState == PWLoadState::CONNECTING_LOADING) {
         m_loadState = PWLoadState::CONNECTING_LOADED;
+        loadUrl();
     } else if (m_loadState == PWLoadState::URL_LOADING) {
         m_loadState = PWLoadState::URL_LOADED;
+
+        if (evt.GetURL().IsEmpty())return;
+        SendAPIKey();
     } else if (m_loadState == PWLoadState::FAILED_LOADING) {
         m_loadState = PWLoadState::FAILED_LOADED;
     }
-    loadUrl();
-    if (evt.GetURL().IsEmpty())
-        return;
-    SendAPIKey();
 }
 void PrinterWebView::OnScriptMessage(wxWebViewEvent& event)
 {
@@ -255,7 +267,8 @@ void PrinterWebView::loadConnectingPage()
 }
 void PrinterWebView::loadFailedPage()
 {
-    if (m_loadState == PWLoadState::URL_LOADED) {
+    if (m_loadState == PWLoadState::URL_LOADED||
+        m_loadState == PWLoadState::URL_LOADING) {
         m_loadState     = PWLoadState::FAILED_LOADING;
         m_browser->LoadURL(m_failedUrl+"?url="+m_url);
     }

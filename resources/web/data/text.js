@@ -111,6 +111,12 @@ var LangText = {
     elegoo4: "This stops the transmission of data to Bambu's cloud services. Users who don't use BBL machines or use LAN mode only can safely turn on this function.",
     elegoo5: "Enable Stealth Mode.",
     tSearchDevice: "Search device",
+    printer_connection_failed1: "Unable to access",
+    printer_connection_failed2: "Please check:",
+    printer_connection_failed3: "1. Hostname, IP or URL entry.",
+    printer_connection_failed4: "2. Computer and printer network connection.",
+    printer_connection_failed5: "3. Both are on the same network.",
+    connecting_device: "Connecting device...",
   },
     ca_ES: {
     t1: "Benvingut a ElegooSlicer",
@@ -783,6 +789,12 @@ var LangText = {
     elegoo1: "编辑项目信息",
     elegoo2: "该模型没有相关信息",
     tSearchDevice: "搜索设备",
+    printer_connection_failed1: "无法访问",
+    printer_connection_failed2: "请检查:",
+    printer_connection_failed3: "1. 主机名、IP或者URL是否正确输入。",
+    printer_connection_failed4: "2. 电脑及打印机的网络是否正常。",
+    printer_connection_failed5: "3. 电脑与打印机是否处于同一个网络。",
+    connecting_device: "正在连接设备...",
   },
   zh_TW: {
     t1: "歡迎使用 ElegooSlicer",
@@ -1445,7 +1457,6 @@ function TranslatePage() {
   let nTotal = AllNode.length;
   for (let n = 0; n < nTotal; n++) {
     let OneNode = AllNode[n];
-
     let tid = $(OneNode).attr("tid");
     if (LangText[strLang].hasOwnProperty(tid)) {
       $(OneNode).html(LangText[strLang][tid]);

@@ -14,7 +14,7 @@
 
 #include <slic3r/GUI/Widgets/WebView.hpp>
 #include <wx/webview.h>
-
+#include"slic3r/GUI/PhysicalPrinterDialog.hpp"
 namespace pt = boost::property_tree;
 
 namespace Slic3r {
@@ -35,42 +35,43 @@ PrinterWebView::PrinterWebView(wxWindow *parent)
 
     m_browser->Bind(wxEVT_WEBVIEW_ERROR, &PrinterWebView::OnError, this);
     m_browser->Bind(wxEVT_WEBVIEW_LOADED, &PrinterWebView::OnLoaded, this);
+    m_browser->Bind(wxEVT_WEBVIEW_NAVIGATING, &PrinterWebView::OnNavgating, this);
     SetSizer(topsizer);
 
-#if defined(__APPLE__) || defined(__MACH__)
     m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &PrinterWebView::OnScriptMessage, this);
-    // Add user script, that will handle the opening of links in a new tab
-    bool ret = m_browser->AddUserScript(R"(
-        console.log('User script added.');
-        document.addEventListener('click', function (event) {
-            let target = event.target;
-            while (target && target.tagName.toLowerCase() !== 'a') {
-                target = target.parentElement;
-            }
-            if (!target || target.tagName.toLowerCase() !== 'a' || !target.href) {
-                return;
-            }
-            const blank = target.target === '_blank';
-            const needDownload = target.download !== undefined && target.download !== null;
-            if (!blank && !needDownload) {
-                return;
-            }
-            console.info('Open URL: ' + target.href);
-            event.preventDefault();
-            try {
-                wx.postMessage({ cmd: 'open', data: { url: target.href, needDownload: needDownload } });
-            } catch (e) {
-                console.error(e);
-            }
-        });
-      )");
+    auto _dir = resources_dir();
+    // replace all "\\" with "/"
+    std::replace(_dir.begin(), _dir.end(), '\\', '/');
+
+    m_connectiongUrl = wxString::Format("file:///%s/web/orca/connecting.html", from_u8(_dir));
+    m_failedUrl =wxString::Format("file:///%s/web/orca/connection-failed.html", from_u8(_dir));
+
+    auto injectJsPath = boost::format("%1%/web/orca/inject.js") % _dir;
+    //read file
+    std::string injectJs;
+    std::ifstream injectJsFile(injectJsPath.str());
+    if (injectJsFile.is_open()) {
+        std::string line;
+        while (std::getline(injectJsFile, line)) {
+            injectJs += line;
+        }
+        injectJsFile.close();
+    } else {
+        wxLogError("Could not open inject.js");
+    }
+//
+//#ifdef WIN32
+//    injectJs = "let isWin=true;\n" + injectJs;
+//#endif // WIN32
+
+    // Add inject.js to the webview
+    bool ret = m_browser->AddUserScript(injectJs);
     if (!ret) {
         wxLogError("Could not add user script");
     }
-#endif
+
 
     topsizer->Add(m_browser, wxSizerFlags().Expand().Proportion(1));
-
     update_mode();
 
     // Log backend information
@@ -108,10 +109,18 @@ void PrinterWebView::load_url(wxString& url, wxString apikey)
         return;
     m_apikey = apikey;
     m_apikey_sent = false;
-    
-    m_browser->LoadURL(url);
+    m_url         = url;
+    loadConnectingPage();
     //m_browser->SetFocus();
     UpdateState();
+}
+void PrinterWebView::OnNavgating(wxWebViewEvent& event) {
+    auto url = event.GetURL();     
+    if ((m_loadState != PWLoadState::CONNECTING_LOADING && m_connectiongUrl == url) ||
+        (m_loadState != PWLoadState::FAILED_LOADING && m_failedUrl == url)) {
+        event.Veto();
+        loadConnectingPage();
+    }  
 }
 
 void PrinterWebView::reload()
@@ -121,7 +130,8 @@ void PrinterWebView::reload()
 
 void PrinterWebView::update_mode()
 {
-    m_browser->EnableAccessToDevTools(wxGetApp().app_config->get_bool("developer_mode"));
+    //m_browser->EnableAccessToDevTools(wxGetApp().app_config->get_bool("developer_mode"));
+    m_browser->EnableAccessToDevTools(true);
 }
 
 /**
@@ -191,17 +201,27 @@ void PrinterWebView::OnError(wxWebViewEvent &evt)
         break;
       }
     BOOST_LOG_TRIVIAL(info) << __FUNCTION__<< boost::format(": error loading page %1% %2% %3% %4%") %evt.GetURL() %evt.GetTarget() %e %evt.GetString();
+
+    loadFailedPage();
 }
 
 void PrinterWebView::OnLoaded(wxWebViewEvent &evt)
 {
+    if (m_loadState == PWLoadState::CONNECTING_LOADING) {
+        m_loadState = PWLoadState::CONNECTING_LOADED;
+    } else if (m_loadState == PWLoadState::URL_LOADING) {
+        m_loadState = PWLoadState::URL_LOADED;
+    } else if (m_loadState == PWLoadState::FAILED_LOADING) {
+        m_loadState = PWLoadState::FAILED_LOADED;
+    }
+    loadUrl();
     if (evt.GetURL().IsEmpty())
         return;
     SendAPIKey();
 }
 void PrinterWebView::OnScriptMessage(wxWebViewEvent& event)
 {
-#if defined(__APPLE__) || defined(__MACH__)
+//#if defined(__APPLE__) || defined(__MACH__)
     wxString message = event.GetString();
     wxLogMessage("Received message: %s", message);
 
@@ -215,11 +235,38 @@ void PrinterWebView::OnScriptMessage(wxWebViewEvent& event)
             std::string url = root.get<std::string>("data.url");
             wxLogMessage("Open URL: %s", url);
             wxLaunchDefaultBrowser(url);
+        } else if (cmd == "reload"){
+            if (m_url.IsEmpty())return;
+            m_loadState = PWLoadState::URL_LOADING;
+            m_browser->LoadURL(m_url);
+            //loadConnectingPage();
+            return;
         }
     } catch (std::exception& e) {
         wxLogMessage("Error: %s", e.what());
     }
-#endif
+//#endif
+}
+
+void PrinterWebView::loadConnectingPage()
+{
+    m_loadState         = PWLoadState::CONNECTING_LOADING;
+    m_browser->LoadURL(m_connectiongUrl);
+}
+void PrinterWebView::loadFailedPage()
+{
+    if (m_loadState == PWLoadState::URL_LOADED) {
+        m_loadState     = PWLoadState::FAILED_LOADING;
+        m_browser->LoadURL(m_failedUrl+"?url="+m_url);
+    }
+}
+void PrinterWebView::loadUrl()
+{
+    if (m_loadState == PWLoadState::CONNECTING_LOADED) {
+        m_loadState = PWLoadState::URL_LOADING;
+        m_browser->LoadURL(m_url);
+        return;
+    }
 }
 } // GUI
 } // Slic3r

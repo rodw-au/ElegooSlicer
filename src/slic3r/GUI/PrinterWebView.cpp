@@ -17,6 +17,8 @@
 #include"slic3r/GUI/PhysicalPrinterDialog.hpp"
 namespace pt = boost::property_tree;
 
+#define CONNECTIONG_URL_SUFFIX "/web/orca/connecting.html"
+#define FAILED_URL_SUFFIX "/web/orca/connection-failed.html"
 namespace Slic3r {
 namespace GUI {
 
@@ -43,8 +45,8 @@ PrinterWebView::PrinterWebView(wxWindow *parent)
     // replace all "\\" with "/"
     std::replace(_dir.begin(), _dir.end(), '\\', '/');
 
-    m_connectiongUrl = wxString::Format("file:///%s/web/orca/connecting.html", from_u8(_dir));
-    m_failedUrl =wxString::Format("file:///%s/web/orca/connection-failed.html", from_u8(_dir));
+    m_connectiongUrl = wxString::Format("file:///%s" + wxString(CONNECTIONG_URL_SUFFIX), from_u8(_dir));
+    m_failedUrl      = wxString::Format("file:///%s" + wxString(FAILED_URL_SUFFIX), from_u8(_dir));
 
     auto injectJsPath = boost::format("%1%/web/orca/inject.js") % _dir;
     //read file
@@ -116,8 +118,12 @@ void PrinterWebView::load_url(wxString& url, wxString apikey)
 }
 void PrinterWebView::OnNavgating(wxWebViewEvent& event) {
     auto url = event.GetURL();     
-    if ((m_loadState != PWLoadState::CONNECTING_LOADING && m_connectiongUrl == url) ||
-        (m_loadState != PWLoadState::FAILED_LOADING && url.StartsWith(m_failedUrl))) {
+    BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(": url %1%") % url;
+
+    // Because the space in the browser url is escaped as %20, so when comparing strings, 
+    // the full path cannot be compared, use SUFFIX for comparison
+    if ((m_loadState != PWLoadState::CONNECTING_LOADING && url.Contains(CONNECTIONG_URL_SUFFIX)) ||
+        (m_loadState != PWLoadState::FAILED_LOADING && url.Contains(FAILED_URL_SUFFIX))) {
         m_loadState = PWLoadState::CONNECTING_LOADING;
         event.Veto();
         loadConnectingPage();
@@ -270,7 +276,7 @@ void PrinterWebView::loadFailedPage()
     if (m_loadState == PWLoadState::URL_LOADED||
         m_loadState == PWLoadState::URL_LOADING) {
         m_loadState     = PWLoadState::FAILED_LOADING;
-        m_browser->LoadURL(m_failedUrl+"?url="+m_url);
+        m_browser->LoadURL(m_failedUrl+"?url=" + m_url);
     }
 }
 void PrinterWebView::loadUrl()

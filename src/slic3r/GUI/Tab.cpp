@@ -3599,12 +3599,29 @@ void TabFilament::toggle_options()
     {
         bool pa = m_config->opt_bool("enable_pressure_advance", 0);
         toggle_option("pressure_advance", pa);
-        auto support_multi_bed_types = is_BBL_printer || cfg.opt_bool("support_multi_bed_types");
-        toggle_line("cool_plate_temp_initial_layer", support_multi_bed_types );
-        toggle_line("textured_cool_plate_temp_initial_layer", support_multi_bed_types);
-        toggle_line("eng_plate_temp_initial_layer", support_multi_bed_types);
-        toggle_line("textured_plate_temp_initial_layer", support_multi_bed_types);
-        
+
+        DynamicConfig& proj_cfg               = m_preset_bundle->project_config;
+        std::string    bed_temp_1st_layer_key = "";
+        if (proj_cfg.has("curr_bed_type")) 
+        {
+            bed_temp_1st_layer_key = get_bed_temp_1st_layer_key(proj_cfg.opt_enum<BedType>("curr_bed_type"));
+        }
+
+        const std::vector<std::string> bed_temp_keys = {"cool_plate_temp_initial_layer", "textured_cool_plate_temp_initial_layer",
+                                                        "eng_plate_temp_initial_layer", "textured_plate_temp_initial_layer",
+                                                        "hot_plate_temp_initial_layer"};
+
+        bool support_multi_bed_types = std::find(bed_temp_keys.begin(), bed_temp_keys.end(), bed_temp_1st_layer_key) ==
+                                           bed_temp_keys.end() ||
+                                       is_BBL_printer || cfg.opt_bool("support_multi_bed_types");
+
+        for (const auto& key : bed_temp_keys) 
+        {
+            toggle_line(key, support_multi_bed_types || bed_temp_1st_layer_key == key);
+        }
+
+
+             
         // Orca: adaptive pressure advance and calibration model
         // If PA is not enabled, disable adaptive pressure advance and hide the model section
         // If adaptive PA is not enabled, hide the adaptive PA model section

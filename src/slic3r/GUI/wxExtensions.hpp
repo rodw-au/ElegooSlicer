@@ -274,6 +274,9 @@ private:
     // bitmap dimensions 
     int             m_px_cnt{ 16 };
     bool            m_has_border {false};
+
+    wxColour        m_original_bg_colour;
+    wxColour        m_original_fg_colour;
 };
 
 

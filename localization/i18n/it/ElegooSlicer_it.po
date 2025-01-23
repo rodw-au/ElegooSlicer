@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-22 10:07+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -15750,6 +15750,9 @@ msgstr "Selezionare il Tipo"
 
 msgid "Select Filament Preset"
 msgstr "Seleziona il preset del filamento"
+
+msgid "No Optional Filament Presets"
+msgstr ""
 
 msgid "Serial"
 msgstr "Seriale"

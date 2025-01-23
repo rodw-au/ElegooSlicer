@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-22 10:07+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: 2024-07-11 00:22+0300\n"
 "Last-Translator: Olcay ÖREN\n"
 "Language-Team: \n"
@@ -15426,6 +15426,9 @@ msgstr "Tür Seçin"
 
 msgid "Select Filament Preset"
 msgstr "Filament Ön Ayarını Seçin"
+
+msgid "No Optional Filament Presets"
+msgstr ""
 
 msgid "Serial"
 msgstr "Seri"

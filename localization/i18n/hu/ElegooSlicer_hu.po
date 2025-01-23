@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-22 10:07+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14987,6 +14987,9 @@ msgstr "Válassz típust"
 
 msgid "Select Filament Preset"
 msgstr "Válassz filamentbeállítást"
+
+msgid "No Optional Filament Presets"
+msgstr ""
 
 msgid "Serial"
 msgstr "Sorozatszám"

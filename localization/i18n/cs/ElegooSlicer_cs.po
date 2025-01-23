@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-22 10:07+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: 2023-09-30 15:15+0200\n"
 "Last-Translator: René Mošner <Renemosner@seznam.cz>\n"
 "Language-Team: \n"
@@ -15100,6 +15100,9 @@ msgid "Select Type"
 msgstr ""
 
 msgid "Select Filament Preset"
+msgstr ""
+
+msgid "No Optional Filament Presets"
 msgstr ""
 
 msgid "Serial"

@@ -16,7 +16,8 @@ function hookNativeFunction() {
                 return;
             }
             const blank = target.target === '_blank';
-            const needDownload = target.download !== undefined && target.download !== '';
+            const download = target.getAttribute('download');
+            const needDownload = (download !== null) && (download !== undefined);
             if (!blank && !needDownload) {
                 return;
             }    
@@ -119,14 +120,15 @@ to {
             } else {
                 console.error('wx is not defined');
             }
-        }, 1000);
+        }, 500);
 
     });
     buttonContainer.appendChild(reconnectButton);
     document.body.appendChild(buttonContainer);
 }
 
-window.addEventListener('load', function () {
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOMContentLoaded');
     hookNativeFunction();
     slicerAddButtons();
 });

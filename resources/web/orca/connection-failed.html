@@ -46,10 +46,21 @@
             font-size: 18px;
             margin-top: 40px;
         }
+        .title {
+            text-align: left;
+            line-height: 28px;
+        }
         .line {
             text-align: left;
             line-height: 28px;
 
+        }
+        .line::before {
+            content: '•';
+            display: inline-block;
+            width: 1em;
+            margin-right: 0.5em;
+            text-align: center;
         }
     </style>
     <script>
@@ -65,16 +76,17 @@
             }
         }, 0);
 
-        setTimeout(() => {
+        setInterval(() => {
             if(window.is_loading_printer){
                 return;
             }
+            window.is_loading_printer = true;
             if (typeof wx !== 'undefined') {
                 wx.postMessage({ cmd: 'reload' });
             } else {
                 console.error('wx is not defined');
             }
-        }, 15000);
+        }, 30000);
     </script>
 </head>
 
@@ -94,10 +106,10 @@
                 <span id="ipAddress" class="message"></span>
             </div>
             <div class="text">
-                <div class="line trans" tid="printer_connection_failed2">Please check:</div>
-                <div class="line trans" tid="printer_connection_failed3">1. Hostname, IP or URL entry。</div>
-                <div class="line trans" tid="printer_connection_failed4">2. Computer and printer network connection.</div>
-                <div class="line trans" tid="printer_connection_failed5">3. Both are on the same network.</div>
+                <div class="title trans" tid="printer_connection_failed2">Please check:</div>
+                <div class="line trans" tid="printer_connection_failed3">Hostname, IP or URL entry。</div>
+                <div class="line trans" tid="printer_connection_failed4">Computer and printer network connection.</div>
+                <div class="line trans" tid="printer_connection_failed5">Both are on the same network.</div>
             </div>
         </div>
     </div>

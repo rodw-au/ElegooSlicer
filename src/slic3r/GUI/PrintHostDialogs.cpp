@@ -863,7 +863,7 @@ ElegooPrintHostSendDialog::ElegooPrintHostSendDialog(const fs::path&            
 
     content_sizer->Add(uploadandprint_sizer);
     uploadandprint_sizer->Show(post_upload_action == PrintHostPostUploadAction::StartPrint);
-    warning_text->Show(appBedType() != m_BedType);
+    warning_text->Show(post_upload_action == PrintHostPostUploadAction::StartPrint&&appBedType() != m_BedType);
     
     uploadandprint_sizer->Layout();
 
@@ -1020,7 +1020,7 @@ void ElegooPrintHostSendDialog::refresh()
         }
     }
     if (warning_text) {
-        warning_text->Show(appBedType() != m_BedType);
+        warning_text->Show(post_upload_action == PrintHostPostUploadAction::StartPrint && appBedType() != m_BedType);
     }
     this->Layout();
     this->Fit();

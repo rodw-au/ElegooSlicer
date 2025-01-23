@@ -11288,7 +11288,14 @@ static long GetNumberFromUser(  const wxString& msg,
 // #ifdef _WIN32
     wxNumberEntryDialog dialog(parent, msg, prompt, title, value, min, max, wxDefaultPosition);
     wxGetApp().UpdateDlgDarkUI(&dialog);
-
+    wxColour color;
+    if (wxGetApp().dark_mode()) {// SetBackgroundColour
+        color = wxColour(45, 45, 49);
+    }
+    else {
+        color = *wxWHITE;
+    }
+    dialog.SetBackgroundColour(color);
     wxWindow* okButton = dialog.FindWindow(wxID_OK);
     if (okButton) {
         okButton->SetLabel(_L("OK"));

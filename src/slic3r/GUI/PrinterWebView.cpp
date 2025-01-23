@@ -38,6 +38,7 @@ PrinterWebView::PrinterWebView(wxWindow *parent)
     m_browser->Bind(wxEVT_WEBVIEW_ERROR, &PrinterWebView::OnError, this);
     m_browser->Bind(wxEVT_WEBVIEW_LOADED, &PrinterWebView::OnLoaded, this);
     m_browser->Bind(wxEVT_WEBVIEW_NAVIGATING, &PrinterWebView::OnNavgating, this);
+    m_browser->Bind(wxEVT_WEBVIEW_NAVIGATED, &PrinterWebView::OnNavgated, this);
     SetSizer(topsizer);
 
     m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &PrinterWebView::OnScriptMessage, this);
@@ -129,7 +130,9 @@ void PrinterWebView::OnNavgating(wxWebViewEvent& event) {
         loadConnectingPage();
     }  
 }
+void PrinterWebView::OnNavgated(wxWebViewEvent& event) {
 
+}
 void PrinterWebView::reload()
 {
     m_browser->Reload();
@@ -138,7 +141,6 @@ void PrinterWebView::reload()
 void PrinterWebView::update_mode()
 {
     m_browser->EnableAccessToDevTools(wxGetApp().app_config->get_bool("developer_mode"));
-    //m_browser->EnableAccessToDevTools(true);
 }
 
 /**
@@ -214,23 +216,25 @@ void PrinterWebView::OnError(wxWebViewEvent &evt)
     std::string error = e;
     std::string message = evt.GetString().ToStdString();
     
-    if(evt.GetInt() == wxWEBVIEW_NAV_ERR_USER_CANCELLED){
-        return;
-    }
+
     if(message=="COREWEBVIEW2_WEB_ERROR_STATUS_CONNECTION_ABORTED"){
         return;
     }
-    loadFailedPage();
+    auto code = evt.GetInt();
+    if (code == wxWEBVIEW_NAV_ERR_CONNECTION|| 
+        code == wxWEBVIEW_NAV_ERR_NOT_FOUND || 
+        code == wxWEBVIEW_NAV_ERR_REQUEST) {
+        loadFailedPage();
+    }
 }
 
 void PrinterWebView::OnLoaded(wxWebViewEvent &evt)
 {
     if (m_loadState == PWLoadState::CONNECTING_LOADING) {
         m_loadState = PWLoadState::CONNECTING_LOADED;
-        loadUrl();
+        loadInputUrl();
     } else if (m_loadState == PWLoadState::URL_LOADING) {
         m_loadState = PWLoadState::URL_LOADED;
-
         if (evt.GetURL().IsEmpty())return;
         SendAPIKey();
     } else if (m_loadState == PWLoadState::FAILED_LOADING) {
@@ -256,7 +260,7 @@ void PrinterWebView::OnScriptMessage(wxWebViewEvent& event)
         } else if (cmd == "reload"){
             if (m_url.IsEmpty())return;
             m_loadState = PWLoadState::URL_LOADING;
-            m_browser->LoadURL(m_url);
+            loadUrl(m_url);
             //loadConnectingPage();
             return;
         }
@@ -269,23 +273,41 @@ void PrinterWebView::OnScriptMessage(wxWebViewEvent& event)
 void PrinterWebView::loadConnectingPage()
 {
     m_loadState         = PWLoadState::CONNECTING_LOADING;
-    m_browser->LoadURL(m_connectiongUrl);
+    loadUrl(m_connectiongUrl);
 }
 void PrinterWebView::loadFailedPage()
 {
     if (m_loadState == PWLoadState::URL_LOADED||
         m_loadState == PWLoadState::URL_LOADING) {
         m_loadState     = PWLoadState::FAILED_LOADING;
-        m_browser->LoadURL(m_failedUrl+"?url=" + m_url);
+        //if (!m_isRetry) {
+            loadUrl(m_failedUrl + "?url=" + m_url);
+        //} else {
+        //    m_browser->RunScript(R"(
+        //                            function cancelLoading() {
+        //                                console.log('cancelLoading');
+        //                                window.is_loading_printer = false;
+        //                                try{
+        //                                    document.getElementById('reconnectButton').disabled = false;
+        //                                    document.getElementById('reconnectButton').classList.remove('is-loading');
+        //                                }catch(e){
+        //                                } 
+        //                            }
+        //                            cancelLoading();
+        //                            )");
+        //}
     }
 }
-void PrinterWebView::loadUrl()
+void PrinterWebView::loadInputUrl()
 {
     if (m_loadState == PWLoadState::CONNECTING_LOADED) {
         m_loadState = PWLoadState::URL_LOADING;
-        m_browser->LoadURL(m_url);
+        loadUrl(m_url);
         return;
     }
+}
+void PrinterWebView::loadUrl(wxString& url) {
+    m_browser->LoadURL(url);
 }
 } // GUI
 } // Slic3r

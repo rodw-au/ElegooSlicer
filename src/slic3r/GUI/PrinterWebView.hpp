@@ -51,7 +51,7 @@ private:
     void       loadConnectingPage();
     void       loadFailedPage();
     void       loadInputUrl();
-    void       loadUrl(wxString& url);
+    void       loadUrl(const wxString& url);
 
     wxWebView* m_browser;
     long m_zoomFactor;

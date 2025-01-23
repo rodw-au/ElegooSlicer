@@ -306,7 +306,7 @@ void PrinterWebView::loadInputUrl()
         return;
     }
 }
-void PrinterWebView::loadUrl(wxString& url) {
+void PrinterWebView::loadUrl(const wxString& url) {
     m_browser->LoadURL(url);
 }
 } // GUI

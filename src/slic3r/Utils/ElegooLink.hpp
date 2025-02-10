@@ -17,6 +17,13 @@ class Http;
 
 class ElegooLink : public OctoPrint
 {
+    struct UploadParams
+    {
+        int timeLapse{0};
+        int heatedBedLeveling{0};
+        int bedType{0};
+    };
+
 public:
     ElegooLink(DynamicPrintConfig *config);
     ~ElegooLink() override = default;
@@ -42,7 +49,13 @@ protected:
 
 private:
     bool elegoo_test(wxString& curl_msg) const;
-    bool print(WebSocketClient& client, const std::string filename,ErrorFn error_fn) const;
+    bool print(WebSocketClient&  client,
+               std::string       timeLapse,
+               std::string       heatedBedLeveling,
+               std::string       bedType,
+               const std::string filename, ErrorFn error_fn) const;
+    bool checkResult(WebSocketClient&  client,
+               ErrorFn           error_fn) const;
 
     bool loopUpload(std::string url, PrintHostUpload upload_data,
                     ProgressFn        prorgess_fn,

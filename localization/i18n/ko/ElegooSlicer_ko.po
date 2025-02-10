@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: 2024-05-31 23:33+0900\n"
 "Last-Translator: Hotsolidinfill <138652683+Hotsolidinfill@users.noreply."
 "github.com>, crwusiz <crwusiz@gmail.com>\n"
@@ -6125,12 +6125,6 @@ msgid "Please resolve the slicing errors and publish again."
 msgstr "슬라이싱 오류를 해결하고 다시 시도하세요."
 
 msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr ""
-"네트워크 플러그인이 감지되지 않습니다. 네트워크 관련 기능을 사용할 수 없습니"
-"다."
-
-msgid ""
 "Preview only mode:\n"
 "The loaded file contains gcode only, Can not enter the Prepare page"
 msgstr ""
@@ -9289,13 +9283,9 @@ msgid "Bed exclude area"
 msgstr "베드 제외 구역"
 
 msgid ""
-"Unprintable area in XY plane. For example, X1 Series printers use the front "
-"left corner to cut filament during filament change. The area is expressed as "
-"polygon by points in following format: \"XxY, XxY, ...\""
+"Unprintable area in XY plane. The area is expressed as polygon by points in "
+"following format: \"XxY, XxY, ...\""
 msgstr ""
-"XY 평면에서 출력할 수 없는 영역입니다. 예를 들어, X1 시리즈 프린터는 필라멘"
-"트 교체 중에 필라멘트를 절단하기 위해 전면 왼쪽 모서리를 사용합니다. 영역은 "
-"\"XxY, XxY...\" 형식의 점으로 다각형으로 표시됩니다"
 
 msgid "Bed custom texture"
 msgstr "사용자 정의 베드 텍스처"
@@ -15338,6 +15328,23 @@ msgstr "업로드 중"
 msgid "Cancelling"
 msgstr "취소 중"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr ""
+
+msgid "Time-lapse"
+msgstr ""
+
+msgid "Heated Bed Leveling"
+msgstr ""
+
+msgid "Textured Build Plate (Side A)"
+msgstr ""
+
+msgid "Smooth Build Plate (Side B)"
+msgstr ""
+
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "선택한 부품에서 부울 연산을 수행할 수 없습니다"
 
@@ -15448,6 +15455,9 @@ msgstr "유형 선택"
 
 msgid "Select Filament Preset"
 msgstr "필라멘트 사전 설정 선택"
+
+msgid "No Optional Filament Presets"
+msgstr ""
 
 msgid "Serial"
 msgstr "시리얼"
@@ -16403,10 +16413,10 @@ msgstr ""
 msgid "User cancelled."
 msgstr "사용자가 취소했습니다."
 
-msgid "Connection to Elegoo Link works correctly."
+msgid "Connection to ElegooLink works correctly."
 msgstr ""
 
-msgid "Could not connect to Elegoo Link"
+msgid "Could not connect to ElegooLink"
 msgstr ""
 
 msgid ""
@@ -16417,7 +16427,9 @@ msgstr ""
 msgid "Error code not found"
 msgstr ""
 
-msgid "The printer is busy, please check and try again."
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
 msgstr ""
 
 msgid "The file is lost, please check and try again."
@@ -16440,7 +16452,7 @@ msgstr ""
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
+"functioning properly, and confirm that they are on the same network."
 msgstr ""
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
@@ -16785,6 +16797,21 @@ msgstr ""
 "뒤틀림 방지\n"
 "ABS와 같이 뒤틀림이 발생하기 쉬운 소재를 출력할 때, 히트베드 온도를 적절하게 "
 "높이면 뒤틀림 가능성을 줄일 수 있다는 사실을 알고 계셨나요?"
+
+#~ msgid ""
+#~ "Unprintable area in XY plane. For example, X1 Series printers use the "
+#~ "front left corner to cut filament during filament change. The area is "
+#~ "expressed as polygon by points in following format: \"XxY, XxY, ...\""
+#~ msgstr ""
+#~ "XY 평면에서 출력할 수 없는 영역입니다. 예를 들어, X1 시리즈 프린터는 필라"
+#~ "멘트 교체 중에 필라멘트를 절단하기 위해 전면 왼쪽 모서리를 사용합니다. 영"
+#~ "역은 \"XxY, XxY...\" 형식의 점으로 다각형으로 표시됩니다"
+
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr ""
+#~ "네트워크 플러그인이 감지되지 않습니다. 네트워크 관련 기능을 사용할 수 없습"
+#~ "니다."
 
 #, boost-format
 #~ msgid "Fatal error, exception caught: %1%"

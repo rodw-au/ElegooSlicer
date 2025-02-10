@@ -844,7 +844,12 @@ wxBoxSizer *CreateFilamentPresetDialog::create_type_item()
         if (curr_create_type == m_create_type.base_filament) {
             wxArrayString filament_preset_choice = get_filament_preset_choices();
             m_filament_preset_combobox->Set(filament_preset_choice);
-            m_filament_preset_combobox->SetLabel(_L("Select Filament Preset"));
+
+            if (filament_preset_choice.size() > 0) {
+                m_filament_preset_combobox->SetLabel(_L("Select Filament Preset"));
+            } else {
+                m_filament_preset_combobox->SetLabel(_L("No Optional Filament Presets"));
+            }
             m_filament_preset_combobox->SetLabelColor(DEFAULT_PROMPT_TEXT_COLOUR);
             
         } else if (curr_create_type == m_create_type.base_filament_preset) {
@@ -1270,8 +1275,11 @@ void CreateFilamentPresetDialog::select_curr_radiobox(std::vector<std::pair<Radi
                 if (_L("Select Type") != m_filament_type_combobox->GetLabel()) {
                     clear_filament_preset_map();
                     wxArrayString filament_preset_choice = get_filament_preset_choices();
-                    m_filament_preset_combobox->Set(filament_preset_choice);
-                    m_filament_preset_combobox->SetLabel(_L("Select Filament Preset"));
+                    if (filament_preset_choice.size() > 0) {
+                        m_filament_preset_combobox->SetLabel(_L("Select Filament Preset"));
+                    } else {
+                        m_filament_preset_combobox->SetLabel(_L("No Optional Filament Presets"));
+                    }
                     m_filament_preset_combobox->SetLabelColor(DEFAULT_PROMPT_TEXT_COLOUR);
                 }
             } else if (curr_selected_type == m_create_type.base_filament_preset) {

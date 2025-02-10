@@ -965,6 +965,35 @@ ScalableButton::ScalableButton( wxWindow *          parent,
         m_width = size.x/em;
         m_height= size.y/em;
     }
+
+    // Handle optimization of font and button color display when the mouse is focused in dark mode
+
+
+    this->Bind(wxEVT_ENTER_WINDOW, [this](wxMouseEvent& e) {
+
+        //m_original_bg_colour = GetBackgroundColour();
+        m_original_fg_colour = GetForegroundColour();
+
+        if (Slic3r::GUI::wxGetApp().dark_mode()) 
+        {
+            //SetBackgroundColour(wxColour(180, 180, 180)); 
+            SetForegroundColour(*wxBLACK);               
+        } 
+        else 
+        {
+            /*SetBackgroundColour(*wxBLACK); 
+            SetBackgroundColour(wxColour(211, 211, 211));  */            
+        }
+        Refresh();
+        e.Skip();
+    });
+
+    this->Bind(wxEVT_LEAVE_WINDOW, [this](wxMouseEvent& e) {
+        //SetBackgroundColour(m_original_bg_colour);
+        SetForegroundColour(m_original_fg_colour);
+        Refresh();
+        e.Skip();                  
+    });
 }
 
 

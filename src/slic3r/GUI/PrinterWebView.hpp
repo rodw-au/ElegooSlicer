@@ -46,12 +46,34 @@ public:
 private:
     void SendAPIKey();
     void OnScriptMessage(wxWebViewEvent& event);
+    void       OnNavgating(wxWebViewEvent& event);
+    void       OnNavgated(wxWebViewEvent& event);
+    void       loadConnectingPage();
+    void       loadFailedPage();
+    void       loadInputUrl();
+    void       loadUrl(const wxString& url);
+
     wxWebView* m_browser;
     long m_zoomFactor;
     wxString m_apikey;
     bool m_apikey_sent;
-
     // DECLARE_EVENT_TABLE()
+
+    wxString m_url;
+    wxString m_connectiongUrl;
+    wxString m_failedUrl;
+    enum PWLoadState { 
+        CONNECTING_LOADING = 0, 
+        CONNECTING_LOADED, 
+        URL_LOADING, 
+        URL_LOADED, 
+        FAILED_LOADING, 
+        FAILED_LOADED 
+    };
+    // 0 is load connecting page
+    // 1 is load url
+    // 2 is load failed page
+    PWLoadState m_loadState = PWLoadState::CONNECTING_LOADING;
 };
 
 } // GUI

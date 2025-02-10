@@ -403,7 +403,7 @@ MsgDataIncompatible::~MsgDataIncompatible() {}
 // MsgNoUpdate
 
 MsgNoUpdates::MsgNoUpdates() :
-    MsgDialog(nullptr, _(L("Configuration updates")), _(L("No updates available.")), wxICON_ERROR | wxOK)
+    MsgDialog(nullptr, _(L("Configuration updates")), _(L("No updates available.")), wxICON_INFORMATION | wxOK)
 {
 
 	auto* text = new wxStaticText(this, wxID_ANY, _(L("The configuration is up to date.")));

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slic3rPE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: 2023-04-01 13:21+0800\n"
 "Last-Translator: ELEGOOTechSupport <softfeverever@gmail.com>\n"
 "Language-Team: \n"
@@ -5994,10 +5994,6 @@ msgid "Please resolve the slicing errors and publish again."
 msgstr "请解决切片错误后再重新发布。"
 
 msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr "未检测到网络插件。网络相关功能不可用。"
-
-msgid ""
 "Preview only mode:\n"
 "The loaded file contains gcode only, Can not enter the Prepare page"
 msgstr ""
@@ -9020,12 +9016,10 @@ msgid "Bed exclude area"
 msgstr "不可打印区域"
 
 msgid ""
-"Unprintable area in XY plane. For example, X1 Series printers use the front "
-"left corner to cut filament during filament change. The area is expressed as "
-"polygon by points in following format: \"XxY, XxY, ...\""
+"Unprintable area in XY plane. The area is expressed as polygon by points in "
+"following format: \"XxY, XxY, ...\""
 msgstr ""
-"XY平面上的不可打印区域。例如，X1系列打印机在换料过程中，会使用左前角区域来切"
-"断耗材丝。这个多边形区域由以下格式的点表示：“XxY，XxY，…”"
+"XY平面上的不可打印区域。这个多边形区域由以下格式的点表示：“XxY，XxY，…”"
 
 msgid "Bed custom texture"
 msgstr "自定义热床纹理"
@@ -12696,7 +12690,7 @@ msgstr ""
 "悬垂下创建与正常支撑类似的结构（默认）。"
 
 msgid "Default (Grid/Organic"
-msgstr ""
+msgstr "缺省"
 
 msgid "Snug"
 msgstr "紧贴"
@@ -14515,6 +14509,23 @@ msgstr "正在上传"
 msgid "Cancelling"
 msgstr "取消中"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr "当前选择的热床类型与文件不匹配，请确认后再启动打印。"
+
+msgid "Time-lapse"
+msgstr "延时摄影"
+
+msgid "Heated Bed Leveling"
+msgstr "热床调平"
+
+msgid "Textured Build Plate (Side A)"
+msgstr "纹理打印板(A面)"
+
+msgid "Smooth Build Plate (Side B)"
+msgstr "光面打印板(B面)"
+
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "无法对所选部件执行布尔运算"
 
@@ -14625,6 +14636,9 @@ msgstr "选择类型"
 
 msgid "Select Filament Preset"
 msgstr "选择材料预设"
+
+msgid "No Optional Filament Presets"
+msgstr "无可选的耗材预设"
 
 msgid "Serial"
 msgstr "系列"
@@ -15529,11 +15543,11 @@ msgstr "在尝试登录时发生了异常，请重试。"
 msgid "User cancelled."
 msgstr "用户已取消。"
 
-msgid "Connection to Elegoo Link works correctly."
-msgstr "已成功连接到Elegoo Link"
+msgid "Connection to ElegooLink works correctly."
+msgstr "已成功连接到ElegooLink"
 
-msgid "Could not connect to Elegoo Link"
-msgstr "无法连接到Elegoo Link"
+msgid "Could not connect to ElegooLink"
+msgstr "无法连接到ElegooLink"
 
 msgid ""
 "The file has been transferred, but some unknown errors occurred. Please "
@@ -15545,8 +15559,10 @@ msgstr ""
 msgid "Error code not found"
 msgstr "未发现错误码。"
 
-msgid "The printer is busy, please check and try again."
-msgstr "打印机正在工作，请检查后重新尝试。"
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
+msgstr "打印机正在工作，请前往设备页面检查文件并尝试重新启动打印。"
 
 msgid "The file is lost, please check and try again."
 msgstr "打印文件已丢失，请检查后重新尝试。"
@@ -15568,8 +15584,9 @@ msgstr "启动打印失败。"
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
-msgstr "连接打印机超时，请检查打印机以及电脑网络是否正常。"
+"functioning properly, and confirm that they are on the same network."
+msgstr ""
+"连接打印机超时，请检查打印机以及电脑网络是否正常，并且处于同一个网络下。"
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
 msgstr "无法解析输入的主机名/IP/URL，请重新输入。"
@@ -15896,6 +15913,18 @@ msgid ""
 msgstr ""
 "避免翘曲\n"
 "您知道吗？打印ABS这类易翘曲材料时，适当提高热床温度可以降低翘曲的概率。"
+
+#~ msgid "The printer is busy, please check and try again."
+#~ msgstr "打印机正在工作，请检查后重新尝试。"
+
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr "未检测到网络插件。网络相关功能不可用。"
+
+#~ msgid ""
+#~ "Connection timed out. Please check if the printer and computer network "
+#~ "are functioning properly."
+#~ msgstr "连接打印机超时，请检查打印机以及电脑网络是否正常。"
 
 #~ msgid ""
 #~ "The number of printer connections has exceeded the limit. Please "

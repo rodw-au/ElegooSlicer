@@ -29,7 +29,7 @@
 #include <time.h>
 #include <vector>
 #include <algorithm>
-
+#include<thread>
 namespace Slic3r { 
 namespace GUI {
 
@@ -71,16 +71,17 @@ protected:
 
 	boost::thread* test_job[TEST_JOB_MAX];
 	boost::thread* m_sequence_job { nullptr };
+    bool           m_isSequenceTest = false;
 	bool		   m_in_testing[TEST_JOB_MAX];
 	bool           m_download_cancel = false;
-	bool           m_closing = false;
+    bool           m_closing;
 
 	void init_bind();
 
 public:
 	NetworkTestDialog(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(605, 375), long style = wxDEFAULT_DIALOG_STYLE);
 
-	~NetworkTestDialog();
+	~NetworkTestDialog() override;
 
 	void on_dpi_changed(const wxRect& suggested_rect);
 

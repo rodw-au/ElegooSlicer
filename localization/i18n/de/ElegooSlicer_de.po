@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Heiko Liebscher <hliebschergmail.com>\n"
 "Language-Team: \n"
@@ -6362,12 +6362,6 @@ msgid "Please resolve the slicing errors and publish again."
 msgstr "Bitte beheben Sie die Slicing-Fehler und veröffentlichen Sie erneut."
 
 msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr ""
-"Das Netzwerk-Plugin wurde nicht erkannt. Netzwerkbezogene Funktionen sind "
-"nicht verfügbar."
-
-msgid ""
 "Preview only mode:\n"
 "The loaded file contains gcode only, Can not enter the Prepare page"
 msgstr ""
@@ -9682,14 +9676,9 @@ msgid "Bed exclude area"
 msgstr "ausgenommene Druckbettfläche"
 
 msgid ""
-"Unprintable area in XY plane. For example, X1 Series printers use the front "
-"left corner to cut filament during filament change. The area is expressed as "
-"polygon by points in following format: \"XxY, XxY, ...\""
+"Unprintable area in XY plane. The area is expressed as polygon by points in "
+"following format: \"XxY, XxY, ...\""
 msgstr ""
-"Unbedruckbarer Bereich in der XY-Ebene. Bei Druckern der X1 Serie wird zum "
-"Beispiel die vordere linke Ecke verwendet, um das Filament während des "
-"Filamentwechsels zu schneiden. Der Bereich wird als Polygon durch Punkte im "
-"folgenden Format ausgedrückt: \"XxY, XxY, ...\""
 
 msgid "Bed custom texture"
 msgstr "Benutzerdefinierte Textur des Druckbettes"
@@ -16171,6 +16160,23 @@ msgstr "Hochladen"
 msgid "Cancelling"
 msgstr "Wird abgebrochen"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr ""
+
+msgid "Time-lapse"
+msgstr ""
+
+msgid "Heated Bed Leveling"
+msgstr ""
+
+msgid "Textured Build Plate (Side A)"
+msgstr ""
+
+msgid "Smooth Build Plate (Side B)"
+msgstr ""
+
 msgid "Unable to perform boolean operation on selected parts"
 msgstr ""
 "Die boolesche Operation kann auf den ausgewählten Teilen nicht durchgeführt "
@@ -16285,6 +16291,9 @@ msgstr "Typ auswählen"
 
 msgid "Select Filament Preset"
 msgstr "Filament-Voreinstellung auswählen"
+
+msgid "No Optional Filament Presets"
+msgstr ""
 
 msgid "Serial"
 msgstr "Seriennummer"
@@ -17308,10 +17317,10 @@ msgstr ""
 msgid "User cancelled."
 msgstr "Benutzer abgebrochen."
 
-msgid "Connection to Elegoo Link works correctly."
+msgid "Connection to ElegooLink works correctly."
 msgstr ""
 
-msgid "Could not connect to Elegoo Link"
+msgid "Could not connect to ElegooLink"
 msgstr ""
 
 msgid ""
@@ -17322,7 +17331,9 @@ msgstr ""
 msgid "Error code not found"
 msgstr ""
 
-msgid "The printer is busy, please check and try again."
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
 msgstr ""
 
 msgid "The file is lost, please check and try again."
@@ -17345,7 +17356,7 @@ msgstr ""
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
+"functioning properly, and confirm that they are on the same network."
 msgstr ""
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
@@ -17704,6 +17715,12 @@ msgstr ""
 "Wussten Sie, dass beim Drucken von Materialien, die zu Verwerfungen neigen, "
 "wie z.B. ABS, durch eine entsprechende Erhöhung der Heizbetttemperatur die "
 "Wahrscheinlichkeit von Verwerfungen verringert werden kann."
+
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr ""
+#~ "Das Netzwerk-Plugin wurde nicht erkannt. Netzwerkbezogene Funktionen sind "
+#~ "nicht verfügbar."
 
 #, boost-format
 #~ msgid "Fatal error, exception caught: %1%"

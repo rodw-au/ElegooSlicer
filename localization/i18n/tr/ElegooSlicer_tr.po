@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: 2024-07-11 00:22+0300\n"
 "Last-Translator: Olcay ÖREN\n"
 "Language-Team: \n"
@@ -6211,10 +6211,6 @@ msgid "Please resolve the slicing errors and publish again."
 msgstr "Lütfen dilimleme hatalarını giderip tekrar yayınlayın."
 
 msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr "Ağ Eklentisi algılanmadı. Ağla ilgili özellikler kullanılamıyor."
-
-msgid ""
 "Preview only mode:\n"
 "The loaded file contains gcode only, Can not enter the Prepare page"
 msgstr ""
@@ -9432,13 +9428,9 @@ msgid "Bed exclude area"
 msgstr "Yatak hariç alan"
 
 msgid ""
-"Unprintable area in XY plane. For example, X1 Series printers use the front "
-"left corner to cut filament during filament change. The area is expressed as "
-"polygon by points in following format: \"XxY, XxY, ...\""
+"Unprintable area in XY plane. The area is expressed as polygon by points in "
+"following format: \"XxY, XxY, ...\""
 msgstr ""
-"XY düzleminde yazdırılamayan alan. Örneğin X1 Serisi yazıcılar, filament "
-"değişimi sırasında filamenti kesmek için sol ön köşeyi kullanır. Alan şu "
-"formatta noktalarla çokgen olarak ifade edilir: \"XxY, XxY, ...\""
 
 msgid "Bed custom texture"
 msgstr "Özel plaka dokusu"
@@ -15307,6 +15299,23 @@ msgstr "Yükleniyor"
 msgid "Cancelling"
 msgstr "İptal Ediliyor"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr ""
+
+msgid "Time-lapse"
+msgstr ""
+
+msgid "Heated Bed Leveling"
+msgstr ""
+
+msgid "Textured Build Plate (Side A)"
+msgstr ""
+
+msgid "Smooth Build Plate (Side B)"
+msgstr ""
+
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "Seçilen parçalarda bölme işlemi gerçekleştirilemiyor"
 
@@ -15417,6 +15426,9 @@ msgstr "Tür Seçin"
 
 msgid "Select Filament Preset"
 msgstr "Filament Ön Ayarını Seçin"
+
+msgid "No Optional Filament Presets"
+msgstr ""
 
 msgid "Serial"
 msgstr "Seri"
@@ -16416,10 +16428,10 @@ msgstr ""
 msgid "User cancelled."
 msgstr "Kullanıcı iptal edildi."
 
-msgid "Connection to Elegoo Link works correctly."
+msgid "Connection to ElegooLink works correctly."
 msgstr ""
 
-msgid "Could not connect to Elegoo Link"
+msgid "Could not connect to ElegooLink"
 msgstr ""
 
 msgid ""
@@ -16430,7 +16442,9 @@ msgstr ""
 msgid "Error code not found"
 msgstr ""
 
-msgid "The printer is busy, please check and try again."
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
 msgstr ""
 
 msgid "The file is lost, please check and try again."
@@ -16453,7 +16467,7 @@ msgstr ""
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
+"functioning properly, and confirm that they are on the same network."
 msgstr ""
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
@@ -16807,6 +16821,19 @@ msgstr ""
 "ABS gibi bükülmeye yatkın malzemelere baskı yaparken, ısıtma yatağı "
 "sıcaklığının uygun şekilde arttırılmasının bükülme olasılığını "
 "azaltabileceğini biliyor muydunuz?"
+
+#~ msgid ""
+#~ "Unprintable area in XY plane. For example, X1 Series printers use the "
+#~ "front left corner to cut filament during filament change. The area is "
+#~ "expressed as polygon by points in following format: \"XxY, XxY, ...\""
+#~ msgstr ""
+#~ "XY düzleminde yazdırılamayan alan. Örneğin X1 Serisi yazıcılar, filament "
+#~ "değişimi sırasında filamenti kesmek için sol ön köşeyi kullanır. Alan şu "
+#~ "formatta noktalarla çokgen olarak ifade edilir: \"XxY, XxY, ...\""
+
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr "Ağ Eklentisi algılanmadı. Ağla ilgili özellikler kullanılamıyor."
 
 #~ msgid ""
 #~ "Embeded\n"

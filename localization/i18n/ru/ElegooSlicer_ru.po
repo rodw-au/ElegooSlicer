@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer V2.0.0 Official Release\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: 2024-06-19 16:50+0700\n"
 "Last-Translator: \n"
 "Language-Team: Andylg <andylg@yandex.ru>\n"
@@ -6358,10 +6358,6 @@ msgid "Please resolve the slicing errors and publish again."
 msgstr "Пожалуйста, устраните ошибки нарезки и попробуйте опубликовать снова."
 
 msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr "Сетевой плагин не обнаружен. Функции, связанные с сетью, недоступны."
-
-msgid ""
 "Preview only mode:\n"
 "The loaded file contains gcode only, Can not enter the Prepare page"
 msgstr ""
@@ -9690,14 +9686,9 @@ msgid "Bed exclude area"
 msgstr "Область исключения"
 
 msgid ""
-"Unprintable area in XY plane. For example, X1 Series printers use the front "
-"left corner to cut filament during filament change. The area is expressed as "
-"polygon by points in following format: \"XxY, XxY, ...\""
+"Unprintable area in XY plane. The area is expressed as polygon by points in "
+"following format: \"XxY, XxY, ...\""
 msgstr ""
-"Непечатаемая область в плоскости XY. Например, в принтерах серии X1 передний "
-"левый угол используется для обрезания материала при его замене. Область "
-"выражается в виде многоугольника по точкам в следующем формате: \"XxY, "
-"XxY, ...\""
 
 msgid "Bed custom texture"
 msgstr "Пользовательская текстура стола"
@@ -16215,6 +16206,23 @@ msgstr "Отправка"
 msgid "Cancelling"
 msgstr "Отмена"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr ""
+
+msgid "Time-lapse"
+msgstr ""
+
+msgid "Heated Bed Leveling"
+msgstr ""
+
+msgid "Textured Build Plate (Side A)"
+msgstr ""
+
+msgid "Smooth Build Plate (Side B)"
+msgstr ""
+
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "Невозможно выполнить булевую операцию над выбранными элементами."
 
@@ -16325,6 +16333,9 @@ msgstr "Тип прутка"
 
 msgid "Select Filament Preset"
 msgstr "Выбор профиля прутка"
+
+msgid "No Optional Filament Presets"
+msgstr ""
 
 msgid "Serial"
 msgstr "Серия"
@@ -17330,10 +17341,10 @@ msgstr "При попытке войти произошла какая-то ош
 msgid "User cancelled."
 msgstr "Отменено пользователем."
 
-msgid "Connection to Elegoo Link works correctly."
+msgid "Connection to ElegooLink works correctly."
 msgstr ""
 
-msgid "Could not connect to Elegoo Link"
+msgid "Could not connect to ElegooLink"
 msgstr ""
 
 msgid ""
@@ -17344,7 +17355,9 @@ msgstr ""
 msgid "Error code not found"
 msgstr ""
 
-msgid "The printer is busy, please check and try again."
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
 msgstr ""
 
 msgid "The file is lost, please check and try again."
@@ -17367,7 +17380,7 @@ msgstr ""
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
+"functioning properly, and confirm that they are on the same network."
 msgstr ""
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
@@ -17722,6 +17735,11 @@ msgstr ""
 "Знаете ли вы, что при печати материалами, склонными к короблению, таких как "
 "ABS, повышение температуры подогреваемого стола может снизить эту "
 "вероятность?"
+
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr ""
+#~ "Сетевой плагин не обнаружен. Функции, связанные с сетью, недоступны."
 
 #, boost-format
 #~ msgid "Fatal error, exception caught: %1%"

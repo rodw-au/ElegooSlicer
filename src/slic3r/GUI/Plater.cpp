@@ -11285,16 +11285,33 @@ static long GetNumberFromUser(  const wxString& msg,
                                 long max,
                                 wxWindow* parent)
 {
-#ifdef _WIN32
+// #ifdef _WIN32
     wxNumberEntryDialog dialog(parent, msg, prompt, title, value, min, max, wxDefaultPosition);
     wxGetApp().UpdateDlgDarkUI(&dialog);
+    wxColour color;
+    if (wxGetApp().dark_mode()) {// SetBackgroundColour
+        color = wxColour(45, 45, 49);
+    }
+    else {
+        color = *wxWHITE;
+    }
+    dialog.SetBackgroundColour(color);
+    wxWindow* okButton = dialog.FindWindow(wxID_OK);
+    if (okButton) {
+        okButton->SetLabel(_L("OK"));
+    }
+    wxWindow* cancelButton = dialog.FindWindow(wxID_CANCEL);
+    if (cancelButton) {
+        cancelButton->SetLabel(_L("Cancel"));
+    }
+
     if (dialog.ShowModal() == wxID_OK)
         return dialog.GetValue();
 
     return -1;
-#else
-    return wxGetNumberFromUser(msg, prompt, title, value, min, max, parent);
-#endif
+// #else
+//     return wxGetNumberFromUser(msg, prompt, title, value, min, max, parent);
+// #endif
 }
 
 void Plater::set_number_of_copies(/*size_t num*/)
@@ -12601,16 +12618,50 @@ void Plater::send_gcode_legacy(int plate_idx, Export3mfProgressFn proFn, bool us
         }
     }
 
-    auto config = get_app_config();
-    PrintHostSendDialog dlg(default_output_file, upload_job.printhost->get_post_upload_actions(), groups, storage_paths, storage_names, config->get_bool("open_device_tab_post_upload"));
-    if (dlg.ShowModal() == wxID_OK) {
-        config->set_bool("open_device_tab_post_upload", dlg.switch_to_device_tab());
-        upload_job.switch_to_device_tab    = dlg.switch_to_device_tab();
-        upload_job.upload_data.upload_path = dlg.filename();
-        upload_job.upload_data.post_action = dlg.post_action();
-        upload_job.upload_data.group       = dlg.group();
-        upload_job.upload_data.storage     = dlg.storage();
+    {
+        //ELE
+        auto        preset_bundle = wxGetApp().preset_bundle;
+        auto model_id      = preset_bundle->printers.get_edited_preset().get_printer_type(preset_bundle);
+        const auto  opt           = physical_printer_config->option<ConfigOptionEnum<PrintHostType>>("host_type");
+        const auto  host_type     = opt != nullptr ? opt->value : htElegooLink;
+        auto        config        = get_app_config();
 
+        if ((model_id == "Elegoo-CC" || model_id == "Elegoo-C") && host_type == htElegooLink){
+           
+            ElegooPrintHostSendDialog dlg(default_output_file, upload_job.printhost->get_post_upload_actions(), groups, storage_paths,
+                                          storage_names, config->get_bool("open_device_tab_post_upload"));
+            if (dlg.ShowModal() != wxID_OK) {
+                return;
+            }
+            config->set_bool("open_device_tab_post_upload", dlg.switch_to_device_tab());
+            // PrintHostUpload upload_data;
+            upload_job.switch_to_device_tab    = dlg.switch_to_device_tab();
+            upload_job.upload_data.upload_path = dlg.filename();
+            upload_job.upload_data.post_action = dlg.post_action();
+            upload_job.upload_data.group       = dlg.group();
+            upload_job.upload_data.storage     = dlg.storage();
+
+            std::map<std::string, std::string> other;
+            other["bedType"] = std::to_string(dlg.bedType());
+            other["timeLapse"] = std::to_string(dlg.timeLapse());
+            other["heatedBedLeveling"] = std::to_string(dlg.heatedBedLeveling());
+            // Elegoo specific
+            upload_job.upload_data.other = other;
+        }else{
+            PrintHostSendDialog dlg(default_output_file, upload_job.printhost->get_post_upload_actions(), groups, storage_paths,
+                                    storage_names, config->get_bool("open_device_tab_post_upload"));
+            if (dlg.ShowModal() != wxID_OK) {
+                return;
+            }
+            config->set_bool("open_device_tab_post_upload", dlg.switch_to_device_tab());
+            // PrintHostUpload upload_data;
+            upload_job.switch_to_device_tab    = dlg.switch_to_device_tab();
+            upload_job.upload_data.upload_path = dlg.filename();
+            upload_job.upload_data.post_action = dlg.post_action();
+            upload_job.upload_data.group       = dlg.group();
+            upload_job.upload_data.storage     = dlg.storage();
+        }
+    }
         // Show "Is printer clean" dialog for PrusaConnect - Upload and print.
         if (std::string(upload_job.printhost->get_name()) == "PrusaConnect" && upload_job.upload_data.post_action == PrintHostPostUploadAction::StartPrint) {
             GUI::MessageDialog dlg(nullptr, _L("Is the printer ready? Is the print sheet in place, empty and clean?"), _L("Upload and Print"), wxOK | wxCANCEL);
@@ -12632,7 +12683,7 @@ void Plater::send_gcode_legacy(int plate_idx, Export3mfProgressFn proFn, bool us
         }
 
         p->export_gcode(fs::path(), false, std::move(upload_job));
-    }
+    
 }
 int Plater::send_gcode(int plate_idx, Export3mfProgressFn proFn)
 {
@@ -13418,7 +13469,7 @@ void Plater::clone_selection()
 {
     if (is_selection_empty())
         return;
-    long res = wxGetNumberFromUser("",
+    long res = GetNumberFromUser("",
         _L("Clone"),
         _L("Number of copies:"),
         1, 0, 1000, this);

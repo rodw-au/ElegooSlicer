@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: 2023-11-06 14:37+0800\n"
 "Last-Translator: ablegods <ablegods@gmail.com>\n"
 "Language-Team: \n"
@@ -6190,11 +6190,6 @@ msgstr "正在切片列印板 %d"
 msgid "Please resolve the slicing errors and publish again."
 msgstr "請解決切片錯誤後再重新發布。"
 
-#, fuzzy
-msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr "未偵測到網路套件。網路相關功能不可用。"
-
 msgid ""
 "Preview only mode:\n"
 "The loaded file contains gcode only, Can not enter the Prepare page"
@@ -9336,12 +9331,10 @@ msgstr "不可列印區域"
 
 #, fuzzy
 msgid ""
-"Unprintable area in XY plane. For example, X1 Series printers use the front "
-"left corner to cut filament during filament change. The area is expressed as "
-"polygon by points in following format: \"XxY, XxY, ...\""
+"Unprintable area in XY plane. The area is expressed as polygon by points in "
+"following format: \"XxY, XxY, ...\""
 msgstr ""
-"XY 平面上的不可列印區域。例如，X1系列設備在換料過程中，會使用左前角區域來切斷"
-"線材。這個多邊形區域由以下格式的點表示：“XxY，XxY，…”"
+"XY 平面上的不可列印區域。這個多邊形區域由以下格式的點表示：“XxY，XxY，…”"
 
 #, fuzzy
 msgid "Bed custom texture"
@@ -14837,6 +14830,23 @@ msgstr "正在上傳"
 msgid "Cancelling"
 msgstr "取消中"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr ""
+
+msgid "Time-lapse"
+msgstr ""
+
+msgid "Heated Bed Leveling"
+msgstr ""
+
+msgid "Textured Build Plate (Side A)"
+msgstr ""
+
+msgid "Smooth Build Plate (Side B)"
+msgstr ""
+
 #, fuzzy
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "無法對所選零件執行布林運算"
@@ -14948,6 +14958,9 @@ msgid "Select Type"
 msgstr ""
 
 msgid "Select Filament Preset"
+msgstr ""
+
+msgid "No Optional Filament Presets"
 msgstr ""
 
 msgid "Serial"
@@ -15775,10 +15788,10 @@ msgstr ""
 msgid "User cancelled."
 msgstr ""
 
-msgid "Connection to Elegoo Link works correctly."
+msgid "Connection to ElegooLink works correctly."
 msgstr ""
 
-msgid "Could not connect to Elegoo Link"
+msgid "Could not connect to ElegooLink"
 msgstr ""
 
 msgid ""
@@ -15789,7 +15802,9 @@ msgstr ""
 msgid "Error code not found"
 msgstr ""
 
-msgid "The printer is busy, please check and try again."
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
 msgstr ""
 
 msgid "The file is lost, please check and try again."
@@ -15812,7 +15827,7 @@ msgstr ""
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
+"functioning properly, and confirm that they are on the same network."
 msgstr ""
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
@@ -16133,6 +16148,11 @@ msgid ""
 "ABS, appropriately increasing the heatbed temperature can reduce the "
 "probability of warping."
 msgstr ""
+
+#, fuzzy
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr "未偵測到網路套件。網路相關功能不可用。"
 
 #, boost-format
 #~ msgid "Fatal error, exception caught: %1%"

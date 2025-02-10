@@ -110,6 +110,15 @@ var LangText = {
     elegoo3: "Stealth Mode",
     elegoo4: "This stops the transmission of data to Bambu's cloud services. Users who don't use BBL machines or use LAN mode only can safely turn on this function.",
     elegoo5: "Enable Stealth Mode.",
+    tSearchDevice: "Search device",
+    printer_connection_failed1: "Unable to access",
+    printer_connection_failed2: "Please check:",
+    printer_connection_failed3: "Hostname, IP or URL entry.",
+    printer_connection_failed4: "Computer and printer network connection.",
+    printer_connection_failed5: "Both are on the same network.",
+    connecting_device: "Loading...",
+    printer_connection: "Printer Connection",
+    setup_printer: "Please set up your printer connection to view the device.",
   },
     ca_ES: {
     t1: "Benvingut a ElegooSlicer",
@@ -781,6 +790,15 @@ var LangText = {
     wk16: "使用3D文本工具，用户可以轻松地在项目中创建各种3D文本形状，使模型更加个性化。ElegooSlicer提供了数十种字体，并支持粗体和斜体样式，使文本具有更大的灵活性。",
     elegoo1: "编辑项目信息",
     elegoo2: "该模型没有相关信息",
+    tSearchDevice: "搜索设备",
+    printer_connection_failed1: "无法访问",
+    printer_connection_failed2: "请检查:",
+    printer_connection_failed3: "主机名、IP或者URL是否正确输入。",
+    printer_connection_failed4: "电脑及打印机的网络是否正常。",
+    printer_connection_failed5: "电脑与打印机是否处于同一个网络。",
+    connecting_device: "正在加载中...",
+    printer_connection: "连接打印机",
+    setup_printer: "请设置您的打印机连接以查看设备。",
   },
   zh_TW: {
     t1: "歡迎使用 ElegooSlicer",
@@ -1443,10 +1461,15 @@ function TranslatePage() {
   let nTotal = AllNode.length;
   for (let n = 0; n < nTotal; n++) {
     let OneNode = AllNode[n];
-
     let tid = $(OneNode).attr("tid");
     if (LangText[strLang].hasOwnProperty(tid)) {
       $(OneNode).html(LangText[strLang][tid]);
+    }
+
+    //placeholder
+    let tplaceholder = $(OneNode).attr("tplaceholder");
+    if (LangText[strLang].hasOwnProperty(tplaceholder)) {
+      $(OneNode).attr("placeholder", LangText[strLang][tplaceholder]);
     }
   }
 }

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 14:18+0800\n"
+"POT-Creation-Date: 2025-01-23 15:25+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -6295,12 +6295,6 @@ msgid "Please resolve the slicing errors and publish again."
 msgstr "Risolvi gli errori di slicing e pubblica nuovamente."
 
 msgid ""
-"Network Plug-in is not detected. Network related features are unavailable."
-msgstr ""
-"Il plug-in di rete non è stato rilevato. Le funzioni di rete non sono "
-"disponibili."
-
-msgid ""
 "Preview only mode:\n"
 "The loaded file contains gcode only, Can not enter the Prepare page"
 msgstr ""
@@ -9557,14 +9551,9 @@ msgid "Bed exclude area"
 msgstr "Zona piano esclusa"
 
 msgid ""
-"Unprintable area in XY plane. For example, X1 Series printers use the front "
-"left corner to cut filament during filament change. The area is expressed as "
-"polygon by points in following format: \"XxY, XxY, ...\""
+"Unprintable area in XY plane. The area is expressed as polygon by points in "
+"following format: \"XxY, XxY, ...\""
 msgstr ""
-"Area non stampabile nel piano XY. Ad esempio, le stampanti della serie X1 "
-"utilizzano l'angolo anteriore sinistro per tagliare il filamento durante il "
-"cambio filamento. L'area è espressa come poligono di punti nel seguente "
-"formato: \"XxY, XxY, ...\""
 
 msgid "Bed custom texture"
 msgstr "Texture piano personalizzata"
@@ -15634,6 +15623,23 @@ msgstr "Caricamento"
 msgid "Cancelling"
 msgstr "Annullamento"
 
+msgid ""
+"The selected bed type does not match the file. Please confirm before "
+"starting the print."
+msgstr ""
+
+msgid "Time-lapse"
+msgstr ""
+
+msgid "Heated Bed Leveling"
+msgstr ""
+
+msgid "Textured Build Plate (Side A)"
+msgstr ""
+
+msgid "Smooth Build Plate (Side B)"
+msgstr ""
+
 msgid "Unable to perform boolean operation on selected parts"
 msgstr "Impossibile eseguire un'operazione booleana sulle parti selezionate"
 
@@ -15744,6 +15750,9 @@ msgstr "Selezionare il Tipo"
 
 msgid "Select Filament Preset"
 msgstr "Seleziona il preset del filamento"
+
+msgid "No Optional Filament Presets"
+msgstr ""
 
 msgid "Serial"
 msgstr "Seriale"
@@ -16750,10 +16759,10 @@ msgstr ""
 msgid "User cancelled."
 msgstr ""
 
-msgid "Connection to Elegoo Link works correctly."
+msgid "Connection to ElegooLink works correctly."
 msgstr ""
 
-msgid "Could not connect to Elegoo Link"
+msgid "Could not connect to ElegooLink"
 msgstr ""
 
 msgid ""
@@ -16764,7 +16773,9 @@ msgstr ""
 msgid "Error code not found"
 msgstr ""
 
-msgid "The printer is busy, please check and try again."
+msgid ""
+"The printer is busy, Please check the device page for the file and try to "
+"start printing again."
 msgstr ""
 
 msgid "The file is lost, please check and try again."
@@ -16787,7 +16798,7 @@ msgstr ""
 
 msgid ""
 "Connection timed out. Please check if the printer and computer network are "
-"functioning properly."
+"functioning properly, and confirm that they are on the same network."
 msgstr ""
 
 msgid "The Hostname/IP/URL could not be parsed, please check it and try again."
@@ -17141,6 +17152,12 @@ msgstr ""
 "Sapevi che quando si stampano materiali soggetti a deformazioni come l'ABS, "
 "aumentare in modo appropriato la temperatura del piano riscaldato può "
 "ridurre la probabilità di deformazione."
+
+#~ msgid ""
+#~ "Network Plug-in is not detected. Network related features are unavailable."
+#~ msgstr ""
+#~ "Il plug-in di rete non è stato rilevato. Le funzioni di rete non sono "
+#~ "disponibili."
 
 #, boost-format
 #~ msgid "Fatal error, exception caught: %1%"

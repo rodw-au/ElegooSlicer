@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: 2024-06-30 23:05+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1420,9 +1420,6 @@ msgstr "Невідома помилка ElegooSlicer : %1%"
 msgid "Untitled"
 msgstr "Без назви"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Завантаження мережевого плагіна для принтерів Bambu"
-
 msgid "Login information expired. Please login again."
 msgstr "Термін дії даних для входу минув. Будь ласка, увійдіть знову."
 
@@ -1490,6 +1487,9 @@ msgstr "Завантаження поточних налаштувань"
 
 msgid "Loading a mode view"
 msgstr "Завантаження режиму перегляду"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Завантаження мережевого плагіна для принтерів Bambu"
 
 msgid "Choose one file (3mf):"
 msgstr "Виберіть один файл (3mf):"
@@ -3123,24 +3123,14 @@ msgstr "Файл"
 msgid "Calibration"
 msgstr "Калібрування"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"Не вдалося завантажити плагін. Будь ласка, перевірте налаштування "
-"брандмауера та vpn\n"
-"Програмне забезпечення, перевірте та повторіть спробу."
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"Не вдалося встановити плагін. Будь ласка, перевірте, чи він не заблокований "
-"або видалений\n"
-"за допомогою антивірусного програмного забезпечення."
+msgid "Open Folder"
+msgstr "Відкрити папку"
 
-msgid "click here to see more info"
-msgstr "натисніть тут, щоб побачити більше інформації"
+msgid "Check the reason"
+msgstr "Перевірте причину"
 
 msgid "Please home all axes (click "
 msgstr "Поверніть всі осі у вихідне положення (натисніть "
@@ -5089,36 +5079,6 @@ msgstr ""
 "Помилка підключення до локальної мережі (не вдалося запустити перегляд у "
 "реальному часі)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"Для цього завдання потрібні інструменти віртуальної камери!\n"
-"\n"
-"Ви хочете встановити їх?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "Завантаження інструментів віртуальної камери"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"Працює інша віртуальна камера.\n"
-"ElegooSlicer підтримує лише одну віртуальну камеру.\n"
-"Ви хочете зупинити цю віртуальну камеру?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "Помилка ініціалізації віртуальної камери (%s)!"
-
-msgid "Network unreachable"
-msgstr "Мережа недоступна"
-
-msgid "Information"
-msgstr "Інформація"
-
 msgid "Playing..."
 msgstr "Гра..."
 
@@ -5212,6 +5172,9 @@ msgstr "Перегляд файлів на SD-картці не підтриму
 msgid "Initialize failed (%s)!"
 msgstr "Помилка ініціалізації (%s)!"
 
+msgid "Network unreachable"
+msgstr "Мережа недоступна"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5269,9 +5232,6 @@ msgstr "Чекання завантаження..."
 
 msgid "Play"
 msgstr "Відтворити"
-
-msgid "Open Folder"
-msgstr "Відкрити папку"
 
 msgid "Download finished"
 msgstr "Завантаження завершено"
@@ -7451,9 +7411,6 @@ msgstr "Вхід до принтера"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "Ви хочете увійти до цього принтера з поточним обліковим записом?"
-
-msgid "Check the reason"
-msgstr "Перевірте причину"
 
 msgid "Read and accept"
 msgstr "Прочитайте і згодьтеся"
@@ -17058,6 +17015,52 @@ msgstr ""
 "Чи знаєте ви, що при друку матеріалами, схильними до деформації, такими як "
 "ABS, відповідне підвищення температури гарячого ліжка може зменшити "
 "ймовірність деформації."
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "Не вдалося завантажити плагін. Будь ласка, перевірте налаштування "
+#~ "брандмауера та vpn\n"
+#~ "Програмне забезпечення, перевірте та повторіть спробу."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "Не вдалося встановити плагін. Будь ласка, перевірте, чи він не "
+#~ "заблокований або видалений\n"
+#~ "за допомогою антивірусного програмного забезпечення."
+
+#~ msgid "click here to see more info"
+#~ msgstr "натисніть тут, щоб побачити більше інформації"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "Для цього завдання потрібні інструменти віртуальної камери!\n"
+#~ "\n"
+#~ "Ви хочете встановити їх?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "Завантаження інструментів віртуальної камери"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "Працює інша віртуальна камера.\n"
+#~ "ElegooSlicer підтримує лише одну віртуальну камеру.\n"
+#~ "Ви хочете зупинити цю віртуальну камеру?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "Помилка ініціалізації віртуальної камери (%s)!"
+
+#~ msgid "Information"
+#~ msgstr "Інформація"
 
 #~ msgid ""
 #~ "Unprintable area in XY plane. For example, X1 Series printers use the "

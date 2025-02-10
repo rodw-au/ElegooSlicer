@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <functional>
 
 #include "GUI_Utils.hpp"
 #include <wx/dialog.h>
@@ -34,26 +35,26 @@ namespace GUI {
 class DownloadProgressDialog : public DPIDialog
 {
 protected:
-    bool Show(bool show) override;
+
     void on_close(wxCloseEvent& event);
 
+
 public:
-    DownloadProgressDialog(wxString title);
-    wxString format_text(wxStaticText* st, wxString str, int warp);
+    DownloadProgressDialog(wxString title, std::function<bool(ButtonAction, int)> user_action_callback, int download_id);
     ~DownloadProgressDialog();
 
-    void on_dpi_changed(const wxRect &suggested_rect) override;
-    void update_release_note(std::string release_note, std::string version);
+    bool Show(bool show) override;
+    void on_dpi_changed(const wxRect& suggested_rect) override;
+    void update_progress(int progress);
+    void show_error_info(const wxString& error_message, const wxString& description);
 
     wxSimplebook* m_simplebook_status{nullptr};
 
 	std::shared_ptr<BBLStatusBarSend> m_status_bar;
-    std::unique_ptr<Worker>           m_worker;
     wxPanel *                         m_panel_download;
+    std::function<bool(ButtonAction, int)> m_user_action_callback;
+    int                                            m_download_id;
 
-protected:
-    virtual std::unique_ptr<UpgradeNetworkJob> make_job();
-    virtual void                               on_finish();
 };
 
 

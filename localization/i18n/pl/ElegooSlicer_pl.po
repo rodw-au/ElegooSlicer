@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Krzysztof Morga <tlumaczeniebs@gmail.com>\n"
 "Language-Team: \n"
@@ -1419,9 +1419,6 @@ msgstr "ElegooSlicer napotkał nieobsługiwany wyjątek: %1%"
 msgid "Untitled"
 msgstr "Bez tytułu"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Pobieranie wtyczki sieciowej Bambu"
-
 msgid "Login information expired. Please login again."
 msgstr "Informacje logowania wygasły. Proszę zalogować się ponownie."
 
@@ -1491,6 +1488,9 @@ msgstr "Ładowanie obecnych ustawień"
 
 msgid "Loading a mode view"
 msgstr "Ładowanie widoku trybu"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Pobieranie wtyczki sieciowej Bambu"
 
 msgid "Choose one file (3mf):"
 msgstr "Wybierz jeden plik (3mf):"
@@ -3132,22 +3132,14 @@ msgstr "Plik"
 msgid "Calibration"
 msgstr "Kalibracja"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
-msgstr ""
-"Nie udało się pobrać wtyczki. Sprawdź ustawienia zapory ogniowej i "
-"oprogramowania VPN, sprawdź i spróbuj ponownie."
+msgid "Continue"
+msgstr "Kontynuacja"
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"Nie udało się zainstalować wtyczki. Sprawdź, czy nie jest zablokowana lub "
-"usunięta przez oprogramowanie antywirusowe."
+msgid "Open Folder"
+msgstr "Otwórz folder"
 
-msgid "click here to see more info"
-msgstr "cliknij tutaj, aby zobaczyć więcej informacji"
+msgid "Check the reason"
+msgstr "Sprawdź powód"
 
 msgid "Please home all axes (click "
 msgstr "Ustaw wszystkie osie na pozycje domową (kliknij "
@@ -5095,35 +5087,6 @@ msgstr "Zatrzymano."
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "Błąd połączenia LAN (Nie można uruchomić podglądu na żywo)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"Do wykonania tej operacji wymagane są narzędzia wirtualnej kamery!\n"
-"Czy chcesz je zainstalować?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "Pobieranie narzędzi wirtualnej kamery"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"Inna wirtualna kamera jest już uruchomiona.\n"
-"ElegooSlicer obsługuje tylko jedną wirtualną kamerę.\n"
-"Czy chcesz zatrzymać tę wirtualną kamerę?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "Inicjalizacja wirtualnej kamery nie powiodła się (%s)!"
-
-msgid "Network unreachable"
-msgstr "Brak połączenia z siecią"
-
-msgid "Information"
-msgstr "Informacja"
-
 msgid "Playing..."
 msgstr "Odtwarzanie..."
 
@@ -5219,6 +5182,9 @@ msgstr ""
 msgid "Initialize failed (%s)!"
 msgstr "Inicjalizacja nie powiodła się (%s)!"
 
+msgid "Network unreachable"
+msgstr "Brak połączenia z siecią"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5273,9 +5239,6 @@ msgstr "Oczekiwanie na pobranie..."
 
 msgid "Play"
 msgstr "Odtwórz"
-
-msgid "Open Folder"
-msgstr "Otwórz folder"
 
 msgid "Download finished"
 msgstr "Pobieranie zakończone"
@@ -7458,9 +7421,6 @@ msgstr "Zaloguj się do drukarki"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "Czy chcesz zalogować się do tej drukarki z obecnym kontem?"
-
-msgid "Check the reason"
-msgstr "Sprawdź powód"
 
 msgid "Read and accept"
 msgstr "Przeczytaj i zaakceptuj"
@@ -17509,6 +17469,49 @@ msgstr ""
 "zmniejszyć prawdopodobieństwo odkształceń."
 
 #~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "Nie udało się pobrać wtyczki. Sprawdź ustawienia zapory ogniowej i "
+#~ "oprogramowania VPN, sprawdź i spróbuj ponownie."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "Nie udało się zainstalować wtyczki. Sprawdź, czy nie jest zablokowana lub "
+#~ "usunięta przez oprogramowanie antywirusowe."
+
+#~ msgid "click here to see more info"
+#~ msgstr "cliknij tutaj, aby zobaczyć więcej informacji"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "Do wykonania tej operacji wymagane są narzędzia wirtualnej kamery!\n"
+#~ "Czy chcesz je zainstalować?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "Pobieranie narzędzi wirtualnej kamery"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "Inna wirtualna kamera jest już uruchomiona.\n"
+#~ "ElegooSlicer obsługuje tylko jedną wirtualną kamerę.\n"
+#~ "Czy chcesz zatrzymać tę wirtualną kamerę?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "Inicjalizacja wirtualnej kamery nie powiodła się (%s)!"
+
+#~ msgid "Information"
+#~ msgstr "Informacja"
+
+#~ msgid ""
 #~ "Unprintable area in XY plane. For example, X1 Series printers use the "
 #~ "front left corner to cut filament during filament change. The area is "
 #~ "expressed as polygon by points in following format: \"XxY, XxY, ...\""
@@ -18901,9 +18904,6 @@ msgstr ""
 
 #~ msgid "ElegooSlicer error"
 #~ msgstr "błąd ElegooSlicer"
-
-#~ msgid "Continue"
-#~ msgstr "Kontynuacja"
 
 #~ msgid "Abort"
 #~ msgstr "Przerwij"

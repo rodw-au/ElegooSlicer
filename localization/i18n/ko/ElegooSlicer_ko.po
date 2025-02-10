@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: 2024-05-31 23:33+0900\n"
 "Last-Translator: Hotsolidinfill <138652683+Hotsolidinfill@users.noreply."
 "github.com>, crwusiz <crwusiz@gmail.com>\n"
@@ -1403,9 +1403,6 @@ msgstr "ElegooSlicer에 처리되지 않은 예외가 발생했습니다: %1%"
 msgid "Untitled"
 msgstr "제목 없음"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "뱀부 네트워크 플러그인 다운로드"
-
 msgid "Login information expired. Please login again."
 msgstr "로그인 정보가 만료되었습니다. 다시 로그인해주세요."
 
@@ -1473,6 +1470,9 @@ msgstr "현재 사전 설정 로드 중"
 
 msgid "Loading a mode view"
 msgstr "모드 보기 로드 중"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "뱀부 네트워크 플러그인 다운로드"
 
 msgid "Choose one file (3mf):"
 msgstr "하나의 파일을 선택 (3mf):"
@@ -3055,22 +3055,14 @@ msgstr "파일"
 msgid "Calibration"
 msgstr "교정"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"플러그인을 다운로드하지 못했습니다. 방화벽 설정 및 VPN 소프트웨어를 확인하고 "
-"확인한 후 다시 시도하세요."
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"플러그인을 설치하지 못했습니다. 안티바이러스 소프트웨어에 의해 차단 또는 삭제"
-"되었는지 확인하세요."
+msgid "Open Folder"
+msgstr "폴더 열기"
 
-msgid "click here to see more info"
-msgstr "자세한 내용을 보려면 여기를 클릭하세요"
+msgid "Check the reason"
+msgstr "이유 확인"
 
 msgid "Please home all axes (click "
 msgstr "모든 축을 홈으로 이동하세요(클릭 "
@@ -4962,35 +4954,6 @@ msgstr "중지됨."
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "LAN 연결 실패(라이브뷰 시작 실패)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"이 작업에는 가상 카메라 도구가 필요합니다!\n"
-"설치하시겠습니까?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "가상 카메라 도구 다운로드"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"다른 가상 카메라가 실행 중입니다.\n"
-"ElegooSlicer는 하나의 가상 카메라만 지원합니다.\n"
-"이 가상 카메라를 중지하시겠습니까?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "가상 카메라 초기화 실패(%s)!"
-
-msgid "Network unreachable"
-msgstr "네트워크에 연결할 수 없음"
-
-msgid "Information"
-msgstr "정보"
-
 msgid "Playing..."
 msgstr "재생중...."
 
@@ -5085,6 +5048,9 @@ msgstr "LAN 전용 모드에서는 SD 카드의 파일 탐색이 지원되지 �
 msgid "Initialize failed (%s)!"
 msgstr "(%s) 초기화 실패!"
 
+msgid "Network unreachable"
+msgstr "네트워크에 연결할 수 없음"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5134,9 +5100,6 @@ msgstr "다운로드 대기 중..."
 
 msgid "Play"
 msgstr "재생"
-
-msgid "Open Folder"
-msgstr "폴더 열기"
 
 msgid "Download finished"
 msgstr "다운로드 완료"
@@ -7256,9 +7219,6 @@ msgstr "프린터 로그인"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "현재 계정으로 이 프린터에 로그인하시겠습니까?"
-
-msgid "Check the reason"
-msgstr "이유 확인"
 
 msgid "Read and accept"
 msgstr "읽고 수락"
@@ -16797,6 +16757,49 @@ msgstr ""
 "뒤틀림 방지\n"
 "ABS와 같이 뒤틀림이 발생하기 쉬운 소재를 출력할 때, 히트베드 온도를 적절하게 "
 "높이면 뒤틀림 가능성을 줄일 수 있다는 사실을 알고 계셨나요?"
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "플러그인을 다운로드하지 못했습니다. 방화벽 설정 및 VPN 소프트웨어를 확인하"
+#~ "고 확인한 후 다시 시도하세요."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "플러그인을 설치하지 못했습니다. 안티바이러스 소프트웨어에 의해 차단 또는 "
+#~ "삭제되었는지 확인하세요."
+
+#~ msgid "click here to see more info"
+#~ msgstr "자세한 내용을 보려면 여기를 클릭하세요"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "이 작업에는 가상 카메라 도구가 필요합니다!\n"
+#~ "설치하시겠습니까?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "가상 카메라 도구 다운로드"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "다른 가상 카메라가 실행 중입니다.\n"
+#~ "ElegooSlicer는 하나의 가상 카메라만 지원합니다.\n"
+#~ "이 가상 카메라를 중지하시겠습니까?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "가상 카메라 초기화 실패(%s)!"
+
+#~ msgid "Information"
+#~ msgstr "정보"
 
 #~ msgid ""
 #~ "Unprintable area in XY plane. For example, X1 Series printers use the "

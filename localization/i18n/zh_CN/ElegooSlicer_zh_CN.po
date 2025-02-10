@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slic3rPE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: 2023-04-01 13:21+0800\n"
 "Last-Translator: ELEGOOTechSupport <softfeverever@gmail.com>\n"
 "Language-Team: \n"
@@ -1390,9 +1390,6 @@ msgstr "ElegooSlicer 捕捉到一个未处理的异常：%1%"
 msgid "Untitled"
 msgstr "未命名"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "正在下载Bambu网络插件"
-
 msgid "Login information expired. Please login again."
 msgstr "登录信息过期。请重新登录。"
 
@@ -1457,6 +1454,9 @@ msgstr "加载当前预设"
 
 msgid "Loading a mode view"
 msgstr "加载模式视图"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "正在下载Bambu网络插件"
 
 msgid "Choose one file (3mf):"
 msgstr "选择一个文件（3mf）："
@@ -2997,18 +2997,14 @@ msgstr "文件"
 msgid "Calibration"
 msgstr "校准"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
-msgstr "插件下载失败。请检查您的防火墙设置和vpn软件,检查后重试。"
+msgid "Continue"
+msgstr "继续"
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr "安装插件失败。请检查是否被杀毒软件屏蔽或删除。"
+msgid "Open Folder"
+msgstr "打开目录"
 
-msgid "click here to see more info"
-msgstr "点击这里查看更多信息"
+msgid "Check the reason"
+msgstr "查看原因"
 
 msgid "Please home all axes (click "
 msgstr "请先执行回原点（点击"
@@ -4878,33 +4874,6 @@ msgstr "已经停止。"
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "局域网连接失败（无法启动直播）"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr "该功能需要“虚拟摄像头工具包”，是否下载并安装该工具包？"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "正在下载“虚拟摄像头工具包”"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"另一个虚拟摄像头正在工作。\n"
-"ElegooSlicer 同时只能支持一个虚拟摄像头。\n"
-"是否停止前一个虚拟摄像头？"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "虚拟摄像头初始化失败(%s)！"
-
-msgid "Network unreachable"
-msgstr "网络不可访问"
-
-msgid "Information"
-msgstr "信息"
-
 msgid "Playing..."
 msgstr "正在播放中……"
 
@@ -4996,6 +4965,9 @@ msgstr "局域网模式下暂不支持查看SD卡内文件。"
 msgid "Initialize failed (%s)!"
 msgstr "初始化失败（%s）!"
 
+msgid "Network unreachable"
+msgstr "网络不可访问"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5043,9 +5015,6 @@ msgstr "等待下载中..."
 
 msgid "Play"
 msgstr "播放"
-
-msgid "Open Folder"
-msgstr "打开目录"
 
 msgid "Download finished"
 msgstr "下载完成"
@@ -7090,9 +7059,6 @@ msgstr "登录打印机"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "你想使用当前账号登录这台打印机吗?"
-
-msgid "Check the reason"
-msgstr "查看原因"
 
 msgid "Read and accept"
 msgstr "我已阅读并接受"
@@ -15907,6 +15873,43 @@ msgid ""
 msgstr ""
 "避免翘曲\n"
 "您知道吗？打印ABS这类易翘曲材料时，适当提高热床温度可以降低翘曲的概率。"
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr "插件下载失败。请检查您的防火墙设置和vpn软件,检查后重试。"
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr "安装插件失败。请检查是否被杀毒软件屏蔽或删除。"
+
+#~ msgid "click here to see more info"
+#~ msgstr "点击这里查看更多信息"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr "该功能需要“虚拟摄像头工具包”，是否下载并安装该工具包？"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "正在下载“虚拟摄像头工具包”"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "另一个虚拟摄像头正在工作。\n"
+#~ "ElegooSlicer 同时只能支持一个虚拟摄像头。\n"
+#~ "是否停止前一个虚拟摄像头？"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "虚拟摄像头初始化失败(%s)！"
+
+#~ msgid "Information"
+#~ msgstr "信息"
 
 #~ msgid "The printer is busy, please check and try again."
 #~ msgstr "打印机正在工作，请检查后重新尝试。"

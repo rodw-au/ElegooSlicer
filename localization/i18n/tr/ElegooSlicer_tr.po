@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: 2024-07-11 00:22+0300\n"
 "Last-Translator: Olcay ÖREN\n"
 "Language-Team: \n"
@@ -1409,9 +1409,6 @@ msgstr "ElegooSlicer'da işlenmeyen bir istisna oluştu: %1%"
 msgid "Untitled"
 msgstr "İsimsiz"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Bambu Ağ Eklentisini İndirme"
-
 msgid "Login information expired. Please login again."
 msgstr "Giriş bilgilerinin süresi doldu. Lütfen tekrar giriş yapın."
 
@@ -1481,6 +1478,9 @@ msgstr "Mevcut ön ayarlar yükleniyor"
 
 msgid "Loading a mode view"
 msgstr "Mod görünümü yükleniyor"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Bambu Ağ Eklentisini İndirme"
 
 msgid "Choose one file (3mf):"
 msgstr "Dosya seçin (3mf):"
@@ -3088,22 +3088,14 @@ msgstr "Dosya"
 msgid "Calibration"
 msgstr "Kalibrasyon"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"Eklenti indirilemedi. Lütfen güvenlik duvarı ayarlarınızı ve vpn "
-"yazılımınızı kontrol edin, kontrol edip yeniden deneyin."
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"Eklenti yüklenemedi. Lütfen anti-virüs yazılımı tarafından engellenip "
-"engellenmediğini veya silinip silinmediğini kontrol edin."
+msgid "Open Folder"
+msgstr "Klasörü Aç"
 
-msgid "click here to see more info"
-msgstr "daha fazla bilgi görmek için burayı tıklayın"
+msgid "Check the reason"
+msgstr "Sebebini kontrol edin"
 
 msgid "Please home all axes (click "
 msgstr "Lütfen tüm eksenleri hizalayın (tıklayın) "
@@ -5027,35 +5019,6 @@ msgstr "Durdu."
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "LAN Bağlantısı Başarısız Oldu (Canlı izleme başlatılamadı)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"Bu görev için Sanal Kamera Araçları gereklidir!\n"
-"Bunları yüklemek istiyor musunuz?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "Sanal Kamera Araçlarını İndirme"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"Başka bir sanal kamera çalışıyor.\n"
-"ElegooSlicer yalnızca tek bir sanal kamerayı destekler.\n"
-"Bu sanal kamerayı durdurmak istiyor musunuz?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "Sanal kameranın başlatılması başarısız oldu (%s)!"
-
-msgid "Network unreachable"
-msgstr "Ağa ulaşılamıyor"
-
-msgid "Information"
-msgstr "Bilgi"
-
 msgid "Playing..."
 msgstr "Oynatılıyor..."
 
@@ -5150,6 +5113,9 @@ msgstr "SD karttaki dosyaya göz atmak Yalnızca LAN Modunda desteklenmez."
 msgid "Initialize failed (%s)!"
 msgstr "Başlatma başarısız oldu (%s)!"
 
+msgid "Network unreachable"
+msgstr "Ağa ulaşılamıyor"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5202,9 +5168,6 @@ msgstr "İndirme bekleniyor..."
 
 msgid "Play"
 msgstr "Oynat"
-
-msgid "Open Folder"
-msgstr "Klasörü Aç"
 
 msgid "Download finished"
 msgstr "İndirme tamamlandı"
@@ -7375,9 +7338,6 @@ msgstr "Yazıcıda oturum aç"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "Bu yazıcıda geçerli hesapla oturum açmak ister misiniz?"
-
-msgid "Check the reason"
-msgstr "Sebebini kontrol edin"
 
 msgid "Read and accept"
 msgstr "Oku ve kabul et"
@@ -16821,6 +16781,49 @@ msgstr ""
 "ABS gibi bükülmeye yatkın malzemelere baskı yaparken, ısıtma yatağı "
 "sıcaklığının uygun şekilde arttırılmasının bükülme olasılığını "
 "azaltabileceğini biliyor muydunuz?"
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "Eklenti indirilemedi. Lütfen güvenlik duvarı ayarlarınızı ve vpn "
+#~ "yazılımınızı kontrol edin, kontrol edip yeniden deneyin."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "Eklenti yüklenemedi. Lütfen anti-virüs yazılımı tarafından engellenip "
+#~ "engellenmediğini veya silinip silinmediğini kontrol edin."
+
+#~ msgid "click here to see more info"
+#~ msgstr "daha fazla bilgi görmek için burayı tıklayın"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "Bu görev için Sanal Kamera Araçları gereklidir!\n"
+#~ "Bunları yüklemek istiyor musunuz?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "Sanal Kamera Araçlarını İndirme"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "Başka bir sanal kamera çalışıyor.\n"
+#~ "ElegooSlicer yalnızca tek bir sanal kamerayı destekler.\n"
+#~ "Bu sanal kamerayı durdurmak istiyor musunuz?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "Sanal kameranın başlatılması başarısız oldu (%s)!"
+
+#~ msgid "Information"
+#~ msgstr "Bilgi"
 
 #~ msgid ""
 #~ "Unprintable area in XY plane. For example, X1 Series printers use the "

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1381,9 +1381,6 @@ msgstr ""
 msgid "Untitled"
 msgstr "Névtelen"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Bambu Network bővítmény letöltése"
-
 msgid "Login information expired. Please login again."
 msgstr "A bejelentkezési adatok érvénytelenek. Kérjük, jelentkezz be újra."
 
@@ -1445,6 +1442,9 @@ msgstr "Jelenlegi beállítások betöltése"
 
 msgid "Loading a mode view"
 msgstr "Mód nézet betöltése"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Bambu Network bővítmény letöltése"
 
 msgid "Choose one file (3mf):"
 msgstr "Válassz ki egy fájlt (3mf):"
@@ -3070,22 +3070,14 @@ msgstr "Fájl"
 msgid "Calibration"
 msgstr "Kalibrálás"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"Nem sikerült letölteni a bővítményt. Kérjük, ellenőrizd a tűzfal "
-"beállításait és a VPN-szoftvert, majd próbálja meg újra."
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"Nem sikerült telepíteni a bővítményt. Kérjük, ellenőrizd, hogy a vírusirtó "
-"szoftver nem blokkolta vagy törölte-e."
+msgid "Open Folder"
+msgstr "Mappa megnyitása"
 
-msgid "click here to see more info"
-msgstr "kattints ide további információkért"
+msgid "Check the reason"
+msgstr "Check the reason"
 
 msgid "Please home all axes (click "
 msgstr "Kérjük, végezd el a tengelyek alaphelyzetbe állítását (kattints"
@@ -4998,35 +4990,6 @@ msgstr "Megállítva."
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "Sikertelen LAN csatlakozás (Nem sikerült elindítani az élő videót)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"Ehhez a feladathoz virtuális kameraeszközök szükségesek!\n"
-"Telepíted őket?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "Virtuális kameraeszközök letöltése"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"Már fut egy másik virtuális kamera.\n"
-"A ElegooSlicer csak egy virtuális kamerát támogat.\n"
-"Leállítod ezt a virtuális kamerát?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "A virtuális kamera inicializálása sikertelen (%s)!"
-
-msgid "Network unreachable"
-msgstr "A hálózat nem elérhető"
-
-msgid "Information"
-msgstr "Információ"
-
 msgid "Playing..."
 msgstr "Lejátszás..."
 
@@ -5120,6 +5083,9 @@ msgstr "Browsing file in SD card is not supported in LAN Only Mode."
 msgid "Initialize failed (%s)!"
 msgstr "Sikertelen inicializálás (%s)!"
 
+msgid "Network unreachable"
+msgstr "A hálózat nem elérhető"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5168,9 +5134,6 @@ msgstr "Várakozás letöltésre..."
 
 msgid "Play"
 msgstr "Lejátszás"
-
-msgid "Open Folder"
-msgstr "Mappa megnyitása"
 
 msgid "Download finished"
 msgstr "A letöltés kész"
@@ -7320,9 +7283,6 @@ msgstr "Bejelentkezés a nyomtatóra"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "Szeretnél bejelentkezni a nyomtatóra a jelenlegi fiókkal?"
-
-msgid "Check the reason"
-msgstr "Check the reason"
 
 msgid "Read and accept"
 msgstr "Read and accept"
@@ -16336,6 +16296,49 @@ msgstr ""
 "Vetemedés elkerülése\n"
 "Tudtad, hogy a vetemedésre hajlamos anyagok (például ABS) nyomtatásakor a "
 "tárgyasztal hőmérsékletének növelése csökkentheti a vetemedés valószínűségét?"
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "Nem sikerült letölteni a bővítményt. Kérjük, ellenőrizd a tűzfal "
+#~ "beállításait és a VPN-szoftvert, majd próbálja meg újra."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "Nem sikerült telepíteni a bővítményt. Kérjük, ellenőrizd, hogy a "
+#~ "vírusirtó szoftver nem blokkolta vagy törölte-e."
+
+#~ msgid "click here to see more info"
+#~ msgstr "kattints ide további információkért"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "Ehhez a feladathoz virtuális kameraeszközök szükségesek!\n"
+#~ "Telepíted őket?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "Virtuális kameraeszközök letöltése"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "Már fut egy másik virtuális kamera.\n"
+#~ "A ElegooSlicer csak egy virtuális kamerát támogat.\n"
+#~ "Leállítod ezt a virtuális kamerát?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "A virtuális kamera inicializálása sikertelen (%s)!"
+
+#~ msgid "Information"
+#~ msgstr "Információ"
 
 #~ msgid ""
 #~ "Network Plug-in is not detected. Network related features are unavailable."

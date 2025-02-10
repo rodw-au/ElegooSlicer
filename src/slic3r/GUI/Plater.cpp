@@ -9087,9 +9087,8 @@ void Plater::import_model_id(wxString download_info)
 
         }
         else {
-            fs::path download_path = fs::path(download_origin_url.wx_str());
             download_url = download_origin_url;
-            filename = download_path.filename().string();
+            filename               = FileGet::filename_from_url(download_url.ToStdString());
         }
 
     }

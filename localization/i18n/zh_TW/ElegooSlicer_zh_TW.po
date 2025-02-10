@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: 2023-11-06 14:37+0800\n"
 "Last-Translator: ablegods <ablegods@gmail.com>\n"
 "Language-Team: \n"
@@ -1411,9 +1411,6 @@ msgstr "ElegooSlicer 遭遇到一個未處理的異常：%1%"
 msgid "Untitled"
 msgstr "未命名"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "正在下載 Bambu 網路套件"
-
 msgid "Login information expired. Please login again."
 msgstr "登入資訊已過期。請重新登入。"
 
@@ -1480,6 +1477,9 @@ msgstr "載入目前預設"
 
 msgid "Loading a mode view"
 msgstr "載入模式視圖"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "正在下載 Bambu 網路套件"
 
 #, fuzzy
 msgid "Choose one file (3mf):"
@@ -3085,20 +3085,14 @@ msgstr "檔案"
 msgid "Calibration"
 msgstr "校準"
 
-#, fuzzy
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
-msgstr "套件下載失敗。請檢查您的防火牆設定和 VPN 軟體，檢查後重試。"
+msgid "Continue"
+msgstr ""
 
-#, fuzzy
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr "安裝套件失敗。請檢查是否被防毒軟體阻擋或刪除。"
+msgid "Open Folder"
+msgstr "打開資料夾"
 
-msgid "click here to see more info"
-msgstr "點擊這裡查看更多資訊"
+msgid "Check the reason"
+msgstr "查看原因"
 
 msgid "Please home all axes (click "
 msgstr "請先執行回原點（點擊"
@@ -5033,34 +5027,6 @@ msgstr "已經停止。"
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "區域網路連接失敗（無法啟動直播）"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr "該功能需要“虛擬攝影機工具包”，是否下載並安裝該工具包？"
-
-#, fuzzy
-msgid "Downloading Virtual Camera Tools"
-msgstr "正在下載虛擬攝影機工具包...."
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"另一個虛擬攝影機正在工作。\n"
-"ElegooSlicer 同時只能支援一個虛擬攝影機。\n"
-"是否停止前一個虛擬攝影機？"
-
-#, fuzzy, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "虛擬攝影機初始化失敗（%s）！"
-
-msgid "Network unreachable"
-msgstr "網路不可存取"
-
-msgid "Information"
-msgstr "資訊"
-
 msgid "Playing..."
 msgstr "正在播放中……"
 
@@ -5155,6 +5121,9 @@ msgstr ""
 msgid "Initialize failed (%s)!"
 msgstr "初始化失敗（%s）!"
 
+msgid "Network unreachable"
+msgstr "網路不可存取"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5202,9 +5171,6 @@ msgstr "等待下載中..."
 
 msgid "Play"
 msgstr "播放"
-
-msgid "Open Folder"
-msgstr "打開資料夾"
 
 msgid "Download finished"
 msgstr "下載完成"
@@ -7346,9 +7312,6 @@ msgstr "登入列印設備"
 #, fuzzy
 msgid "Would you like to log in this printer with current account?"
 msgstr "你想使用目前帳號登入這台列印設備嗎?"
-
-msgid "Check the reason"
-msgstr "查看原因"
 
 msgid "Read and accept"
 msgstr "閱讀並接受"
@@ -16148,6 +16111,46 @@ msgid ""
 "ABS, appropriately increasing the heatbed temperature can reduce the "
 "probability of warping."
 msgstr ""
+
+#, fuzzy
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr "套件下載失敗。請檢查您的防火牆設定和 VPN 軟體，檢查後重試。"
+
+#, fuzzy
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr "安裝套件失敗。請檢查是否被防毒軟體阻擋或刪除。"
+
+#~ msgid "click here to see more info"
+#~ msgstr "點擊這裡查看更多資訊"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr "該功能需要“虛擬攝影機工具包”，是否下載並安裝該工具包？"
+
+#, fuzzy
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "正在下載虛擬攝影機工具包...."
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "另一個虛擬攝影機正在工作。\n"
+#~ "ElegooSlicer 同時只能支援一個虛擬攝影機。\n"
+#~ "是否停止前一個虛擬攝影機？"
+
+#, fuzzy, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "虛擬攝影機初始化失敗（%s）！"
+
+#~ msgid "Information"
+#~ msgstr "資訊"
 
 #, fuzzy
 #~ msgid ""

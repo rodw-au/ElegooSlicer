@@ -13,11 +13,21 @@
 #include "I18N.hpp"
 #include "libslic3r/Utils.hpp"
 
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <cctype>
+using namespace std;
+
+
 namespace Slic3r {
 namespace GUI {
 
 const size_t DOWNLOAD_MAX_CHUNK_SIZE	= 10 * 1024 * 1024;
 const size_t DOWNLOAD_SIZE_LIMIT		= 1024 * 1024 * 1024;
+
 
 std::string FileGet::escape_url(const std::string& unescaped)
 {
@@ -415,6 +425,181 @@ void FileGet::resume()
 	p->m_io_thread = std::thread([this]() {
 		p->get_perform();
 		});
+}
+
+
+
+int hex2i(char c)
+{
+    if (isdigit(c))
+        return c - '0';
+
+    if (isxdigit(c)) {
+        if (isupper(c))
+            return 10 + c - 'A';
+
+        else
+            return 10 + c - 'a';
+    }
+
+    return -1;
+}
+
+string url_decode(const string& str, bool replace_plus)
+{
+    string result;
+
+    for (size_t i = 0; i < str.size(); ++i) {
+        if (str[i] == '%' && i + 2 < str.size()) {
+            char c1 = str[i + 1];
+            char c2 = str[i + 2];
+            int v1 = hex2i(c1);
+            int v2 = hex2i(c2);
+            if (v1 != -1 && v2 != -1) {
+                char decoded = (v1 << 4) | v2;
+                result += decoded;
+                i += 2;
+            } else {
+                result += str[i];
+            }
+        } else if (replace_plus && str[i] == '+') {
+            result += ' ';
+
+        } else {
+            result += str[i];
+        }
+    }
+
+    return result;
+}
+
+void split(const string& s, char delimiter, vector<string>& segments)
+{
+    stringstream ss(s);
+    string segment;
+    while (getline(ss, segment, delimiter)) {
+        segments.push_back(segment);
+    }
+}
+
+void split_query(const string& query, vector<pair<string, string>>& params)
+{
+    stringstream ss(query);
+    string pair;
+    while (getline(ss, pair, '&')) {
+        size_t pos = pair.find('=');
+
+        if (pos != string::npos) {
+            string key = pair.substr(0, pos);
+
+            string value = pair.substr(pos + 1);
+
+            params.emplace_back(key, value);
+
+        } else {
+            params.emplace_back(pair, "");
+        }
+    }
+}
+
+string trim(const string& s)
+{
+    size_t first = s.find_first_not_of(" \t");
+    if (first == string::npos)
+        return "";
+    size_t last = s.find_last_not_of(" \t");
+    return s.substr(first, (last - first + 1));
+}
+
+string parse_content_disposition(const string& content_disp)
+{
+    vector<string> parts;
+    split(content_disp, ';', parts);
+    for (const string& part : parts) {
+        string trimmed = trim(part);
+
+        if (trimmed.find("filename=") == 0) {
+            string value_part = trimmed.substr(9);
+
+            value_part = trim(value_part);
+            char quote = '\0';
+
+            if (!value_part.empty() && (value_part[0] == '"' || value_part[0] == '\'')) {
+                quote = value_part[0];
+
+                value_part = value_part.substr(1);
+            }
+
+            if (quote != '\0') {
+                size_t end_quote = value_part.find(quote);
+
+                if (end_quote != string::npos) {
+                    value_part = value_part.substr(0, end_quote);
+                }
+
+            } else {
+                size_t space_pos = value_part.find(' ');
+
+                if (space_pos != string::npos) {
+                    value_part = value_part.substr(0, space_pos);
+                }
+            }
+
+            return value_part;
+        }
+    }
+
+    return "";
+}
+
+string FileGet::filename_from_url(const string& url)
+{
+    size_t query_start = url.find('?');
+    string path_part = url.substr(0, query_start);
+    string query_part = (query_start != string::npos) ? url.substr(query_start + 1) : "";
+    vector<string> path_segments;
+    split(path_part, '/', path_segments);
+    string filename_from_path;
+    for (auto it = path_segments.rbegin(); it != path_segments.rend(); ++it) {
+        if (!it->empty()) {
+            filename_from_path = *it;
+
+            break;
+        }
+    }
+
+    filename_from_path = url_decode(filename_from_path, false);
+    vector<pair<string, string>> query_params;
+    split_query(query_part, query_params);
+    string filename_from_query;
+    string content_disp_value;
+
+    for (const auto& param : query_params) {
+        if (param.first == "filename") {
+            filename_from_query = url_decode(param.second, true);
+
+        } else if (param.first == "response-content-disposition") {
+            content_disp_value = url_decode(param.second, true);
+        }
+    }
+
+    string filename_from_cd;
+
+    if (!content_disp_value.empty()) {
+        string cd_filename = parse_content_disposition(content_disp_value);
+
+        filename_from_cd = url_decode(cd_filename, false);
+    }
+
+    if (!filename_from_query.empty()) {
+        return filename_from_query;
+
+    } else if (!filename_from_cd.empty()) {
+        return filename_from_cd;
+
+    } 
+    return filename_from_path;
+
 }
 }
 }

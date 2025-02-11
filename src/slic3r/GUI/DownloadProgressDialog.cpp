@@ -37,7 +37,7 @@ DownloadProgressDialog::DownloadProgressDialog(wxString                         
     , m_download_id(download_id)
 {
 
-
+    m_close               = false;
     std::string icon_path = (boost::format("%1%/images/ElegooSlicerTitle.ico") % resources_dir()).str();
     SetIcon(wxIcon(encode_path(icon_path.c_str()), wxBITMAP_TYPE_ICO));
 
@@ -54,6 +54,8 @@ DownloadProgressDialog::DownloadProgressDialog(wxString                         
 
     m_status_bar = std::make_shared<BBLStatusBarSend>(m_simplebook_status);
     m_status_bar->set_download_user_action([this](ButtonAction action) -> void {
+        if (m_close)
+            return;
         if (ButtonActionCanceled == action) {
             Close();          
         } else if (ButtonActionPaused == action) {
@@ -91,6 +93,9 @@ bool DownloadProgressDialog::Show(bool show)
 
 void DownloadProgressDialog::on_close(wxCloseEvent& event)
 {
+    if (m_close)
+        return;
+    m_close = true;
     m_user_action_callback(ButtonActionCanceled, m_download_id);
     event.Skip();
 }
@@ -99,14 +104,23 @@ DownloadProgressDialog::~DownloadProgressDialog() {}
 
 void DownloadProgressDialog::on_dpi_changed(const wxRect &suggested_rect) {}
 
-void DownloadProgressDialog::update_progress(int progress) 
-{
+void DownloadProgressDialog::download_progress(int progress) {
     m_status_bar->set_progress(progress); 
 }
 
-void DownloadProgressDialog::show_error_info(const wxString& error_message, const wxString& description)
+void DownloadProgressDialog::download_error(const wxString& error_message, const wxString& description)
 {
     m_status_bar->show_error_info(error_message, 0, description, "");
+}
+void DownloadProgressDialog::download_paused() {
+
+}
+void DownloadProgressDialog::download_canceled()
+{
+    if (m_close)
+        return;
+    m_close = true;
+    Close();
 }
 
 

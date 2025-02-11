@@ -5,6 +5,7 @@
 #include <boost/filesystem/path.hpp>
 #include <wx/wx.h>
 #include "DownloadProgressDialog.hpp"
+#include <mutex>
 
 namespace Slic3r {
 namespace GUI {
@@ -63,6 +64,9 @@ class Downloader : public wxEvtHandler {
 public:
     Downloader();
     ~Downloader();
+
+    void close();
+
     bool get_initialized() { return m_initialized; }
     void init(const boost::filesystem::path& dest_folder) 
     { 
@@ -86,7 +90,7 @@ private:
 
     size_t m_next_id { 0 };
     size_t get_next_id() { return ++m_next_id; }
-
+    std::unique_ptr<Download>* find_download_by_id(size_t id);
     void on_progress(wxCommandEvent& event);
     void on_error(wxCommandEvent& event);
     void on_complete(wxCommandEvent& event);
@@ -95,6 +99,8 @@ private:
     void on_canceled(wxCommandEvent& event);
 
     void set_download_state(int id, DownloadState state);
+
+    std::mutex m_mutex;
     /*
     bool is_in_state(int id, DownloadState state) const;
     DownloadState get_download_state(int id) const;

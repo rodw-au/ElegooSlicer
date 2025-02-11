@@ -113,14 +113,22 @@ Downloader::Downloader() : wxEvtHandler()
     Bind(EVT_DWNLDR_FILE_NAME_CHANGE, &Downloader::on_name_change, this);
     Bind(EVT_DWNLDR_FILE_PAUSED, &Downloader::on_paused, this);
     Bind(EVT_DWNLDR_FILE_CANCELED, &Downloader::on_canceled, this);
+
 }
 Downloader::~Downloader()
+{ 
+    close();
+
+}
+void        Downloader::close() 
 {
+    std::lock_guard<std::mutex> lock(m_mutex);
     for (auto& d : m_downloads)
         d->cancel();
-    // m_dialogs.clear();
+    for (auto& d : m_dialogs)
+        d.second->download_canceled();
+    m_dialogs.clear();
 }
-
 std::string process_url(const std::string& full_url)
 {
     boost::regex  re(R"(^(elegooslicer|orcaslicer|prusaslicer|bambustudio|cura):\/\/open[\/]?\?file=|https?:\/\/.*|http?:\/\/.*)",
@@ -197,73 +205,6 @@ void Downloader::download_file(const std::string& full_url)
 
     BOOST_LOG_TRIVIAL(debug) << "started download";
 }
-void Downloader::on_progress(wxCommandEvent& event)
-{
-    size_t id      = event.GetInt();
-    float  percent = (float) std::stoi(boost::nowide::narrow(event.GetString())) / 100.f;
-    // BOOST_LOG_TRIVIAL(error) << "progress " << id << ": " << percent;
-
-    auto it = std::find_if(m_downloads.begin(), m_downloads.end(), [id](const std::unique_ptr<Download>& d) { return d->get_id() == id; });
-    if (it == m_downloads.end()) {
-        BOOST_LOG_TRIVIAL(error) << "Download not found: " << id;
-        return;
-    }
-    if (it->get()->get_down_type() == DownType2) {
-        auto dlg_it = m_dialogs.find(id);
-        if (dlg_it != m_dialogs.end()) {
-            dlg_it->second->update_progress(static_cast<int>(percent * 100));
-        }
-
-    } else if (it->get()->get_down_type() == DownType1) {
-        NotificationManager* ntf_mngr = wxGetApp().notification_manager();
-        ntf_mngr->set_download_URL_progress(id, percent);
-    }
-
-    BOOST_LOG_TRIVIAL(trace) << "Download " << id << ": " << percent;
-}
-void Downloader::on_error(wxCommandEvent& event)
-{
-    size_t id = event.GetInt();
-    auto it = std::find_if(m_downloads.begin(), m_downloads.end(), [id](const std::unique_ptr<Download>& d) { return d->get_id() == id; });
-    if (it == m_downloads.end()) {
-        BOOST_LOG_TRIVIAL(error) << "Download not found: " << id;
-        return;
-    }
-    if (it->get()->get_down_type() == DownType2) {
-        auto dlg_it = m_dialogs.find(id);
-        if (dlg_it != m_dialogs.end()) {
-            dlg_it->second->show_error_info("Download failed", event.GetString());
-        }
-    } else if (it->get()->get_down_type() == DownType1) {
-        NotificationManager* ntf_mngr = wxGetApp().notification_manager();
-        ntf_mngr->set_download_URL_error(id, boost::nowide::narrow(event.GetString()));
-    }
-
-    set_download_state(event.GetInt(), DownloadState::DownloadError);
-    BOOST_LOG_TRIVIAL(error) << "Download error: " << event.GetString();
-
-    show_error(nullptr, format_wxstr(L"%1%\n%2%", _L("The download has failed") + ":", event.GetString()));
-}
-void Downloader::on_complete(wxCommandEvent& event)
-{
-    // TODO: is this always true? :
-    // here we open the file itself, notification should get 1.f progress from on progress.
-    size_t id = event.GetInt();
-    auto it = std::find_if(m_downloads.begin(), m_downloads.end(), [id](const std::unique_ptr<Download>& d) { return d->get_id() == id; });
-    if (it == m_downloads.end()) {
-        BOOST_LOG_TRIVIAL(error) << "Download not found: " << id;
-        return;
-    }
-    set_download_state(id, DownloadState::DownloadDone);
-
-    if (it->get()->get_down_type() == DownType2) {
-        return;
-    }
-
-    wxArrayString paths;
-    paths.Add(event.GetString());
-    wxGetApp().plater()->load_files(paths);
-}
 bool Downloader::user_action_callback(DownloaderUserAction action, int id)
 {
     for (size_t i = 0; i < m_downloads.size(); ++i) {
@@ -287,8 +228,12 @@ bool Downloader::user_action_callback2(ButtonAction action, int id)
             case ButtonActionCanceled: {
                 m_downloads[i]->cancel();
                 std::thread([this, id]() {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(200));
-                    m_dialogs.erase(id);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                    std::lock_guard<std::mutex> lock(m_mutex);
+                    auto dlg_it = m_dialogs.find(id);
+                    if (dlg_it != m_dialogs.end()) {
+                        m_dialogs.erase(id);
+                    }
                 }).detach();
                 return true;
             }
@@ -301,20 +246,125 @@ bool Downloader::user_action_callback2(ButtonAction action, int id)
     }
     return false;
 }
-void Downloader::on_name_change(wxCommandEvent& event) {}
 
+std::unique_ptr<Download>* Downloader::find_download_by_id(size_t id)
+{
+    auto it = std::find_if(m_downloads.begin(), m_downloads.end(), [id](const std::unique_ptr<Download>& d) { return d->get_id() == id; });
+    if (it == m_downloads.end()) {
+        BOOST_LOG_TRIVIAL(error) << "Download not found: " << id;
+        return nullptr;
+    }
+    return &(*it);
+}
+
+void Downloader::on_name_change(wxCommandEvent& event) {}
+void Downloader::on_progress(wxCommandEvent& event)
+{
+    std::lock_guard<std::mutex> lock(m_mutex); 
+
+    size_t id      = event.GetInt();
+    float  percent = (float) std::stoi(boost::nowide::narrow(event.GetString())) / 100.f;
+    // BOOST_LOG_TRIVIAL(error) << "progress " << id << ": " << percent;
+
+    auto it = find_download_by_id(id);
+    if (!it) {
+        return;
+    }
+    if (it->get()->get_down_type() == DownType2) {
+        auto dlg_it = m_dialogs.find(id);
+        if (dlg_it != m_dialogs.end()) {
+            dlg_it->second->download_progress(static_cast<int>(percent * 100));
+        }
+
+    } else if (it->get()->get_down_type() == DownType1) {
+        NotificationManager* ntf_mngr = wxGetApp().notification_manager();
+        ntf_mngr->set_download_URL_progress(id, percent);
+    }
+
+    BOOST_LOG_TRIVIAL(trace) << "Download " << id << ": " << percent;
+}
+void Downloader::on_error(wxCommandEvent& event)
+{
+    std::lock_guard<std::mutex> lock(m_mutex); 
+
+    size_t id = event.GetInt();
+    auto   it = find_download_by_id(id);
+    if (!it) {
+        return;
+    }
+    if (it->get()->get_down_type() == DownType2) {
+        auto dlg_it = m_dialogs.find(id);
+        if (dlg_it != m_dialogs.end()) {
+            dlg_it->second->download_error("Download failed", event.GetString());
+        }
+    } else if (it->get()->get_down_type() == DownType1) {
+        NotificationManager* ntf_mngr = wxGetApp().notification_manager();
+        ntf_mngr->set_download_URL_error(id, boost::nowide::narrow(event.GetString()));
+    }
+
+    set_download_state(event.GetInt(), DownloadState::DownloadError);
+    BOOST_LOG_TRIVIAL(error) << "Download error: " << event.GetString();
+
+    show_error(nullptr, format_wxstr(L"%1%\n%2%", _L("The download has failed") + ":", event.GetString()));
+}
+void Downloader::on_complete(wxCommandEvent& event)
+{
+    std::lock_guard<std::mutex> lock(m_mutex); 
+    // TODO: is this always true? :
+    // here we open the file itself, notification should get 1.f progress from on progress.
+    size_t id = event.GetInt();
+    auto   it = find_download_by_id(id);
+    if (!it) {
+        return;
+    }
+    set_download_state(id, DownloadState::DownloadDone);
+
+    if (it->get()->get_down_type() == DownType2) {
+        return;
+    }
+
+    wxArrayString paths;
+    paths.Add(event.GetString());
+    wxGetApp().plater()->load_files(paths);
+}
 void Downloader::on_paused(wxCommandEvent& event)
 {
-    size_t               id       = event.GetInt();
-    NotificationManager* ntf_mngr = wxGetApp().notification_manager();
-    ntf_mngr->set_download_URL_paused(id);
+    std::lock_guard<std::mutex> lock(m_mutex); 
+
+    size_t id = event.GetInt();
+    auto   it = find_download_by_id(id);
+    if (!it) {
+        return;
+    }
+    if (it->get()->get_down_type() == DownType2) {
+        auto dlg_it = m_dialogs.find(id);
+        if (dlg_it != m_dialogs.end()) {
+            dlg_it->second->download_paused();
+        } 
+    } else {
+        NotificationManager* ntf_mngr = wxGetApp().notification_manager();
+        ntf_mngr->set_download_URL_paused(id);
+    }
 }
 
 void Downloader::on_canceled(wxCommandEvent& event)
 {
-    size_t               id       = event.GetInt();
-    NotificationManager* ntf_mngr = wxGetApp().notification_manager();
-    ntf_mngr->set_download_URL_canceled(id);
+    std::lock_guard<std::mutex> lock(m_mutex); 
+
+    size_t id = event.GetInt();
+    auto   it = find_download_by_id(id);
+    if (!it) {
+        return;
+    }
+    if (it->get()->get_down_type() == DownType2) { 
+        auto dlg_it = m_dialogs.find(id);
+        if (dlg_it != m_dialogs.end()) {
+             dlg_it->second->download_error("Download canceled", "");
+        }
+    } else {
+        NotificationManager* ntf_mngr = wxGetApp().notification_manager();
+        ntf_mngr->set_download_URL_canceled(id);
+    }
 }
 
 void Downloader::set_download_state(int id, DownloadState state)

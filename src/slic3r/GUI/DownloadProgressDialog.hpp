@@ -45,8 +45,12 @@ public:
 
     bool Show(bool show) override;
     void on_dpi_changed(const wxRect& suggested_rect) override;
-    void update_progress(int progress);
-    void show_error_info(const wxString& error_message, const wxString& description);
+    void download_progress(int progress);
+    void download_paused();
+    void download_canceled();
+    void download_error(const wxString& error_message, const wxString& description);
+
+
 
     wxSimplebook* m_simplebook_status{nullptr};
 
@@ -54,6 +58,7 @@ public:
     wxPanel *                         m_panel_download;
     std::function<bool(ButtonAction, int)> m_user_action_callback;
     int                                            m_download_id;
+    bool                                   m_close{false};
 
 };
 

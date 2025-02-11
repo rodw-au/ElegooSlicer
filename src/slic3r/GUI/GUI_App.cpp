@@ -1090,6 +1090,8 @@ void GUI_App::shutdown()
 {
     BOOST_LOG_TRIVIAL(info) << "GUI_App::shutdown enter";
 
+    m_downloader->close();
+
 	if (m_removable_drive_manager) {
 		removable_drive_manager()->shutdown();
 	}

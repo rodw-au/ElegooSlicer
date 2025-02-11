@@ -207,6 +207,7 @@ void Downloader::download_file(const std::string& full_url)
 }
 bool Downloader::user_action_callback(DownloaderUserAction action, int id)
 {
+    std::lock_guard<std::mutex> lock(m_mutex);
     for (size_t i = 0; i < m_downloads.size(); ++i) {
         if (m_downloads[i]->get_id() == id) {
             switch (action) {
@@ -222,21 +223,11 @@ bool Downloader::user_action_callback(DownloaderUserAction action, int id)
 }
 bool Downloader::user_action_callback2(ButtonAction action, int id)
 {
+    std::lock_guard<std::mutex> lock(m_mutex);
     for (size_t i = 0; i < m_downloads.size(); ++i) {
         if (m_downloads[i]->get_id() == id) {
             switch (action) {
-            case ButtonActionCanceled: {
-                m_downloads[i]->cancel();
-                std::thread([this, id]() {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    std::lock_guard<std::mutex> lock(m_mutex);
-                    auto dlg_it = m_dialogs.find(id);
-                    if (dlg_it != m_dialogs.end()) {
-                        m_dialogs.erase(id);
-                    }
-                }).detach();
-                return true;
-            }
+            case ButtonActionCanceled: m_downloads[i]->cancel(); return true;         
             case ButtonActionPaused: m_downloads[i]->pause(); return true;
             case ButtonActionContinued: m_downloads[i]->resume(); return true;
             case ButtonActionOpenedFolder: open_folder(m_downloads[i]->get_dest_folder()); return true;
@@ -350,7 +341,6 @@ void Downloader::on_paused(wxCommandEvent& event)
 void Downloader::on_canceled(wxCommandEvent& event)
 {
     std::lock_guard<std::mutex> lock(m_mutex); 
-
     size_t id = event.GetInt();
     auto   it = find_download_by_id(id);
     if (!it) {
@@ -359,7 +349,7 @@ void Downloader::on_canceled(wxCommandEvent& event)
     if (it->get()->get_down_type() == DownType2) { 
         auto dlg_it = m_dialogs.find(id);
         if (dlg_it != m_dialogs.end()) {
-             dlg_it->second->download_error("Download canceled", "");
+            m_dialogs.erase(dlg_it);                    
         }
     } else {
         NotificationManager* ntf_mngr = wxGetApp().notification_manager();

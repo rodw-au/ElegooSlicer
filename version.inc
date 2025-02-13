@@ -11,7 +11,6 @@ if(NOT DEFINED BBL_INTERNAL_TESTING)
 set(BBL_INTERNAL_TESTING "0")
 endif()
 
-# 添加 BUILD_NUMBER 变量
 if(NOT DEFINED BUILD_NUMBER)
     set(BUILD_NUMBER "0")
 endif()
@@ -28,5 +27,5 @@ set(ELEGOO_VERSION_TWEAK ${BUILD_NUMBER})
 set(SLIC3R_VERSION ${ELEGOOSLICER_VERSION})
 set(SLIC3R_BUILD_ID "${ELEGOOSLICER_VERSION}")
 
-# fork Orca的版本，用于做一些兼容
+# The forked version of Orca, used for some compatibility
 set(ORCA_VERSION "2.2.0")

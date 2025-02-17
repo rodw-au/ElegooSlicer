@@ -1099,7 +1099,7 @@ void PrintConfigDef::init_fff_params()
                      "applied even if the overhanging perimeter is part of a bridge. For example, when the perimeters are 100% overhanging"
                      ", with no wall supporting them from underneath, the 100% overhang speed will be applied.");
     def->mode = comAdvanced;
-    def->set_default_value(new ConfigOptionBool{ true });
+    def->set_default_value(new ConfigOptionBool{ false });
 
     def = this->add("overhang_1_4_speed", coFloatOrPercent);
     def->label = "(10%, 25%)";
@@ -6253,7 +6253,7 @@ void PrintConfigDef::handle_legacy(t_config_option_key &opt_key, std::string &va
     else if (opt_key == "draft_shield" && value == "limited") {
         value = "disabled";
     } else if (opt_key == "overhang_speed_classic") {
-        value = "0";
+        // value = "0";
     }
 
     // Ignore the following obsolete configuration keys:

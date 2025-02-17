@@ -4366,6 +4366,7 @@ void GCodeProcessor::run_post_process()
     std::vector<double> filament_g(m_result.extruders_count, 0.0);
     std::vector<double> filament_cost(m_result.extruders_count, 0.0);
 
+    double filament_total_mm = 0.0;
     double filament_total_g = 0.0;
     double filament_total_cost = 0.0;
 
@@ -4376,10 +4377,12 @@ void GCodeProcessor::run_post_process()
         filament_cost[id] = filament_g[id] * double(m_result.filament_costs[id]) * 0.001;
         filament_total_g += filament_g[id];
         filament_total_cost += filament_cost[id];
+        filament_total_mm += filament_mm[id];
     }
 
     double total_g_wipe_tower = m_print->print_statistics().total_wipe_tower_filament;
 
+    double print_time         = (int)this->get_time(PrintEstimatedStatistics::ETimeMode::Normal);
 
     auto time_in_minutes = [](float time_in_seconds) {
         assert(time_in_seconds >= 0.f);
@@ -4807,6 +4810,27 @@ void GCodeProcessor::run_post_process()
         return ret;
     };
 
+    auto process_cura_tag = [&](std::string& gcode_line) {
+        // Prefilter for parsing speed.
+        if (gcode_line.size() < 8 || gcode_line[0] != ';' || gcode_line[1] != 'C')
+            return false;
+        auto process_tag = [](std::string& gcode_line, const std::string_view tag, const char* newTag, const double& value) {
+            if (boost::algorithm::starts_with(gcode_line, tag)) {
+                char buf[1024];
+                sprintf(buf, newTag, value);
+                gcode_line = buf;
+                return true;
+            }
+            return false;
+        };
+
+        bool ret = false;
+        ret |= process_tag(gcode_line, ";CURA_TIME_PLACEHOLDER", ";TIME:%.0f\n", print_time);
+        ret |= process_tag(gcode_line, ";CURA_FILAMENT_USED_PLACEHOLDER", ";Filament used: %.5fm\n", filament_total_mm/1000);
+        ret |= process_tag(gcode_line, ";CURA_FILAMENT_WEIGHT_PLACEHOLDER",";Filament weight = .%.2f.\n", filament_total_g);
+        return ret;
+    };
+
     // check for temporary lines
     auto is_temporary_decoration = [](const std::string_view gcode_line) {
         // remove trailing '\n'
@@ -5008,6 +5032,8 @@ void GCodeProcessor::run_post_process()
                         gcode_line.clear();
                     if (!processed)
                         processed = process_used_filament(gcode_line);
+                    if (!processed)
+                        processed = process_cura_tag(gcode_line);
                     if (!processed && !is_temporary_decoration(gcode_line)) {
                         if (GCodeReader::GCodeLine::cmd_is(gcode_line, "G0") || GCodeReader::GCodeLine::cmd_is(gcode_line, "G1")) {
                             export_lines.append_line(gcode_line);

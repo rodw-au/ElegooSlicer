@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: 2023-09-30 15:15+0200\n"
 "Last-Translator: René Mošner <Renemosner@seznam.cz>\n"
 "Language-Team: \n"
@@ -1410,9 +1410,6 @@ msgstr "ElegooSlicer dostal neošetřenou výjimku: %1%"
 msgid "Untitled"
 msgstr "Bez názvu"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Stahování Bambu Network Plug-in"
-
 msgid "Login information expired. Please login again."
 msgstr "Platnost přihlašovacích údajů vypršela. Přihlaste se prosím znovu."
 
@@ -1482,6 +1479,9 @@ msgstr "Načítání aktuálních předvoleb"
 
 msgid "Loading a mode view"
 msgstr "Načítání zobrazení režimu"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Stahování Bambu Network Plug-in"
 
 msgid "Choose one file (3mf):"
 msgstr "Vyberte jeden soubor (3mf):"
@@ -3082,22 +3082,14 @@ msgstr "Soubor"
 msgid "Calibration"
 msgstr "Kalibrace"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"Stažení pluginu se nezdařilo. Zkontrolujte prosím nastavení brány firewall a "
-"vpn software, zkontrolujte a zkuste to znovu."
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"Nepodařilo se nainstalovat plugin. Zkontrolujte, zda není blokován nebo "
-"odstraněn antivirovým softwarem."
+msgid "Open Folder"
+msgstr "Otevřít složku"
 
-msgid "click here to see more info"
-msgstr "kliknutím sem zobrazíte více informací"
+msgid "Check the reason"
+msgstr "Zkontrolujte důvod"
 
 msgid "Please home all axes (click "
 msgstr "Prosím domů všechny osy (klikněte "
@@ -5002,35 +4994,6 @@ msgstr "Zastaveno."
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "Připojení LAN se nezdařilo (nepodařilo se spustit živé zobrazení)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"Pro tento úkol jsou vyžadovány nástroje virtuální kamery!\n"
-"Chcete je nainstalovat?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "Stahování nástrojů virtuální kamery"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"Je spuštěna další virtuální kamera.\n"
-"ElegooSlicer podporuje pouze jednu virtuální kameru.\n"
-"Chcete zastavit tuto virtuální kameru?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "Inicializace virtuální kamery selhala (%s)!"
-
-msgid "Network unreachable"
-msgstr "Nedostupná síť"
-
-msgid "Information"
-msgstr "Informace"
-
 msgid "Playing..."
 msgstr "Hraje..."
 
@@ -5122,6 +5085,9 @@ msgstr ""
 msgid "Initialize failed (%s)!"
 msgstr "Inicializace se nezdařila (%s)!"
 
+msgid "Network unreachable"
+msgstr "Nedostupná síť"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5173,9 +5139,6 @@ msgstr "Čekání na stahování..."
 
 msgid "Play"
 msgstr "Přehrát"
-
-msgid "Open Folder"
-msgstr "Otevřít složku"
 
 msgid "Download finished"
 msgstr "Stahování dokončeno"
@@ -7296,9 +7259,6 @@ msgstr "Přihlaste se k tiskárně"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "Chcete se přihlásit k této tiskárně pomocí aktuálního účtu?"
-
-msgid "Check the reason"
-msgstr "Zkontrolujte důvod"
 
 msgid "Read and accept"
 msgstr "Přečíst a přijmout"
@@ -16305,6 +16265,49 @@ msgid ""
 "ABS, appropriately increasing the heatbed temperature can reduce the "
 "probability of warping."
 msgstr ""
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "Stažení pluginu se nezdařilo. Zkontrolujte prosím nastavení brány "
+#~ "firewall a vpn software, zkontrolujte a zkuste to znovu."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "Nepodařilo se nainstalovat plugin. Zkontrolujte, zda není blokován nebo "
+#~ "odstraněn antivirovým softwarem."
+
+#~ msgid "click here to see more info"
+#~ msgstr "kliknutím sem zobrazíte více informací"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "Pro tento úkol jsou vyžadovány nástroje virtuální kamery!\n"
+#~ "Chcete je nainstalovat?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "Stahování nástrojů virtuální kamery"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "Je spuštěna další virtuální kamera.\n"
+#~ "ElegooSlicer podporuje pouze jednu virtuální kameru.\n"
+#~ "Chcete zastavit tuto virtuální kameru?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "Inicializace virtuální kamery selhala (%s)!"
+
+#~ msgid "Information"
+#~ msgstr "Informace"
 
 #~ msgid ""
 #~ "Unprintable area in XY plane. For example, X1 Series printers use the "

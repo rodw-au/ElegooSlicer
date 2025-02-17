@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1397,9 +1397,6 @@ msgstr ""
 msgid "Untitled"
 msgstr "名称未設定"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Bambuネットワークプラグインをダウンロード"
-
 msgid "Login information expired. Please login again."
 msgstr "サインイン情報の有効期限切れ、もう一度サインインしてください"
 
@@ -1461,6 +1458,9 @@ msgstr "プリセットを読込む"
 
 msgid "Loading a mode view"
 msgstr "モードビューをロード"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Bambuネットワークプラグインをダウンロード"
 
 msgid "Choose one file (3mf):"
 msgstr "ファイルを選択 (3mf):"
@@ -3035,20 +3035,14 @@ msgstr "ファイル"
 msgid "Calibration"
 msgstr "キャリブレーション"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"プラグインをダウンロードできませんでした。ファイアウォールやVPN設定をご確認く"
-"ださい。"
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr "プラグインをインストールできませんでした。ご確認ください。"
+msgid "Open Folder"
+msgstr "フォルダを開く"
 
-msgid "click here to see more info"
-msgstr "詳しくはこちら"
+msgid "Check the reason"
+msgstr "Check the reason"
 
 msgid "Please home all axes (click "
 msgstr "すべての軸を原点復帰してください（"
@@ -4927,32 +4921,6 @@ msgstr "中止しました"
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "LAN接続失敗 (ライブビュー開始失敗)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr "バーチャルカメラツールが必要です。インストールしますか？"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "バーチャルカメラツールをダウンロード"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"別のバーチャルカメラを作動しています為、もう一個が起動できません。\n"
-"このバーチャルカメラを停止しますか？"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "バーチャルカメラの初期化が失敗しました！(%s)"
-
-msgid "Network unreachable"
-msgstr "ネットワークにアクセスできません"
-
-msgid "Information"
-msgstr "情報"
-
 msgid "Playing..."
 msgstr "再生中..."
 
@@ -5046,6 +5014,9 @@ msgstr "Browsing file in SD card is not supported in LAN Only Mode."
 msgid "Initialize failed (%s)!"
 msgstr "初期化失敗 (%s)"
 
+msgid "Network unreachable"
+msgstr "ネットワークにアクセスできません"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5093,9 +5064,6 @@ msgstr "ダウンロード待ち"
 
 msgid "Play"
 msgstr "再生"
-
-msgid "Open Folder"
-msgstr "フォルダを開く"
 
 msgid "Download finished"
 msgstr "ダウンロード完了"
@@ -7201,9 +7169,6 @@ msgstr "プリンターを登録"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "現在のアカウントでプリンターをサインインしますか？"
-
-msgid "Check the reason"
-msgstr "Check the reason"
 
 msgid "Read and accept"
 msgstr "Read and accept"
@@ -16021,6 +15986,44 @@ msgstr ""
 "Did you know that when printing materials that are prone to warping such as "
 "ABS, appropriately increasing the heatbed temperature can reduce the "
 "probability of warping?"
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "プラグインをダウンロードできませんでした。ファイアウォールやVPN設定をご確"
+#~ "認ください。"
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr "プラグインをインストールできませんでした。ご確認ください。"
+
+#~ msgid "click here to see more info"
+#~ msgstr "詳しくはこちら"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr "バーチャルカメラツールが必要です。インストールしますか？"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "バーチャルカメラツールをダウンロード"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "別のバーチャルカメラを作動しています為、もう一個が起動できません。\n"
+#~ "このバーチャルカメラを停止しますか？"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "バーチャルカメラの初期化が失敗しました！(%s)"
+
+#~ msgid "Information"
+#~ msgstr "情報"
 
 #~ msgid ""
 #~ "Network Plug-in is not detected. Network related features are unavailable."

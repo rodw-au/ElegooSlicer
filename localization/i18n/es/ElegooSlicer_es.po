@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Carlos Fco. Caruncho Serrano <puzzlero@gmail.com>\n"
 "Language-Team: \n"
@@ -1430,11 +1430,6 @@ msgstr "ElegooSlicer recibió una notificación de excepción no controlada: %1%
 msgid "Untitled"
 msgstr "Sin título"
 
-# msgid "ElegooSlicer got an unhandled exception: %1%"
-# msgstr "ElegooSlicer obtuvo una excepción no manejada: %1%"
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Descargando el complemento de Red Bambú"
-
 msgid "Login information expired. Please login again."
 msgstr "Los datos de acceso han caducado. Por favor, inicie sesión de nuevo."
 
@@ -1505,6 +1500,11 @@ msgstr "Carga de los perfiles actuales"
 
 msgid "Loading a mode view"
 msgstr "Cargar un modo de vista"
+
+# msgid "ElegooSlicer got an unhandled exception: %1%"
+# msgstr "ElegooSlicer obtuvo una excepción no manejada: %1%"
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Descargando el complemento de Red Bambú"
 
 msgid "Choose one file (3mf):"
 msgstr "Elija un archivo (3mf):"
@@ -3144,22 +3144,14 @@ msgstr "Archivo"
 msgid "Calibration"
 msgstr "Calibración"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"Fallo al descargar el complemento. Por favor, compruebe el cortafuegos y la "
-"vpn, e inténtelo de nuevo."
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"Fallo al instalar el complemento. Por favor, compruebe si ha sido bloqueado "
-"o borrado por un antivirus."
+msgid "Open Folder"
+msgstr "Abrir Carpeta"
 
-msgid "click here to see more info"
-msgstr "presiona aquí para mostrar más información"
+msgid "Check the reason"
+msgstr "Compruebe el motivo"
 
 msgid "Please home all axes (click "
 msgstr "Por favor, mandar a inicio todos los ejes (presione "
@@ -5108,35 +5100,6 @@ msgstr "Detenido."
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "Fallo de Conexión de Red Local (Fallo al iniciar vista en directo)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"Virtual Camera Tools es necesario para esta tarea.\n"
-"¿Desea instalarlas?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "Descargando Herramientas de Cámara Virtual"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"Otra cámara virtual se está ejecutando.\n"
-"ElegooSlicer solo soporta una cámara virtual.\n"
-"¿Desea detener esta cámara virtual?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "Inicialización de cámara virtual (%s)"
-
-msgid "Network unreachable"
-msgstr "Red no disponible"
-
-msgid "Information"
-msgstr "Información"
-
 msgid "Playing..."
 msgstr "Reproduciendo..."
 
@@ -5233,6 +5196,9 @@ msgstr ""
 msgid "Initialize failed (%s)!"
 msgstr "¡Fallo al inicializar (%s)!"
 
+msgid "Network unreachable"
+msgstr "Red no disponible"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5283,9 +5249,6 @@ msgstr "Descarga esperando..."
 
 msgid "Play"
 msgstr "Reproducir"
-
-msgid "Open Folder"
-msgstr "Abrir Carpeta"
 
 msgid "Download finished"
 msgstr "Descarga finalizada"
@@ -7491,9 +7454,6 @@ msgstr "Iniciar sesión en la impresora"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "¿Desea iniciar sesión en esta impresora con la cuenta actual?"
-
-msgid "Check the reason"
-msgstr "Compruebe el motivo"
 
 msgid "Read and accept"
 msgstr "Leer y aceptar"
@@ -17090,6 +17050,49 @@ msgstr ""
 "Sabías que al imprimir materiales propensos a la deformación como el ABS, "
 "aumentar adecuadamente la temperatura del lecho térmico puede reducir la "
 "probabilidad de deformaciones."
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "Fallo al descargar el complemento. Por favor, compruebe el cortafuegos y "
+#~ "la vpn, e inténtelo de nuevo."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "Fallo al instalar el complemento. Por favor, compruebe si ha sido "
+#~ "bloqueado o borrado por un antivirus."
+
+#~ msgid "click here to see more info"
+#~ msgstr "presiona aquí para mostrar más información"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "Virtual Camera Tools es necesario para esta tarea.\n"
+#~ "¿Desea instalarlas?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "Descargando Herramientas de Cámara Virtual"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "Otra cámara virtual se está ejecutando.\n"
+#~ "ElegooSlicer solo soporta una cámara virtual.\n"
+#~ "¿Desea detener esta cámara virtual?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "Inicialización de cámara virtual (%s)"
+
+#~ msgid "Information"
+#~ msgstr "Información"
 
 #~ msgid ""
 #~ "Unprintable area in XY plane. For example, X1 Series printers use the "

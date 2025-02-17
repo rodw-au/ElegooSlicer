@@ -1090,6 +1090,8 @@ void GUI_App::shutdown()
 {
     BOOST_LOG_TRIVIAL(info) << "GUI_App::shutdown enter";
 
+    m_downloader->close();
+
 	if (m_removable_drive_manager) {
 		removable_drive_manager()->shutdown();
 	}
@@ -1530,8 +1532,8 @@ void GUI_App::remove_old_networking_plugins()
 
 int GUI_App::updating_bambu_networking()
 {
-    DownloadProgressDialog dlg(_L("Downloading Bambu Network Plug-in"));
-    dlg.ShowModal();
+    //DownloadProgressDialog dlg(_L("Downloading Bambu Network Plug-in"));
+    //dlg.ShowModal();
     return 0;
 }
 
@@ -6947,11 +6949,29 @@ void GUI_App::start_download(std::string url)
         show_error(nullptr, msg);
         return;
     }
+
     m_downloader->init(dest_folder);
     m_downloader->start_download(url);
 
 }
-
+void GUI_App::download(const std::string& url) 
+{
+  if (!plater_) {
+        BOOST_LOG_TRIVIAL(error) << "Could not start URL download: plater is nullptr.";
+        return;
+    }
+    // lets always init so if the download dest folder was changed, new dest is used
+    boost::filesystem::path dest_folder(app_config->get("download_path"));
+    if (dest_folder.empty() || !boost::filesystem::is_directory(dest_folder)) {
+        std::string msg = _u8L(
+            "Could not start URL download. Destination folder is not set. Please choose destination folder in Configuration Wizard.");
+        BOOST_LOG_TRIVIAL(error) << msg;
+        show_error(nullptr, msg);
+        return;
+    }
+    m_downloader->init(dest_folder);
+    m_downloader->download_file(url);
+}
 bool is_support_filament(int extruder_id)
 {
     auto &filament_presets = Slic3r::GUI::wxGetApp().preset_bundle->filament_presets;

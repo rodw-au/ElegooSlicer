@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: 2024-07-07 18:43+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1426,9 +1426,6 @@ msgstr "ElegooSlicer ha tingut una excepció no gestionada: %1%"
 msgid "Untitled"
 msgstr "Sense títol"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Descarregant el Plug-in de Xarxa de Bambu"
-
 msgid "Login information expired. Please login again."
 msgstr ""
 "La informació d'inici de sessió ha caducat. Si us plau, inicieu sessió de "
@@ -1500,6 +1497,9 @@ msgstr "Carregant els valors perfils actuals"
 
 msgid "Loading a mode view"
 msgstr "Carregant un mode de visualització"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Descarregant el Plug-in de Xarxa de Bambu"
 
 msgid "Choose one file (3mf):"
 msgstr "Tria un fitxer ( 3mf ):"
@@ -3133,22 +3133,14 @@ msgstr "Fitxer"
 msgid "Calibration"
 msgstr "Calibratge"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"No s'ha pogut descarregar el connector. Comproveu la configuració del "
-"tallafoc i el programari VPN, comproveu-ho i torneu-ho a provar."
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"No s'ha pogut instal·lar el connector. Comproveu si el programari antivirus "
-"l'ha bloquejat o suprimit."
+msgid "Open Folder"
+msgstr "Obrir la carpeta"
 
-msgid "click here to see more info"
-msgstr "feu clic aquí per veure més informació"
+msgid "Check the reason"
+msgstr "Comprova el motiu"
 
 msgid "Please home all axes (click "
 msgstr "Si us plau, enviar a l'inici tots els eixos ( feu clic "
@@ -5104,35 +5096,6 @@ msgstr ""
 "S'ha produït un error en la connexió LAN ( no s'ha pogut iniciar la "
 "visualització en directe )"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"Virtual Camera Tools és necessari per a aquesta tasca!\n"
-"Vols instal·lar-les?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "Descarregant Virtual Camera Tools"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"Una altra Càmera Virtual està funcionant.\n"
-"ElegooSlicer només admet una sola Càmera Virtual.\n"
-"Vols aturar aquesta Càmera Virtual?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "Inicialització fallida de la Càmera Virtual ( %s )!"
-
-msgid "Network unreachable"
-msgstr "Xarxa inaccessible"
-
-msgid "Information"
-msgstr "Informació"
-
 msgid "Playing..."
 msgstr "Reproduint..."
 
@@ -5231,6 +5194,9 @@ msgstr ""
 msgid "Initialize failed (%s)!"
 msgstr "Inicialització fallida ( %s )!"
 
+msgid "Network unreachable"
+msgstr "Xarxa inaccessible"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5285,9 +5251,6 @@ msgstr "Descàrrega en espera..."
 
 msgid "Play"
 msgstr "Reproduir"
-
-msgid "Open Folder"
-msgstr "Obrir la carpeta"
 
 msgid "Download finished"
 msgstr "Descàrrega finalitzada"
@@ -7481,9 +7444,6 @@ msgstr "Iniciar sessió a la impressora"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "Voleu iniciar sessió en aquesta impressora amb el compte actual?"
-
-msgid "Check the reason"
-msgstr "Comprova el motiu"
 
 msgid "Read and accept"
 msgstr "Llegir i acceptar"
@@ -17282,6 +17242,49 @@ msgstr ""
 "Sabíeu que quan imprimiu materials propensos a deformar-se, com ara l'ABS, "
 "augmentar adequadament la temperatura del llit pot reduir la probabilitat de "
 "deformació."
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "No s'ha pogut descarregar el connector. Comproveu la configuració del "
+#~ "tallafoc i el programari VPN, comproveu-ho i torneu-ho a provar."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "No s'ha pogut instal·lar el connector. Comproveu si el programari "
+#~ "antivirus l'ha bloquejat o suprimit."
+
+#~ msgid "click here to see more info"
+#~ msgstr "feu clic aquí per veure més informació"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "Virtual Camera Tools és necessari per a aquesta tasca!\n"
+#~ "Vols instal·lar-les?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "Descarregant Virtual Camera Tools"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "Una altra Càmera Virtual està funcionant.\n"
+#~ "ElegooSlicer només admet una sola Càmera Virtual.\n"
+#~ "Vols aturar aquesta Càmera Virtual?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "Inicialització fallida de la Càmera Virtual ( %s )!"
+
+#~ msgid "Information"
+#~ msgstr "Informació"
 
 #~ msgid ""
 #~ "Unprintable area in XY plane. For example, X1 Series printers use the "

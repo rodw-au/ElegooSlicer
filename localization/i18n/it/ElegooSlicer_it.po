@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1432,9 +1432,6 @@ msgstr "ElegooSlicer ha ricevuto un'eccezione non gestita: %1%"
 msgid "Untitled"
 msgstr "Senza titolo"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Scaricando il plug-in Bambu Network"
-
 msgid "Login information expired. Please login again."
 msgstr "Le informazioni di login sono scadute. Effettua nuovamente il login."
 
@@ -1504,6 +1501,9 @@ msgstr "Caricamento dei preset correnti"
 
 msgid "Loading a mode view"
 msgstr "Caricamento di una modalità di visualizzazione"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Scaricando il plug-in Bambu Network"
 
 msgid "Choose one file (3mf):"
 msgstr "Scegli file (3mf):"
@@ -3146,22 +3146,14 @@ msgstr "File"
 msgid "Calibration"
 msgstr "Calibrazione"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"Impossibile scaricare il plug-in. Controlla le impostazioni del firewall e "
-"VPN poi riprova."
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"Impossibile installare il plug-in. Verificare se è bloccato o se è stato "
-"eliminato dall'antivirus."
+msgid "Open Folder"
+msgstr "Apri cartella"
 
-msgid "click here to see more info"
-msgstr "clicca per ulteriori informazioni"
+msgid "Check the reason"
+msgstr "Verifica la causa"
 
 msgid "Please home all axes (click "
 msgstr "Prego fai l'home degli assi (clicca "
@@ -5105,35 +5097,6 @@ msgstr "Interrotto."
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr "Connessione LAN non riuscita (impossibile avviare liveview)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"Per questa operazione è necessario Virtual Camera Tools!\n"
-"Vuoi installarli?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "Scaricare strumenti telecamera virtuale"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"È in funzione un'altra telecamera virtuale.\n"
-"ElegooSlicer supporta solo una singola telecamera virtuale.\n"
-"Si desidera interrompere questa telecamera virtuale?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "Inizializzazione Virtual Camera fallita (%s)!"
-
-msgid "Network unreachable"
-msgstr "Rete non raggiungibile"
-
-msgid "Information"
-msgstr "Informazione"
-
 msgid "Playing..."
 msgstr "Riproduzione..."
 
@@ -5228,6 +5191,9 @@ msgstr "Browsing file in SD card is not supported in LAN Only Mode."
 msgid "Initialize failed (%s)!"
 msgstr "Inizializzazione fallita (%s)!"
 
+msgid "Network unreachable"
+msgstr "Rete non raggiungibile"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5280,9 +5246,6 @@ msgstr "Download in attesa..."
 
 msgid "Play"
 msgstr "Play"
-
-msgid "Open Folder"
-msgstr "Apri cartella"
 
 msgid "Download finished"
 msgstr "Download completato"
@@ -7464,9 +7427,6 @@ msgstr "Log in stampante"
 
 msgid "Would you like to log in this printer with current account?"
 msgstr "Vuoi accedere alla stampante con l'account corrente?"
-
-msgid "Check the reason"
-msgstr "Verifica la causa"
 
 msgid "Read and accept"
 msgstr "Leggi e accetta"
@@ -17152,6 +17112,49 @@ msgstr ""
 "Sapevi che quando si stampano materiali soggetti a deformazioni come l'ABS, "
 "aumentare in modo appropriato la temperatura del piano riscaldato può "
 "ridurre la probabilità di deformazione."
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "Impossibile scaricare il plug-in. Controlla le impostazioni del firewall "
+#~ "e VPN poi riprova."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "Impossibile installare il plug-in. Verificare se è bloccato o se è stato "
+#~ "eliminato dall'antivirus."
+
+#~ msgid "click here to see more info"
+#~ msgstr "clicca per ulteriori informazioni"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "Per questa operazione è necessario Virtual Camera Tools!\n"
+#~ "Vuoi installarli?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "Scaricare strumenti telecamera virtuale"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "È in funzione un'altra telecamera virtuale.\n"
+#~ "ElegooSlicer supporta solo una singola telecamera virtuale.\n"
+#~ "Si desidera interrompere questa telecamera virtuale?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "Inizializzazione Virtual Camera fallita (%s)!"
+
+#~ msgid "Information"
+#~ msgstr "Informazione"
 
 #~ msgid ""
 #~ "Network Plug-in is not detected. Network related features are unavailable."

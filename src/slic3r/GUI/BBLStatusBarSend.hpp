@@ -26,6 +26,8 @@ class wxFont;
 
 namespace Slic3r {
 
+enum ButtonAction { ButtonActionCanceled, ButtonActionPaused, ButtonActionContinued, ButtonActionOpenedFolder };
+
 class BBLStatusBarSend : public ProgressIndicator
 {
     wxPanel *     m_self; // we cheat! It should be the base class but: perl!
@@ -35,7 +37,10 @@ class BBLStatusBarSend : public ProgressIndicator
     wxStaticBitmap* m_static_bitmap_show_error;
     wxBitmap      m_bitmap_show_error_close;
     wxBitmap      m_bitmap_show_error_open;
-    Button *      m_cancelbutton;
+    ScalableButton* m_cancelbutton;
+    ScalableButton* m_pausebutton;
+    ScalableButton* m_continuebutton;
+    ScalableButton* m_openfolderbutton;
     wxStaticText *m_status_text;
     wxStaticText *m_stext_percent;
     wxBoxSizer *  m_sizer;
@@ -86,12 +91,17 @@ public:
 
     void disable_cancel_button();
     void enable_cancel_button();
+
+    void set_download_user_action(std::function<void(ButtonAction)> user_action_callback);
+
 private:
     bool     m_show_error_info_state = false;
     bool     m_busy = false;
     bool     m_was_cancelled = false;
+    bool     m_is_download = false;
     CancelFn m_cancel_cb;
     CancelFn m_cancel_cb_fina;
+    std::function<void(ButtonAction)> m_user_action_callback;
 };
 
 namespace GUI {

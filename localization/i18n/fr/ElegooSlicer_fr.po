@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ElegooSlicer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Guislain Cyril, Thomas Lété\n"
@@ -1439,9 +1439,6 @@ msgstr "ElegooSlicer a reçu une exception non gérée : %1%"
 msgid "Untitled"
 msgstr "Sans titre"
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr "Téléchargement du plug-in Bambu Network"
-
 msgid "Login information expired. Please login again."
 msgstr "Les informations de connexion ont expiré. Veuillez vous reconnecter."
 
@@ -1513,6 +1510,9 @@ msgstr "Chargement des préréglages actuels"
 
 msgid "Loading a mode view"
 msgstr "Chargement d'un mode de vue"
+
+msgid "Downloading Bambu Network Plug-in"
+msgstr "Téléchargement du plug-in Bambu Network"
 
 msgid "Choose one file (3mf):"
 msgstr "Choisissez un fichier (3mf):"
@@ -3164,22 +3164,14 @@ msgstr "Fichier"
 msgid "Calibration"
 msgstr "Calibration"
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
-"Échec du téléchargement du plug-in. Veuillez vérifier les paramètres de "
-"votre pare-feu et votre logiciel VPN puis réessayer."
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
-msgstr ""
-"Échec de l'installation du plug-in. Veuillez vérifier s'il est bloqué ou "
-"s'il a été supprimé par un logiciel anti-virus."
+msgid "Open Folder"
+msgstr "Ouvrir le Dossier"
 
-msgid "click here to see more info"
-msgstr "cliquez ici pour voir plus d'informations"
+msgid "Check the reason"
+msgstr "Vérifier le motif"
 
 msgid "Please home all axes (click "
 msgstr "Veuillez mettre à 0 les axes (cliquer "
@@ -5140,35 +5132,6 @@ msgstr ""
 "Échec de la connexion au réseau local (échec du démarrage de l’affichage en "
 "direct)"
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-"Les outils de caméra virtuelle sont nécessaires pour cette tâche !\n"
-"Vous souhaitez les installer ?"
-
-msgid "Downloading Virtual Camera Tools"
-msgstr "Téléchargement des Outils de Caméra Virtuelle"
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-"Une autre caméra virtuelle est en cours d'exécution.\n"
-"ElegooSlicer ne prend en charge qu'une seule caméra virtuelle.\n"
-"Voulez-vous arrêter cette caméra virtuelle ?"
-
-#, c-format, boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr "L'initialisation de la caméra virtuelle a échoué (%s) !"
-
-msgid "Network unreachable"
-msgstr "Réseau inaccessible"
-
-msgid "Information"
-msgstr "Information"
-
 msgid "Playing..."
 msgstr "En cours…"
 
@@ -5269,6 +5232,9 @@ msgstr ""
 msgid "Initialize failed (%s)!"
 msgstr "L'initialisation a échoué (%s)!"
 
+msgid "Network unreachable"
+msgstr "Réseau inaccessible"
+
 #, c-format, boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -5323,9 +5289,6 @@ msgstr "Téléchargement en attente…"
 
 msgid "Play"
 msgstr "Lecture"
-
-msgid "Open Folder"
-msgstr "Ouvrir le Dossier"
 
 msgid "Download finished"
 msgstr "Téléchargement terminé"
@@ -7557,9 +7520,6 @@ msgstr "Connectez-vous à l'imprimante"
 msgid "Would you like to log in this printer with current account?"
 msgstr ""
 "Souhaitez-vous vous connecter à cette imprimante avec un compte courant ?"
-
-msgid "Check the reason"
-msgstr "Vérifier le motif"
 
 msgid "Read and accept"
 msgstr "Lire et accepter"
@@ -17861,6 +17821,49 @@ msgstr ""
 "Saviez-vous que lors de l’impression de matériaux susceptibles de se "
 "déformer, tels que l’ABS, une augmentation appropriée de la température du "
 "plateau chauffant peut réduire la probabilité de déformation."
+
+#~ msgid ""
+#~ "Failed to download the plug-in. Please check your firewall settings and "
+#~ "vpn software, check and retry."
+#~ msgstr ""
+#~ "Échec du téléchargement du plug-in. Veuillez vérifier les paramètres de "
+#~ "votre pare-feu et votre logiciel VPN puis réessayer."
+
+#~ msgid ""
+#~ "Failed to install the plug-in. Please check whether it is blocked or "
+#~ "deleted by anti-virus software."
+#~ msgstr ""
+#~ "Échec de l'installation du plug-in. Veuillez vérifier s'il est bloqué ou "
+#~ "s'il a été supprimé par un logiciel anti-virus."
+
+#~ msgid "click here to see more info"
+#~ msgstr "cliquez ici pour voir plus d'informations"
+
+#~ msgid ""
+#~ "Virtual Camera Tools is required for this task!\n"
+#~ "Do you want to install them?"
+#~ msgstr ""
+#~ "Les outils de caméra virtuelle sont nécessaires pour cette tâche !\n"
+#~ "Vous souhaitez les installer ?"
+
+#~ msgid "Downloading Virtual Camera Tools"
+#~ msgstr "Téléchargement des Outils de Caméra Virtuelle"
+
+#~ msgid ""
+#~ "Another virtual camera is running.\n"
+#~ "ElegooSlicer supports only a single virtual camera.\n"
+#~ "Do you want to stop this virtual camera?"
+#~ msgstr ""
+#~ "Une autre caméra virtuelle est en cours d'exécution.\n"
+#~ "ElegooSlicer ne prend en charge qu'une seule caméra virtuelle.\n"
+#~ "Voulez-vous arrêter cette caméra virtuelle ?"
+
+#, c-format, boost-format
+#~ msgid "Virtual camera initialize failed (%s)!"
+#~ msgstr "L'initialisation de la caméra virtuelle a échoué (%s) !"
+
+#~ msgid "Information"
+#~ msgstr "Information"
 
 #~ msgid ""
 #~ "Network Plug-in is not detected. Network related features are unavailable."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:25+0800\n"
+"POT-Creation-Date: 2025-02-10 18:03+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1377,9 +1377,6 @@ msgstr ""
 msgid "Untitled"
 msgstr ""
 
-msgid "Downloading Bambu Network Plug-in"
-msgstr ""
-
 msgid "Login information expired. Please login again."
 msgstr ""
 
@@ -1438,6 +1435,9 @@ msgid "Loading current presets"
 msgstr ""
 
 msgid "Loading a mode view"
+msgstr ""
+
+msgid "Downloading Bambu Network Plug-in"
 msgstr ""
 
 msgid "Choose one file (3mf):"
@@ -2950,17 +2950,13 @@ msgstr ""
 msgid "Calibration"
 msgstr ""
 
-msgid ""
-"Failed to download the plug-in. Please check your firewall settings and vpn "
-"software, check and retry."
+msgid "Continue"
 msgstr ""
 
-msgid ""
-"Failed to install the plug-in. Please check whether it is blocked or deleted "
-"by anti-virus software."
+msgid "Open Folder"
 msgstr ""
 
-msgid "click here to see more info"
+msgid "Check the reason"
 msgstr ""
 
 msgid "Please home all axes (click "
@@ -4754,30 +4750,6 @@ msgstr ""
 msgid "LAN Connection Failed (Failed to start liveview)"
 msgstr ""
 
-msgid ""
-"Virtual Camera Tools is required for this task!\n"
-"Do you want to install them?"
-msgstr ""
-
-msgid "Downloading Virtual Camera Tools"
-msgstr ""
-
-msgid ""
-"Another virtual camera is running.\n"
-"ElegooSlicer supports only a single virtual camera.\n"
-"Do you want to stop this virtual camera?"
-msgstr ""
-
-#, possible-c-format, possible-boost-format
-msgid "Virtual camera initialize failed (%s)!"
-msgstr ""
-
-msgid "Network unreachable"
-msgstr ""
-
-msgid "Information"
-msgstr ""
-
 msgid "Playing..."
 msgstr ""
 
@@ -4869,6 +4841,9 @@ msgstr ""
 msgid "Initialize failed (%s)!"
 msgstr ""
 
+msgid "Network unreachable"
+msgstr ""
+
 #, possible-c-format, possible-boost-format
 msgid "You are going to delete %u file from printer. Are you sure to continue?"
 msgid_plural ""
@@ -4914,9 +4889,6 @@ msgid "Download waiting..."
 msgstr ""
 
 msgid "Play"
-msgstr ""
-
-msgid "Open Folder"
 msgstr ""
 
 msgid "Download finished"
@@ -6911,9 +6883,6 @@ msgid "Log in printer"
 msgstr ""
 
 msgid "Would you like to log in this printer with current account?"
-msgstr ""
-
-msgid "Check the reason"
 msgstr ""
 
 msgid "Read and accept"

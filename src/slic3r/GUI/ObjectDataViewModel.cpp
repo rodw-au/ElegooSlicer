@@ -20,7 +20,6 @@ namespace GUI {
 
 wxDEFINE_EVENT(wxCUSTOMEVT_LAST_VOLUME_IS_DELETED, wxCommandEvent);
 
-BitmapCache* m_bitmap_cache = nullptr;
 
 
 // *****************************************************************************
@@ -44,13 +43,15 @@ static constexpr char WarningIcon[]     = "obj_warning";
 static constexpr char WarningManifoldIcon[] = "obj_warning";
 static constexpr char LockIcon[]            = "cut_";
 
-ObjectDataViewModelNode::ObjectDataViewModelNode(PartPlate* part_plate, wxString name) :
+ObjectDataViewModelNode::ObjectDataViewModelNode(PartPlate* part_plate, wxString name, std::shared_ptr<BitmapCache> bitmap_cache)
+    :
     m_parent(nullptr),
     m_name(name),
     m_type(itPlate),
     m_part_plate(part_plate),
-    m_extruder(wxEmptyString),
-    m_container(true)
+    m_extruder(wxEmptyString), 
+    m_container(true),
+    m_bitmap_cache(bitmap_cache)
 {
     m_plate_idx = part_plate ? part_plate->get_index() : -1;
     set_action_icon(false);
@@ -80,6 +81,7 @@ ObjectDataViewModelNode::ObjectDataViewModelNode(ObjectDataViewModelNode*   pare
                                                  const bool                 is_text_volume,
                                                  const bool                 is_svg_volume,
                                                  const wxString&            extruder,
+                                                 std::shared_ptr<BitmapCache> bitmap_cache,
                                                  const int                  idx/* = -1*/) :
     m_parent(parent),
     m_name(sub_obj_name),
@@ -88,27 +90,37 @@ ObjectDataViewModelNode::ObjectDataViewModelNode(ObjectDataViewModelNode*   pare
     m_is_text_volume(is_text_volume),
     m_is_svg_volume(is_svg_volume),
     m_idx(idx),
-    m_extruder(type == Slic3r::ModelVolumeType::MODEL_PART || type == Slic3r::ModelVolumeType::PARAMETER_MODIFIER ? extruder : "")
+    m_extruder(type == Slic3r::ModelVolumeType::MODEL_PART || type == Slic3r::ModelVolumeType::PARAMETER_MODIFIER ? extruder : ""),
+    m_bitmap_cache(bitmap_cache)
 {
     set_icons();
     init_container();
 }
 
-ObjectDataViewModelNode::ObjectDataViewModelNode(ObjectDataViewModelNode* parent, const InfoItemType info_type) :
+ObjectDataViewModelNode::ObjectDataViewModelNode(ObjectDataViewModelNode*     parent,
+                                                 const InfoItemType           info_type,
+                                                 std::shared_ptr<BitmapCache> bitmap_cache)
+    :
     m_parent(parent),
     m_type(itInfo),
     m_info_item_type(info_type),
     m_extruder(wxEmptyString),
-    m_name(_(INFO_ITEMS.at(info_type).name))
+    m_name(_(INFO_ITEMS.at(info_type).name)),
+    m_bitmap_cache(bitmap_cache)
 {
 }
 
 
-ObjectDataViewModelNode::ObjectDataViewModelNode(ObjectDataViewModelNode* parent, const ItemType type, const int plate_idx) :
+ObjectDataViewModelNode::ObjectDataViewModelNode(ObjectDataViewModelNode*     parent,
+                                                 const ItemType               type,
+                                                 std::shared_ptr<BitmapCache> bitmap_cache,
+                                                 const int                    plate_idx)
+    :
     m_parent(parent),
     m_type(type),
     m_extruder(wxEmptyString),
-    m_plate_idx(plate_idx)
+    m_plate_idx(plate_idx),
+    m_bitmap_cache(bitmap_cache)
 {
     if (type == itSettings) {
         m_name = "Settings to modified";
@@ -139,13 +151,15 @@ ObjectDataViewModelNode::ObjectDataViewModelNode(ObjectDataViewModelNode* parent
 
 ObjectDataViewModelNode::ObjectDataViewModelNode(ObjectDataViewModelNode* parent,
                                                  const t_layer_height_range& layer_range,
+                                                 std::shared_ptr<BitmapCache> bitmap_cache,
                                                  const int idx /*= -1 */,
                                                  const wxString& extruder) :
     m_parent(parent),
     m_type(itLayer),
     m_idx(idx),
     m_layer_range(layer_range),
-    m_extruder(extruder)
+    m_extruder(extruder),
+    m_bitmap_cache(bitmap_cache)
 {
     const int children_cnt = parent->GetChildCount();
     if (idx < 0)
@@ -440,7 +454,7 @@ static int get_root_idx(ObjectDataViewModelNode *parent_node, const ItemType roo
 
 ObjectDataViewModel::ObjectDataViewModel()
 {
-    m_bitmap_cache = new Slic3r::GUI::BitmapCache;
+    m_bitmap_cache = std::make_shared<Slic3r::GUI::BitmapCache>();
 
     m_volume_bmps = MenuFactory::get_volume_bitmaps();
     m_text_volume_bmps = MenuFactory::get_text_volume_bitmaps();
@@ -460,7 +474,8 @@ ObjectDataViewModel::~ObjectDataViewModel()
 {
     for (auto object : m_objects)
 			delete object;
-    delete m_bitmap_cache;
+    //delete m_bitmap_cache;
+    m_bitmap_cache->clear();
     m_bitmap_cache = nullptr;
 }
 
@@ -485,7 +500,7 @@ wxDataViewItem ObjectDataViewModel::AddPlate(PartPlate* part_plate, wxString nam
             plate_name += wxString(" (", wxConvUTF8) + from_u8(part_plate->get_plate_name()) + wxString(")", wxConvUTF8);
         }
     }
-    auto plate_node = new ObjectDataViewModelNode(part_plate, plate_name);
+    auto plate_node = new ObjectDataViewModelNode(part_plate, plate_name, m_bitmap_cache);
 
     bool is_added = false;
     if (plate_idx >= 0) {
@@ -644,7 +659,8 @@ wxDataViewItem ObjectDataViewModel::AddVolumeChild( const wxDataViewItem &parent
     if (create_frst_child && root->m_volumes_cnt == 0)
     {
         const Slic3r::ModelVolumeType type = Slic3r::ModelVolumeType::MODEL_PART;
-        const auto node = new ObjectDataViewModelNode(root, root->m_name, type, is_text_volume, is_svg_volume, root->m_extruder, 0);
+        const auto node = new ObjectDataViewModelNode(root, root->m_name, type, is_text_volume, is_svg_volume, root->m_extruder,
+                                                      m_bitmap_cache, 0);
         UpdateBitmapForNode(node, root->m_warning_icon_name, root->has_lock());
 
         insert_position < 0 ? root->Append(node) : root->Insert(node, insert_position);
@@ -668,7 +684,8 @@ wxDataViewItem ObjectDataViewModel::AddVolumeChild( const wxDataViewItem &parent
         extruder_str = wxString::Format("%d", extruder);
     }
 
-    const auto node = new ObjectDataViewModelNode(root, name, volume_type, is_text_volume, is_svg_volume, extruder_str, root->m_volumes_cnt);
+    const auto node = new ObjectDataViewModelNode(root, name, volume_type, is_text_volume, is_svg_volume, extruder_str,
+                                                  m_bitmap_cache, root->m_volumes_cnt);
     UpdateBitmapForNode(node, warning_icon_name, root->has_lock() && volume_type < ModelVolumeType::PARAMETER_MODIFIER);
     insert_position < 0 ? root->Append(node) : root->Insert(node, insert_position);
 
@@ -692,7 +709,7 @@ wxDataViewItem ObjectDataViewModel::AddInfoChild(const wxDataViewItem &parent_it
     ObjectDataViewModelNode *root = static_cast<ObjectDataViewModelNode*>(parent_item.GetID());
     if (!root) return wxDataViewItem(0);
 
-    const auto node = new ObjectDataViewModelNode(root, info_type);
+    const auto node = new ObjectDataViewModelNode(root, info_type, m_bitmap_cache);
 
     // The new item should be added according to its order in InfoItemType.
     // Find last info item with lower index and append after it.
@@ -718,7 +735,7 @@ wxDataViewItem ObjectDataViewModel::AddSettingsChild(const wxDataViewItem &paren
     ObjectDataViewModelNode *root = static_cast<ObjectDataViewModelNode*>(parent_item.GetID());
     if (!root) return wxDataViewItem(0);
 
-    const auto node = new ObjectDataViewModelNode(root, itSettings);
+    const auto node = new ObjectDataViewModelNode(root, itSettings, m_bitmap_cache);
 
     root->Insert(node, 0);
     // notify control
@@ -733,12 +750,12 @@ wxDataViewItem ObjectDataViewModel::AddSettingsChild(const wxDataViewItem &paren
 */
 static bool append_root_node(ObjectDataViewModelNode *parent_node,
                              ObjectDataViewModelNode **root_node,
-                             const ItemType root_type)
+                             const ItemType root_type,
+                             std::shared_ptr<BitmapCache> bitmap_cache)
 {
     const int inst_root_id = get_root_idx(parent_node, root_type);
 
-    *root_node = inst_root_id < 0 ?
-                new ObjectDataViewModelNode(parent_node, root_type) :
+    *root_node = inst_root_id < 0 ? new ObjectDataViewModelNode(parent_node, root_type, bitmap_cache) :
                 parent_node->GetNthChild(inst_root_id);
 
     if (inst_root_id < 0) {
@@ -760,7 +777,7 @@ wxDataViewItem ObjectDataViewModel::AddRoot(const wxDataViewItem &parent_item, I
 
     // get InstanceRoot node
     ObjectDataViewModelNode *root_node { nullptr };
-    const bool appended = append_root_node(parent_node, &root_node, root_type);
+    const bool               appended = append_root_node(parent_node, &root_node, root_type, m_bitmap_cache);
     if (!root_node) return wxDataViewItem(0);
 
     const wxDataViewItem root_item((void*)root_node);
@@ -801,7 +818,7 @@ wxDataViewItem ObjectDataViewModel::AddInstanceChild(const wxDataViewItem& paren
     ObjectDataViewModelNode *instance_node = nullptr;
     size_t counter = 0;
     while (counter < print_indicator.size()) {
-        instance_node = new ObjectDataViewModelNode(inst_root_node, itInstance, plate_indicator[counter]);
+        instance_node = new ObjectDataViewModelNode(inst_root_node, itInstance, m_bitmap_cache, plate_indicator[counter]);
 
         instance_node->set_printable_icon(print_indicator[counter] ? piPrintable : piUnprintable);
 
@@ -902,7 +919,7 @@ wxDataViewItem ObjectDataViewModel::AddLayersChild(const wxDataViewItem &parent_
     }
 
     // Add layer node
-    ObjectDataViewModelNode *layer_node = new ObjectDataViewModelNode(layer_root_node, layer_range, index, extruder_str);
+    ObjectDataViewModelNode* layer_node = new ObjectDataViewModelNode(layer_root_node, layer_range, m_bitmap_cache, index, extruder_str);
     if (index < 0)
         layer_root_node->Append(layer_node);
     else

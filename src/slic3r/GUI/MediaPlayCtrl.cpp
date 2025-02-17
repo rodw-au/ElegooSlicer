@@ -439,107 +439,107 @@ void MediaPlayCtrl::TogglePlay()
 
 void MediaPlayCtrl::ToggleStream()
 {
-    std::string file_url = data_dir() + "/cameratools/url.txt";
-    if (m_streaming) {
-        boost::nowide::ofstream file(file_url);
-        file.close();
-        m_streaming = false;
-        return;
-    } else if (!boost::filesystem::exists(file_url)) {
-        boost::nowide::ofstream file(file_url);
-        file.close();
-    }
-    std::string url;
-    if (!get_stream_url(&url)) {
-        // create stream pipeline
-        bool need_install = false;
-        if (!start_stream_service(&need_install)) {
-            if (!need_install) return;
-            auto res = MessageDialog(this->GetParent(), _L("Virtual Camera Tools is required for this task!\nDo you want to install them?"), _L("Info"),
-                                    wxOK | wxCANCEL).ShowModal();
-            if (res == wxID_OK) {
-                // download tools
-                struct DownloadProgressDialog2 : DownloadProgressDialog
-                {
-                    MediaPlayCtrl *ctrl;
-                    DownloadProgressDialog2(MediaPlayCtrl *ctrl) : DownloadProgressDialog(_L("Downloading Virtual Camera Tools")), ctrl(ctrl) {}
-                    struct UpgradeNetworkJob2 : UpgradeNetworkJob
-                    {
-                        UpgradeNetworkJob2(std::shared_ptr<ProgressIndicator> pri) : UpgradeNetworkJob() {
-                            name         = "cameratools";
-                            package_name = "camera_tools.zip";
-                        }
-                    };
-                    std::shared_ptr<UpgradeNetworkJob> make_job(std::shared_ptr<ProgressIndicator> pri)
-                    { return std::make_shared<UpgradeNetworkJob2>(pri); }
-                    void                               on_finish() override
-                    {
-                        ctrl->CallAfter([ctrl = this->ctrl] { ctrl->ToggleStream(); });
-                        EndModal(wxID_CLOSE);
-                    }
-                };
-                DownloadProgressDialog2 dlg(this);
-                dlg.ShowModal();
-            }
-            return;
-        }
-    }
-    if (!url.empty() && wxGetApp().app_config->get("not_show_vcamera_stop_prev") != "1") {
-        MessageDialog dlg(this->GetParent(), _L("Another virtual camera is running.\nElegooSlicer supports only a single virtual camera.\nDo you want to stop this virtual camera?"), _L("Warning"),
-                                 wxYES | wxCANCEL | wxICON_INFORMATION);
-        dlg.show_dsa_button();
-        auto          res = dlg.ShowModal();
-        if (dlg.get_checkbox_state())
-            wxGetApp().app_config->set("not_show_vcamera_stop_prev", "1");
-        if (res == wxID_CANCEL) return;
-    }
-    if (m_lan_proto > MachineObject::LVL_Disable && (m_lan_mode || !m_remote_support) && !m_disable_lan && !m_lan_ip.empty()) {
-        std::string url;
-        if (m_lan_proto == MachineObject::LVL_Local)
-            url = "bambu:///local/" + m_lan_ip + ".?port=6000&user=" + m_lan_user + "&passwd=" + m_lan_passwd;
-        else if (m_lan_proto == MachineObject::LVL_Rtsps)
-            url = "bambu:///rtsps___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsps";
-        else if (m_lan_proto == MachineObject::LVL_Rtsp)
-            url = "bambu:///rtsp___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsp";
-        url += "&device=" + into_u8(m_machine);
-        url += "&dev_ver=" + m_dev_ver;
-        BOOST_LOG_TRIVIAL(info) << "MediaPlayCtrl::ToggleStream: " << hide_passwd(hide_id_middle_string(url, url.find(m_lan_ip), m_lan_ip.length()), {m_lan_passwd});
-        std::string             file_url = data_dir() + "/cameratools/url.txt";
-        boost::nowide::ofstream file(file_url);
-        auto                    url2 = encode_path(url.c_str());
-        file.write(url2.c_str(), url2.size());
-        file.close();
-        m_streaming = true;
-        return;
-    }
-    NetworkAgent *agent = wxGetApp().getAgent();
-    if (!agent) return;
-    agent->get_camera_url(m_machine, [this, m = m_machine, v = agent->get_version(), dv = m_dev_ver](std::string url) {
-        if (boost::algorithm::starts_with(url, "bambu:///")) {
-            url += "&device=" + m;
-            url += "&net_ver=" + v;
-            url += "&dev_ver=" + dv;
-            url += "&cli_id=" + wxGetApp().app_config->get("slicer_uuid");
-            url += "&cli_ver=" + std::string(SLIC3R_VERSION);
-        }
-        BOOST_LOG_TRIVIAL(info) << "MediaPlayCtrl::ToggleStream: " << hide_passwd(url, 
-                {"?uid=", "authkey=", "passwd=", "license=", "token="});
-        CallAfter([this, m, url] {
-            if (m != m_machine) return;
-            if (url.empty() || !boost::algorithm::starts_with(url, "bambu:///")) {
-                MessageDialog(this->GetParent(), wxString::Format(_L("Virtual camera initialize failed (%s)!"), url.empty() ? _L("Network unreachable") : from_u8(url)), _L("Information"),
-                              wxICON_INFORMATION)
-                    .ShowModal();
-                return;
-            }
-            std::string             file_url = data_dir() + "/cameratools/url.txt";
-            boost::nowide::ofstream file(file_url);
-            auto                    url2 = encode_path(url.c_str());
-            file.write(url2.c_str(), url2.size());
-            file.close();
-            m_streaming = true;
-        });
-    });
+    //std::string file_url = data_dir() + "/cameratools/url.txt";
+    //if (m_streaming) {
+    //    boost::nowide::ofstream file(file_url);
+    //    file.close();
+    //    m_streaming = false;
+    //    return;
+    //} else if (!boost::filesystem::exists(file_url)) {
+    //    boost::nowide::ofstream file(file_url);
+    //    file.close();
+    //}
+    //std::string url;
+    //if (!get_stream_url(&url)) {
+    //    // create stream pipeline
+    //    bool need_install = false;
+    //    if (!start_stream_service(&need_install)) {
+    //        if (!need_install) return;
+    //        auto res = MessageDialog(this->GetParent(), _L("Virtual Camera Tools is required for this task!\nDo you want to install them?"), _L("Info"),
+    //                                wxOK | wxCANCEL).ShowModal();
+    //        if (res == wxID_OK) {
+    //            // download tools
+    //            struct DownloadProgressDialog2 : DownloadProgressDialog
+    //            {
+    //                MediaPlayCtrl *ctrl;
+    //                DownloadProgressDialog2(MediaPlayCtrl *ctrl) : DownloadProgressDialog(_L("Downloading Virtual Camera Tools")), ctrl(ctrl) {}
+    //                struct UpgradeNetworkJob2 : UpgradeNetworkJob
+    //                {
+    //                    UpgradeNetworkJob2(std::shared_ptr<ProgressIndicator> pri) : UpgradeNetworkJob() {
+    //                        name         = "cameratools";
+    //                        package_name = "camera_tools.zip";
+    //                    }
+    //                };
+    //                std::shared_ptr<UpgradeNetworkJob> make_job(std::shared_ptr<ProgressIndicator> pri)
+    //                { return std::make_shared<UpgradeNetworkJob2>(pri); }
+    //                void                               on_finish() override
+    //                {
+    //                    ctrl->CallAfter([ctrl = this->ctrl] { ctrl->ToggleStream(); });
+    //                    EndModal(wxID_CLOSE);
+    //                }
+    //            };
+    //            DownloadProgressDialog2 dlg(this);
+    //            dlg.ShowModal();
+    //        }
+    //        return;
+    //    }
+    //}
+    //if (!url.empty() && wxGetApp().app_config->get("not_show_vcamera_stop_prev") != "1") {
+    //    MessageDialog dlg(this->GetParent(), _L("Another virtual camera is running.\nElegooSlicer supports only a single virtual camera.\nDo you want to stop this virtual camera?"), _L("Warning"),
+    //                             wxYES | wxCANCEL | wxICON_INFORMATION);
+    //    dlg.show_dsa_button();
+    //    auto          res = dlg.ShowModal();
+    //    if (dlg.get_checkbox_state())
+    //        wxGetApp().app_config->set("not_show_vcamera_stop_prev", "1");
+    //    if (res == wxID_CANCEL) return;
+    //}
+    //if (m_lan_proto > MachineObject::LVL_Disable && (m_lan_mode || !m_remote_support) && !m_disable_lan && !m_lan_ip.empty()) {
+    //    std::string url;
+    //    if (m_lan_proto == MachineObject::LVL_Local)
+    //        url = "bambu:///local/" + m_lan_ip + ".?port=6000&user=" + m_lan_user + "&passwd=" + m_lan_passwd;
+    //    else if (m_lan_proto == MachineObject::LVL_Rtsps)
+    //        url = "bambu:///rtsps___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsps";
+    //    else if (m_lan_proto == MachineObject::LVL_Rtsp)
+    //        url = "bambu:///rtsp___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsp";
+    //    url += "&device=" + into_u8(m_machine);
+    //    url += "&dev_ver=" + m_dev_ver;
+    //    BOOST_LOG_TRIVIAL(info) << "MediaPlayCtrl::ToggleStream: " << hide_passwd(hide_id_middle_string(url, url.find(m_lan_ip), m_lan_ip.length()), {m_lan_passwd});
+    //    std::string             file_url = data_dir() + "/cameratools/url.txt";
+    //    boost::nowide::ofstream file(file_url);
+    //    auto                    url2 = encode_path(url.c_str());
+    //    file.write(url2.c_str(), url2.size());
+    //    file.close();
+    //    m_streaming = true;
+    //    return;
+    //}
+    //NetworkAgent *agent = wxGetApp().getAgent();
+    //if (!agent) return;
+    //agent->get_camera_url(m_machine, [this, m = m_machine, v = agent->get_version(), dv = m_dev_ver](std::string url) {
+    //    if (boost::algorithm::starts_with(url, "bambu:///")) {
+    //        url += "&device=" + m;
+    //        url += "&net_ver=" + v;
+    //        url += "&dev_ver=" + dv;
+    //        url += "&cli_id=" + wxGetApp().app_config->get("slicer_uuid");
+    //        url += "&cli_ver=" + std::string(SLIC3R_VERSION);
+    //    }
+    //    BOOST_LOG_TRIVIAL(info) << "MediaPlayCtrl::ToggleStream: " << hide_passwd(url, 
+    //            {"?uid=", "authkey=", "passwd=", "license=", "token="});
+    //    CallAfter([this, m, url] {
+    //        if (m != m_machine) return;
+    //        if (url.empty() || !boost::algorithm::starts_with(url, "bambu:///")) {
+    //            MessageDialog(this->GetParent(), wxString::Format(_L("Virtual camera initialize failed (%s)!"), url.empty() ? _L("Network unreachable") : from_u8(url)), _L("Information"),
+    //                          wxICON_INFORMATION)
+    //                .ShowModal();
+    //            return;
+    //        }
+    //        std::string             file_url = data_dir() + "/cameratools/url.txt";
+    //        boost::nowide::ofstream file(file_url);
+    //        auto                    url2 = encode_path(url.c_str());
+    //        file.write(url2.c_str(), url2.size());
+    //        file.close();
+    //        m_streaming = true;
+    //    });
+    //});
 }
 
 void MediaPlayCtrl::msw_rescale() { 

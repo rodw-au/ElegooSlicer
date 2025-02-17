@@ -64,7 +64,7 @@ enum class InfoItemType
     //Sinking
     CutConnectors,
 };
-
+class BitmapCache;
 class ObjectDataViewModelNode;
 WX_DEFINE_ARRAY_PTR(ObjectDataViewModelNode*, MyObjectTreeModelNodePtrArray);
 
@@ -106,6 +106,7 @@ class ObjectDataViewModelNode
     bool                            m_support_enable = false;
     bool                            m_color_enable = false;
     bool                            m_sink_enable = false;
+    std::shared_ptr<class BitmapCache> m_bitmap_cache   = nullptr;
 
 public:
     PartPlate*                      m_part_plate;
@@ -133,19 +134,24 @@ public:
                             const bool is_text_volume,
                             const bool is_svg_volume,
                             const wxString& extruder,
+                            std::shared_ptr<BitmapCache> bitmap_cache,
                             const int idx = -1 );
 
     ObjectDataViewModelNode(ObjectDataViewModelNode* parent,
                             const t_layer_height_range& layer_range,
+                            std::shared_ptr<BitmapCache> bitmap_cache,
                             const int idx = -1,
                             const wxString& extruder = wxEmptyString );
 
-    ObjectDataViewModelNode(PartPlate* part_plate, wxString name);
+    ObjectDataViewModelNode(PartPlate* part_plate, wxString name, std::shared_ptr<BitmapCache> bitmap_cache);
 
     //BBS: add part plate related logic
-    ObjectDataViewModelNode(ObjectDataViewModelNode* parent, const ItemType type, const int plate_idx = -1);
+    ObjectDataViewModelNode(ObjectDataViewModelNode*           parent,
+                            const ItemType                     type,
+                            std::shared_ptr<BitmapCache> bitmap_cache,
+                            const int                          plate_idx = -1);
     // BBS: to be checked. Whether need to add plate_idx for the following constructor ?
-    ObjectDataViewModelNode(ObjectDataViewModelNode* parent, const InfoItemType type);
+    ObjectDataViewModelNode(ObjectDataViewModelNode* parent, const InfoItemType type, std::shared_ptr<BitmapCache> bitmap_cache);
 
     ~ObjectDataViewModelNode()
     {
@@ -340,6 +346,7 @@ class ObjectDataViewModel :public wxDataViewModel
     std::vector<std::tuple<ObjectDataViewModelNode*, wxString, wxString>> assembly_name_list;
     std::vector<std::tuple<ObjectDataViewModelNode*, wxString, wxString>> search_found_list;
     std::map<int, int>                          m_ui_and_3d_volume_map;
+    std::shared_ptr<class BitmapCache>                                                          m_bitmap_cache = nullptr;
 
 public:
     ObjectDataViewModel();

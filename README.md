@@ -13,7 +13,7 @@
 
 # About ElegooSlicer
 
-ElegooSlicer is an open-source slicer compatible with most FDM printers. Currently, ElegooSlicer is undergoing rapid iteration, with more features to be released soon. Please stay tuned for updates. We invite you to join our Discord and follow the announcement to join the BETA channel for FDM slicer to stay updated on the latest news about ELEGOO products and FDM slicer.
+ElegooSlicer is an open-source slicer compatible with most FDM printers. Currently, ElegooSlicer is undergoing rapid iteration, with more features to be released soon. Please stay tuned for updates. We invite you to [join our Discord](https://discord.gg/t5qJSrNk) and follow the announcement to join the [BETA channel for FDM slicer](https://discord.com/channels/969282195552346202/1068406354097737738/1314179666612850728) to stay updated on the latest news about ELEGOO products and FDM slicer.
 
 
 # How to install
@@ -33,7 +33,8 @@ ElegooSlicer is an open-source slicer compatible with most FDM printers. Current
 2. Drag OrcaSlicer.app to Application folder. 
 3. *If you want to run a build from a PR, you also need to follow the instructions below:*  
     <details quarantine>
-    
+    <summary>Details</summary>
+
     - Option 1 (You only need to do this once. After that the app can be opened normally.):
       - Step 1: Hold _cmd_ and right click the app, from the context menu choose **Open**.
       - Step 2: A warning window will pop up, click _Open_  

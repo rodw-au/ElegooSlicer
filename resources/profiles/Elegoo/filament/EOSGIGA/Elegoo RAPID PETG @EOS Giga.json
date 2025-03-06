@@ -1,6 +1,6 @@
 {
     "type": "filament",
-    "name": "Elegoo rapid PETG @EOS Giga",
+    "name": "Elegoo RAPID PETG @EOS Giga",
     "inherits": "Elegoo PETG PRO @base",
     "from": "system",
     "setting_id": "ERPETGEOSG00",

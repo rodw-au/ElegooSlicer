@@ -4357,6 +4357,7 @@ void GUI_App::check_new_version(bool show_tips, int by_user)
     }).perform();
 }
 
+#if 0
 static bool isValidInstaller(const std::string& input)
 {
 #ifdef WIN32
@@ -4373,9 +4374,14 @@ static bool isValidInstaller(const std::string& input)
 #endif //  WIN32
     return false;
 }
+#endif
 
 void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 {
+#ifdef __LINUX__
+    return; // no version check for linux
+#endif
+
 #if 1 // Elegoo: use elegoo slicer release
     AppConfig* app_config = wxGetApp().app_config;
     auto       version_check_url = app_config->version_check_url();

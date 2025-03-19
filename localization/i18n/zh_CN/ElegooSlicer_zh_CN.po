@@ -15173,12 +15173,6 @@ msgstr "成功连接到 OctoPrint。"
 msgid "Could not connect to OctoPrint"
 msgstr "无法连接到OctoPrint"
 
-msgid "Connection to Elegoo Link works correctly."
-msgstr "成功连接到Elegoo Link。"
-
-msgid "Could not connect to Elegoo Link"
-msgstr "无法连接到Elegoo Link"
-
 msgid "Note: OctoPrint version at least 1.1.0 is required."
 msgstr "注意：至少需要 OctoPrint 版本 1.1.0。"
 

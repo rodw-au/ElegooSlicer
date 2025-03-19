@@ -3780,7 +3780,7 @@ void TabPrinter::build_fff()
 
                         if (!thumbnails_list.empty()) {
                             GCodeThumbnailsFormat old_format = GCodeThumbnailsFormat(m_config->option("thumbnails_format")->getInt());
-                            GCodeThumbnailsFormat new_format = thumbnails_list.begin()->first;
+                            GCodeThumbnailsFormat new_format = std::get<0>(*thumbnails_list.begin());
                             if (old_format != new_format) {
                                 DynamicPrintConfig new_conf = *m_config;
 
@@ -4513,6 +4513,11 @@ void TabPrinter::toggle_options()
         // SoftFever: hide non-BBL settings
         for (auto el : {"use_firmware_retraction", "use_relative_e_distances", "support_multi_bed_types", "pellet_modded_printer", "bed_mesh_max", "bed_mesh_min", "bed_mesh_probe_distance", "adaptive_bed_mesh_margin", "thumbnails"})
           toggle_line(el, !is_BBL_printer);
+
+        auto preset_bundle = wxGetApp().preset_bundle;
+        auto model_id = m_preset_bundle->printers.get_edited_preset().get_printer_type(preset_bundle);
+        toggle_line("gcode_flavor", !(model_id == "Elegoo-CC" || model_id == "Elegoo-C"));
+        
     }
 
     if (m_active_page->title() == L("Multimaterial")) {

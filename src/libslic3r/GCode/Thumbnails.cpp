@@ -154,16 +154,14 @@ std::unique_ptr<CompressedImageBuffer> compress_thumbnail_colpic(const Thumbnail
         int rr = row * width;
         for (int col = 0; col < width; ++col) {
             const int pix_idx = 4 * (rr + width - col - 1);
-            r                 = int(pixels[pix_idx]) >> 3;
-            g                 = int(pixels[pix_idx + 1]) >> 2;
-            b                 = int(pixels[pix_idx + 2]) >> 3;
-            a                 = int(pixels[pix_idx + 3]);
-            if (a == 0) {
-                r = 46 >> 3;
-                g = 51 >> 2;
-                b = 72 >> 3;
-            }
-            rgb             = (r << 11) | (g << 5) | b;
+            r                 = pixels[pix_idx];
+            g                 = pixels[pix_idx + 1];
+            b                 = pixels[pix_idx + 2];
+            a                 = pixels[pix_idx + 3];
+            r >>= 3;
+            g >>= 2;
+            b >>= 3;
+            rgb                 = (r << 11) | (g << 5) | b;
             color16_buf[time--] = rgb;
         }
     }
@@ -242,7 +240,7 @@ std::string rjust(std::string input, unsigned int width, char fill_char) {
     return stream.str();
 }
 
-std::unique_ptr<CompressedImageBuffer> compress_thumbnail(const ThumbnailData &data, GCodeThumbnailsFormat format)
+std::unique_ptr<CompressedImageBuffer> compress_thumbnail(const ThumbnailData& data, GCodeThumbnailsFormat format)
 {
     switch (format) {
     case GCodeThumbnailsFormat::PNG:
@@ -365,8 +363,10 @@ static int Byte8bitEncode(
                 break;
             }
         }
-        tid = (unsigned char) (temp % 32);
-        sid = (unsigned char) (temp / 32);
+        tid = (temp % 32);
+        tid = tid > 255 ? 255 : tid;
+        sid = (temp / 32);
+        sid = sid > 255 ? 255 : sid;
         if (lastid != sid) {
             if (decindex >= decMaxBytesize)
                 goto IL_END;
@@ -391,7 +391,7 @@ static int Byte8bitEncode(
             decindex++;
             if (decindex >= decMaxBytesize)
                 goto IL_END;
-            outputdata[decindex] = (unsigned char) dots;
+            outputdata[decindex] = dots > 255 ? 255 : dots;
             decindex++;
         }
         srcindex += dots;
@@ -407,6 +407,7 @@ static int ColPicEncode(unsigned short* fromcolor16, int picw, int pich, unsigne
     int          cha0, cha1, cha2, fid, minval;
     ColPicHead3* Head0 = nullptr;
     U16HEAD      Listu16[1024];
+    memset(Listu16, 0, sizeof(U16HEAD) * 1024);
     int          ListQty = 0;
     int          enqty   = 0;
     int          dotsqty = picw * pich;
@@ -542,6 +543,7 @@ std::pair<GCodeThumbnailDefinitionsList, ThumbnailErrors> make_and_check_thumbna
     GCodeThumbnailDefinitionsList thumbnails_list;
     while (std::getline(is, point_str, ',')) {
         Vec2d point(Vec2d::Zero());
+        Vec4d color(Vec4d::Zero());
         GCodeThumbnailsFormat format;
         std::istringstream iss(point_str);
         std::string coord_str;
@@ -564,10 +566,31 @@ std::pair<GCodeThumbnailDefinitionsList, ThumbnailErrors> make_and_check_thumbna
                         errors = enum_bitmask(errors | ThumbnailError::InvalidExt);
                     }
 
-                    thumbnails_list.emplace_back(std::make_pair(format, point));
-                }
-                else
+                    std::string color_str;
+                    if (std::getline(iss, color_str, '/') && !color_str.empty()) {
+                        if(color_str.size() == 7 && color_str[0] == '#') {
+                            unsigned int r, g, b;
+                            if (sscanf(color_str.c_str(), "#%02x%02x%02x", &r, &g, &b) == 3) {
+                                color = Vec4d(r / 255.0, g / 255.0, b / 255.0, 1.0);
+                            } else {
+                                errors = enum_bitmask(errors | ThumbnailError::InvalidVal);
+                            }
+                        } else if (color_str.size() == 9 && color_str[0] == '#') {
+                            unsigned int r, g, b, a;
+                            if (sscanf(color_str.c_str(), "#%02x%02x%02x%02x", &r, &g, &b, &a) == 4) {
+                                color = Vec4d(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
+                            } else {
+                                errors = enum_bitmask(errors | ThumbnailError::InvalidVal);
+                            }
+                        } else {
+                            errors = enum_bitmask(errors | ThumbnailError::InvalidVal);
+                        }
+                    }
+
+                    thumbnails_list.emplace_back(std::make_tuple(format, point, color));
+                } else {
                     errors = enum_bitmask(errors | ThumbnailError::OutOfRange);
+                }
                 continue;
             }
         }

@@ -812,8 +812,10 @@ void GUI_App::post_init()
         const auto first_url = this->init_params->input_files.front();
         if (this->init_params->input_files.size() == 1 && is_supported_open_protocol(first_url)) {
             switch_to_3d = true;
-            start_download(first_url);
-            m_open_method = "url";
+            if (m_app_conf_exists && !preset_bundle->printers.only_default_printers()) {
+                start_download(first_url);
+                m_open_method = "url";
+            } 
         } else {
             switch_to_3d = true;
             if (this->init_params->input_gcode) {
@@ -4355,6 +4357,7 @@ void GUI_App::check_new_version(bool show_tips, int by_user)
     }).perform();
 }
 
+#if 0
 static bool isValidInstaller(const std::string& input)
 {
 #ifdef WIN32
@@ -4371,9 +4374,14 @@ static bool isValidInstaller(const std::string& input)
 #endif //  WIN32
     return false;
 }
+#endif
 
 void GUI_App::check_new_version_sf(bool show_tips, int by_user)
 {
+#ifdef __LINUX__
+    return; // no version check for linux
+#endif
+
 #if 1 // Elegoo: use elegoo slicer release
     AppConfig* app_config = wxGetApp().app_config;
     auto       version_check_url = app_config->version_check_url();

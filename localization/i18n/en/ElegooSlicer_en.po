@@ -15374,12 +15374,6 @@ msgstr "Connection to OctoPrint is working correctly."
 msgid "Could not connect to OctoPrint"
 msgstr "Could not connect to OctoPrint"
 
-msgid "Connection to Elegoo Link works correctly."
-msgstr "Connection to Elegoo Link is working correctly."
-
-msgid "Could not connect to Elegoo Link"
-msgstr "Could not connect to Elegoo Link"
-
 msgid "Note: OctoPrint version at least 1.1.0 is required."
 msgstr "Note: OctoPrint version 1.1.0 or higher is required."
 
